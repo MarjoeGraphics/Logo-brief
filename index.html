@@ -303,29 +303,100 @@
                 <div id="step-6" class="step-content hidden">
                     <div class="mb-6">
                         <h2 class="text-2xl font-bold text-white mb-2">Logo Style & Direction</h2>
-                        <p class="text-slate-400">Visualizing the face of your brand.</p>
+                        <p class="text-slate-400">Select the visual directions that appeal to you.</p>
                     </div>
+
+                    <!-- Selection Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Wordmark" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Wordmark (Logotype)</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">Focuses on a company's name using custom typography.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Brand Marks" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Brand Marks</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">A symbol or icon-based logo (Pictorial mark).</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Combination Mark" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Combination Mark</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">A mix of a wordmark and a symbol.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Lettermark" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Lettermark (Monograms)</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">A typography-based logo using brand initials.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Abstract Logo Mark" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Abstract Logo Mark</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">Uses geometric and conceptual symbols.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Emblem Logos" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Emblem Logos</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">Font inside a symbol, badge, or seal.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Letterforms" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Letterforms</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">Minimalist, single-letter icons.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Mascots" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Mascots</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">Character-based designs representing the brand.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Dynamic Mark" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Dynamic Mark</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">An adaptable logo that can change colors or patterns.</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Supporting Text Areas (2x2) -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Idea for new logo?</label>
-                            <textarea name="logo_idea" rows="3" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                            <textarea name="logo_idea" rows="2" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Elements to include?</label>
-                            <textarea name="logo_elements" rows="3" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                            <textarea name="logo_elements" rows="2" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Visual preferences?</label>
-                            <textarea name="logo_preferences" rows="3" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Visual preferences or constraints?</label>
+                            <textarea name="logo_preferences" rows="2" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Text, Graphic, or Both?</label>
-                            <textarea name="logo_type" rows="3" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Current brand assets or references?</label>
+                            <textarea name="logo_assets" rows="2" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Tagline/Slogan</label>
-                        <input type="text" name="tagline" placeholder="Representing your brand..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
+
+                    <!-- Tagline Footer -->
+                    <div class="pt-2">
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">What tagline or slogan represents your brand?</label>
+                        <input type="text" name="tagline" placeholder="Your brand slogan..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
                     </div>
                 </div>
 
