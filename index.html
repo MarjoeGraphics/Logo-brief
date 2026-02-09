@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logo Questioner | Website Design Questionnaire</title>
+    <title>Logo Questioner | Brand Strategy Brief</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,12 +19,12 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .slide-out-left {
-            transform: translateX(-20px);
+            transform: translateX(-30px);
             opacity: 0;
             pointer-events: none;
         }
         .slide-out-right {
-            transform: translateX(20px);
+            transform: translateX(30px);
             opacity: 0;
             pointer-events: none;
         }
@@ -46,6 +46,38 @@
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #334155;
             border-radius: 10px;
+        }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-zoom-in {
+            animation: zoomIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        /* Custom range slider styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #334155;
+            border-radius: 2px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #6366f1;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -7px;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+        }
+        input[type=range]:focus::-webkit-slider-runnable-track {
+            background: #475569;
         }
     </style>
     <script>
@@ -69,151 +101,410 @@
 </head>
 <body class="bg-slate-900 text-slate-200 min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
 
-    <div class="max-w-2xl w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-sm">
+    <div class="max-w-3xl w-full bg-slate-800/40 border border-slate-700/50 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-md">
 
         <!-- Header & Progress Bar -->
         <div class="pt-8 px-8 pb-4">
             <div class="flex justify-between items-center mb-6">
                 <div class="flex items-center gap-2">
-                    <i data-lucide="layers" class="text-indigo-500 w-6 h-6"></i>
+                    <div class="bg-indigo-500 p-1.5 rounded-lg">
+                        <i data-lucide="sparkles" class="text-white w-5 h-5"></i>
+                    </div>
                     <span class="text-xl font-bold tracking-tight text-white">Logo Questioner</span>
                 </div>
-                <div class="text-sm font-medium text-slate-400" id="step-indicator">Step 1 of 5</div>
+                <div class="text-xs font-semibold tracking-widest uppercase text-slate-500" id="step-indicator">Step 1 of 8</div>
             </div>
 
-            <div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
-                <div id="progress-bar" class="bg-indigo-500 h-full w-[20%] transition-all duration-500 ease-out"></div>
+            <div class="w-full bg-slate-700/50 h-1 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-500 h-full w-[12.5%] transition-all duration-700 ease-in-out"></div>
             </div>
         </div>
 
         <!-- Form Container -->
         <form id="questionnaire-form" class="p-8" action="https://formspree.io/f/xzdabljr" method="POST">
-            <div id="steps-wrapper" class="relative min-h-[400px]">
+            <div id="steps-wrapper" class="relative min-h-[480px]">
 
-                <!-- Step 1: Introduction -->
+                <!-- Step 1: Let's Get Started -->
                 <div id="step-1" class="step-content">
                     <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-white mb-2">Let's get started</h2>
-                        <p class="text-slate-400">Tell us a bit about yourself and your company.</p>
+                        <h2 class="text-2xl font-bold text-white mb-2">Let's Get Started</h2>
+                        <p class="text-slate-400">Establish the foundation for our collaboration.</p>
                     </div>
                     <div class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Full Name</label>
-                            <input type="text" name="name" id="name" required placeholder="John Doe" class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Full Name</label>
+                                <input type="text" name="full_name" id="full_name" required placeholder="John Doe" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
+                                <input type="email" name="email" id="email" required placeholder="john@company.com" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
-                            <input type="email" name="email" id="email" required placeholder="john@company.com" class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Company Name</label>
-                            <input type="text" name="company" id="company" required placeholder="Acme Inc." class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700">
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Starting Date / Due Date</label>
+                            <input type="date" name="timeline" id="timeline" required class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white transition-all focus:bg-slate-700/50 [color-scheme:dark]">
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 2: Brand Identity -->
+                <!-- Step 2: Background Information -->
                 <div id="step-2" class="step-content hidden">
                     <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-white mb-2">Brand Identity</h2>
-                        <p class="text-slate-400">Select the styles that best represent your brand.</p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 mb-8">
-                        <label class="cursor-pointer group">
-                            <input type="checkbox" name="style[]" value="Minimal" class="peer hidden">
-                            <div class="bg-slate-700/30 border-2 border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
-                                <i data-lucide="layout" class="w-6 h-6 mb-2 text-slate-400 group-peer-checked:text-indigo-500"></i>
-                                <span class="block font-medium text-slate-200">Minimal</span>
-                            </div>
-                        </label>
-                        <label class="cursor-pointer group">
-                            <input type="checkbox" name="style[]" value="Bold" class="peer hidden">
-                            <div class="bg-slate-700/30 border-2 border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
-                                <i data-lucide="zap" class="w-6 h-6 mb-2 text-slate-400 group-peer-checked:text-indigo-500"></i>
-                                <span class="block font-medium text-slate-200">Bold</span>
-                            </div>
-                        </label>
-                        <label class="cursor-pointer group">
-                            <input type="checkbox" name="style[]" value="Corporate" class="peer hidden">
-                            <div class="bg-slate-700/30 border-2 border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
-                                <i data-lucide="briefcase" class="w-6 h-6 mb-2 text-slate-400 group-peer-checked:text-indigo-500"></i>
-                                <span class="block font-medium text-slate-200">Corporate</span>
-                            </div>
-                        </label>
-                        <label class="cursor-pointer group">
-                            <input type="checkbox" name="style[]" value="Playful" class="peer hidden">
-                            <div class="bg-slate-700/30 border-2 border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
-                                <i data-lucide="smile" class="w-6 h-6 mb-2 text-slate-400 group-peer-checked:text-indigo-500"></i>
-                                <span class="block font-medium text-slate-200">Playful</span>
-                            </div>
-                        </label>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Target Audience</label>
-                        <textarea name="audience" rows="3" placeholder="Describe your ideal customers..." class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700 resize-none"></textarea>
-                    </div>
-                </div>
-
-                <!-- Step 3: Technical Scope -->
-                <div id="step-3" class="step-content hidden">
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-white mb-2">Technical Scope</h2>
-                        <p class="text-slate-400">What features does your website need?</p>
-                    </div>
-                    <div class="space-y-3">
-                        <label class="flex items-center gap-3 p-4 bg-slate-700/30 border border-slate-600 rounded-xl cursor-pointer hover:bg-slate-700/50 transition-all group">
-                            <input type="checkbox" name="features[]" value="E-commerce" class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-indigo-500 focus:ring-indigo-500">
-                            <span class="text-slate-200 font-medium">E-commerce Functionality</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-4 bg-slate-700/30 border border-slate-600 rounded-xl cursor-pointer hover:bg-slate-700/50 transition-all group">
-                            <input type="checkbox" name="features[]" value="CMS" class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-indigo-500 focus:ring-indigo-500">
-                            <span class="text-slate-200 font-medium">Content Management System (CMS)</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-4 bg-slate-700/30 border border-slate-600 rounded-xl cursor-pointer hover:bg-slate-700/50 transition-all group">
-                            <input type="checkbox" name="features[]" value="SEO" class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-indigo-500 focus:ring-indigo-500">
-                            <span class="text-slate-200 font-medium">Search Engine Optimization (SEO)</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-4 bg-slate-700/30 border border-slate-600 rounded-xl cursor-pointer hover:bg-slate-700/50 transition-all group">
-                            <input type="checkbox" name="features[]" value="Animations" class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-indigo-500 focus:ring-indigo-500">
-                            <span class="text-slate-200 font-medium">Custom Animations</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Step 4: Logistics -->
-                <div id="step-4" class="step-content hidden">
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-white mb-2">Logistics</h2>
-                        <p class="text-slate-400">Budget and timeline expectations.</p>
+                        <h2 class="text-2xl font-bold text-white mb-2">Background Information</h2>
+                        <p class="text-slate-400">Tell us about your business and its core.</p>
                     </div>
                     <div class="space-y-6">
                         <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Budget Range</label>
-                            <select name="budget" class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white appearance-none transition-all focus:bg-slate-700">
-                                <option value="" disabled selected>Select a range</option>
-                                <option value="1k-5k">$1,000 — $5,000</option>
-                                <option value="5k-10k">$5,000 — $10,000</option>
-                                <option value="10k-25k">$10,000 — $25,000</option>
-                                <option value="25k+">$25,000+</option>
-                            </select>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Business/Organization Name</label>
+                            <input type="text" name="business_name" placeholder="Acme Inc." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Target Launch Date</label>
-                            <div class="relative">
-                                <input type="date" name="launch_date" class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white transition-all focus:bg-slate-700 [color-scheme:dark]">
-                            </div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Products and Services</label>
+                            <textarea name="products_services" rows="2" placeholder="What do you sell or provide?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Business Value Proposition</label>
+                            <textarea name="value_prop" rows="2" placeholder="What makes you unique?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Ideal Customers</label>
+                            <input type="text" name="ideal_customers" placeholder="Who is your target audience?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 5: Review & Submit -->
+                <!-- Step 3: Brand Presentation -->
+                <div id="step-3" class="step-content hidden">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-white mb-2">Brand Presentation</h2>
+                        <p class="text-slate-400">Defining your brand's public image.</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">How do you want your brand to be perceived by your audience?</label>
+                        <textarea name="perception" rows="8" placeholder="e.g., Innovative, trustworthy, approachable..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 4: Brand Identity -->
+                <div id="step-4" class="step-content hidden">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-white mb-2">Brand Identity</h2>
+                        <p class="text-slate-400">The soul and purpose of your brand.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Core Values</label>
+                            <textarea name="core_values" rows="4" placeholder="What principles guide your business?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Mission Statement</label>
+                            <textarea name="mission_statement" rows="4" placeholder="Your brand's primary objective..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Brand Personality -->
                 <div id="step-5" class="step-content hidden">
                     <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-white mb-2">Review & Submit</h2>
-                        <p class="text-slate-400">Take a moment to review your details.</p>
+                        <h2 class="text-2xl font-bold text-white mb-2">Brand Personality</h2>
+                        <p class="text-slate-400">Fine-tune your brand's visual and emotional character.</p>
                     </div>
-                    <div id="review-summary" class="bg-slate-700/30 border border-slate-600 rounded-2xl p-6 space-y-4 max-h-[300px] overflow-y-auto custom-scrollbar">
-                        <!-- Summary will be generated by JS -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+                        <!-- Personality Scales -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Greyscale</span>
+                                <span>Colorful</span>
+                            </div>
+                            <input type="range" name="scale_greyscale_colorful" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Authoritative</span>
+                                <span>Friendly</span>
+                            </div>
+                            <input type="range" name="scale_authoritative_friendly" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Minimalistic</span>
+                                <span>Complex</span>
+                            </div>
+                            <input type="range" name="scale_minimalistic_complex" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Conservative</span>
+                                <span>Nonconventional</span>
+                            </div>
+                            <input type="range" name="scale_conservative_nonconventional" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Masculine</span>
+                                <span>Feminine</span>
+                            </div>
+                            <input type="range" name="scale_masculine_feminine" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Professional</span>
+                                <span>Casual</span>
+                            </div>
+                            <input type="range" name="scale_professional_casual" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Luxurious</span>
+                                <span>Natural</span>
+                            </div>
+                            <input type="range" name="scale_luxurious_natural" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Serious</span>
+                                <span>Fun</span>
+                            </div>
+                            <input type="range" name="scale_serious_fun" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Classic</span>
+                                <span>Modern</span>
+                            </div>
+                            <input type="range" name="scale_classic_modern" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Retro</span>
+                                <span>Futuristic</span>
+                            </div>
+                            <input type="range" name="scale_retro_futuristic" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Elegant</span>
+                                <span>Sporty</span>
+                            </div>
+                            <input type="range" name="scale_elegant_sporty" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <span>Safe</span>
+                                <span>Extreme</span>
+                            </div>
+                            <input type="range" name="scale_safe_extreme" min="1" max="5" step="1" value="3" class="w-full">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: Logo Style & Direction -->
+                <div id="step-6" class="step-content hidden">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-white mb-2">Logo Style & Direction</h2>
+                        <p class="text-slate-400">Select the visual directions that appeal to you.</p>
+                    </div>
+
+                    <!-- Selection Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Wordmark" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Wordmark (Logotype)</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">Focuses on a company's name using custom typography.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Brand Marks" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Brand Marks</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">A symbol or icon-based logo (Pictorial mark).</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Combination Mark" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Combination Mark</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">A mix of a wordmark and a symbol.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Lettermark" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Lettermark (Monograms)</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">A typography-based logo using brand initials.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Abstract Logo Mark" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Abstract Logo Mark</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">Uses geometric and conceptual symbols.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Emblem Logos" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Emblem Logos</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">Font inside a symbol, badge, or seal.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Letterforms" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Letterforms</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">Minimalist, single-letter icons.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Mascots" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Mascots</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">Character-based designs representing the brand.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="logo_styles[]" value="Dynamic Mark" class="peer hidden">
+                            <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <span class="block font-bold text-white text-sm mb-1">Dynamic Mark</span>
+                                <p class="text-[10px] text-slate-500 leading-tight">An adaptable logo that can change colors or patterns.</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Supporting Text Areas (2x2) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Idea for new logo?</label>
+                            <textarea name="logo_idea" rows="2" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Elements to include?</label>
+                            <textarea name="logo_elements" rows="2" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Visual preferences or constraints?</label>
+                            <textarea name="logo_preferences" rows="2" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Current brand assets or references?</label>
+                            <textarea name="logo_assets" rows="2" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Tagline Footer -->
+                    <div class="pt-2">
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">What tagline or slogan represents your brand?</label>
+                        <input type="text" name="tagline" placeholder="Your brand slogan..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
+                    </div>
+                </div>
+
+                <!-- Step 7: Brand Color Psychology -->
+                <div id="step-7" class="step-content hidden">
+                    <div class="mb-6">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <h2 class="text-2xl font-bold text-white mb-2">Brand Color Psychology</h2>
+                                <p class="text-slate-400">Select 2 to 4 colors that resonate.</p>
+                            </div>
+                            <div class="text-xs font-bold text-indigo-400 mb-1" id="color-count">0 / 4 selected</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 max-h-[380px] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Color Cards -->
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="colors[]" value="Red" class="peer hidden color-checkbox">
+                            <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <div class="w-full h-12 bg-red-500 rounded-lg mb-2"></div>
+                                <span class="block font-bold text-white text-xs mb-1">Red</span>
+                                <p class="text-[9px] text-slate-500 leading-tight">Strength, Excitement, Power, Love</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="colors[]" value="Orange" class="peer hidden color-checkbox">
+                            <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <div class="w-full h-12 bg-orange-500 rounded-lg mb-2"></div>
+                                <span class="block font-bold text-white text-xs mb-1">Orange</span>
+                                <p class="text-[9px] text-slate-500 leading-tight">Safety, Success, Confidence, Bravery</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="colors[]" value="Yellow" class="peer hidden color-checkbox">
+                            <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <div class="w-full h-12 bg-yellow-400 rounded-lg mb-2"></div>
+                                <span class="block font-bold text-white text-xs mb-1">Yellow</span>
+                                <p class="text-[9px] text-slate-500 leading-tight">Cheer, Happiness, Creativity, Warmth</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="colors[]" value="Green" class="peer hidden color-checkbox">
+                            <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <div class="w-full h-12 bg-emerald-500 rounded-lg mb-2"></div>
+                                <span class="block font-bold text-white text-xs mb-1">Green</span>
+                                <p class="text-[9px] text-slate-500 leading-tight">Nature, Healing, Freshness, Quality</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="colors[]" value="Blue" class="peer hidden color-checkbox">
+                            <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <div class="w-full h-12 bg-blue-500 rounded-lg mb-2"></div>
+                                <span class="block font-bold text-white text-xs mb-1">Blue</span>
+                                <p class="text-[9px] text-slate-500 leading-tight">Trust, Peace, Competence, Loyalty</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="colors[]" value="Pink" class="peer hidden color-checkbox">
+                            <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <div class="w-full h-12 bg-pink-400 rounded-lg mb-2"></div>
+                                <span class="block font-bold text-white text-xs mb-1">Pink</span>
+                                <p class="text-[9px] text-slate-500 leading-tight">Sweet, Compassion, Sincerity, Sophistication</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="colors[]" value="Purple" class="peer hidden color-checkbox">
+                            <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <div class="w-full h-12 bg-purple-600 rounded-lg mb-2"></div>
+                                <span class="block font-bold text-white text-xs mb-1">Purple</span>
+                                <p class="text-[9px] text-slate-500 leading-tight">Spiritual, Royalty, Modern, Luxury</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="colors[]" value="Brown" class="peer hidden color-checkbox">
+                            <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <div class="w-full h-12 bg-amber-900 rounded-lg mb-2"></div>
+                                <span class="block font-bold text-white text-xs mb-1">Brown</span>
+                                <p class="text-[9px] text-slate-500 leading-tight">Trust, Rugged, Simple, Dependable</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="colors[]" value="Black" class="peer hidden color-checkbox">
+                            <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <div class="w-full h-12 bg-black rounded-lg mb-2 border border-slate-600"></div>
+                                <span class="block font-bold text-white text-xs mb-1">Black</span>
+                                <p class="text-[9px] text-slate-500 leading-tight">Formality, Dramatic, Sophistication, Security</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="colors[]" value="White" class="peer hidden color-checkbox">
+                            <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                                <div class="w-full h-12 bg-white rounded-lg mb-2"></div>
+                                <span class="block font-bold text-slate-900 text-xs mb-1">White</span>
+                                <p class="text-[9px] text-slate-500 leading-tight">Clean, Simplicity, Innocence, Honest</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 8: Final Thoughts -->
+                <div id="step-8" class="step-content hidden">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-white mb-2">Final Thoughts</h2>
+                        <p class="text-slate-400">Anything else we should know?</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Additional notes / comments / requests / concerns</label>
+                        <textarea name="notes" rows="10" placeholder="Type your message here..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
                     </div>
                 </div>
 
@@ -227,23 +518,23 @@
                 </button>
                 <div class="flex-1"></div>
                 <button type="button" id="next-btn" class="px-8 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/20 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                    Next
+                    Next Step
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
-                <button type="submit" id="submit-btn" class="hidden px-8 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/20 transition-all flex items-center gap-2">
-                    Complete Project Brief
-                    <i data-lucide="check" class="w-4 h-4"></i>
+                <button type="submit" id="submit-btn" class="hidden px-8 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/20 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Submit Brief
+                    <i data-lucide="send" class="w-4 h-4"></i>
                 </button>
             </div>
         </form>
 
-        <!-- Success Message (Hidden by default) -->
-        <div id="success-screen" class="hidden p-12 text-center flex-col items-center justify-center">
-            <div class="w-20 h-20 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mb-6 animate-bounce">
-                <i data-lucide="check-circle" class="w-10 h-10"></i>
+        <!-- Success Message -->
+        <div id="success-screen" class="hidden p-16 text-center flex-col items-center justify-center animate-zoom-in">
+            <div class="w-20 h-20 bg-indigo-500/20 text-indigo-500 rounded-full flex items-center justify-center mb-8">
+                <i data-lucide="check-circle-2" class="w-10 h-10"></i>
             </div>
-            <h2 class="text-3xl font-bold text-white mb-2">Thank You!</h2>
-            <p class="text-slate-400 text-lg">Your brief has been submitted successfully. We'll be in touch shortly.</p>
+            <h2 class="text-3xl font-bold text-white mb-3 tracking-tight">Thank You!</h2>
+            <p class="text-slate-400 text-lg max-w-sm">Your brand strategy brief has been submitted successfully. We'll review your vision and be in touch shortly.</p>
         </div>
     </div>
 
@@ -252,7 +543,7 @@
         lucide.createIcons();
 
         let currentStep = 1;
-        const totalSteps = 5;
+        const totalSteps = 8;
         const form = document.getElementById('questionnaire-form');
         const nextBtn = document.getElementById('next-btn');
         const prevBtn = document.getElementById('prev-btn');
@@ -261,11 +552,14 @@
         const stepIndicator = document.getElementById('step-indicator');
         const successScreen = document.getElementById('success-screen');
 
-        const inputs = {
-            name: document.getElementById('name'),
+        const step1Inputs = {
+            name: document.getElementById('full_name'),
             email: document.getElementById('email'),
-            company: document.getElementById('company')
+            timeline: document.getElementById('timeline')
         };
+
+        const colorCheckboxes = document.querySelectorAll('.color-checkbox');
+        const colorCountDisplay = document.getElementById('color-count');
 
         function updateStepUI() {
             // Update Step Visibility
@@ -298,54 +592,48 @@
             if (currentStep === totalSteps) {
                 nextBtn.classList.add('hidden');
                 submitBtn.classList.remove('hidden');
-                generateSummary();
             } else {
                 nextBtn.classList.remove('hidden');
                 submitBtn.classList.add('hidden');
             }
 
-            validateStep1();
+            validateCurrentStep();
         }
 
-        function validateStep1() {
+        function validateCurrentStep() {
+            let isValid = true;
+
             if (currentStep === 1) {
-                const isValid = inputs.name.value.trim() !== '' &&
-                              inputs.email.value.trim() !== '' &&
-                              inputs.email.checkValidity() &&
-                              inputs.company.value.trim() !== '';
-                nextBtn.disabled = !isValid;
+                isValid = step1Inputs.name.value.trim() !== '' &&
+                          step1Inputs.email.value.trim() !== '' &&
+                          step1Inputs.email.checkValidity() &&
+                          step1Inputs.timeline.value !== '';
+            } else if (currentStep === 7) {
+                const selectedColors = Array.from(colorCheckboxes).filter(cb => cb.checked).length;
+                isValid = selectedColors >= 2 && selectedColors <= 4;
+            }
+
+            if (currentStep === totalSteps) {
+                submitBtn.disabled = !isValid;
             } else {
-                nextBtn.disabled = false;
+                nextBtn.disabled = !isValid;
             }
         }
 
-        function generateSummary() {
-            const summaryContainer = document.getElementById('review-summary');
-            const formData = new FormData(form);
-            let html = '';
+        // Color Selection Logic
+        colorCheckboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                const selected = Array.from(colorCheckboxes).filter(c => c.checked);
+                colorCountDisplay.textContent = `${selected.length} / 4 selected`;
 
-            const sections = [
-                { label: 'Name', value: formData.get('name') },
-                { label: 'Email', value: formData.get('email') },
-                { label: 'Company', value: formData.get('company') },
-                { label: 'Design Styles', value: formData.getAll('style[]').join(', ') || 'None selected' },
-                { label: 'Target Audience', value: formData.get('audience') || 'Not specified' },
-                { label: 'Features', value: formData.getAll('features[]').join(', ') || 'None selected' },
-                { label: 'Budget', value: formData.get('budget') || 'Not specified' },
-                { label: 'Launch Date', value: formData.get('launch_date') || 'Not specified' }
-            ];
+                if (selected.length > 4) {
+                    cb.checked = false;
+                    colorCountDisplay.textContent = `4 / 4 selected`;
+                }
 
-            sections.forEach(section => {
-                html += `
-                    <div>
-                        <span class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">${section.label}</span>
-                        <span class="text-slate-200">${section.value}</span>
-                    </div>
-                `;
+                validateCurrentStep();
             });
-
-            summaryContainer.innerHTML = html;
-        }
+        });
 
         // Event Listeners
         nextBtn.addEventListener('click', () => {
@@ -370,17 +658,18 @@
             }
         });
 
-        [inputs.name, inputs.email, inputs.company].forEach(input => {
-            input.addEventListener('input', validateStep1);
+        Object.values(step1Inputs).forEach(input => {
+            input.addEventListener('input', validateCurrentStep);
         });
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             submitBtn.disabled = true;
+            const originalContent = submitBtn.innerHTML;
             submitBtn.innerHTML = `
-                <span class="animate-spin h-5 w-5 border-2 border-white/30 border-t-white rounded-full"></span>
-                Submitting...
+                <span class="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full"></span>
+                Sending...
             `;
 
             const formData = new FormData(form);
@@ -404,14 +693,12 @@
                     const data = await response.json();
                     alert(data.errors ? data.errors[0].message : 'Oops! There was a problem submitting your form');
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = `Complete Project Brief <i data-lucide="check" class="w-4 h-4"></i>`;
-                    lucide.createIcons();
+                    submitBtn.innerHTML = originalContent;
                 }
             } catch (error) {
                 alert('Oops! There was a problem submitting your form');
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `Complete Project Brief <i data-lucide="check" class="w-4 h-4"></i>`;
-                lucide.createIcons();
+                submitBtn.innerHTML = originalContent;
             }
         });
 
