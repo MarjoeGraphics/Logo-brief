@@ -1,0 +1,144 @@
+{
+    "logoStyles": [
+        {
+            "id": "wordmark",
+            "title": "Wordmark (Logotype)",
+            "description": "Focuses on a company's name using custom typography.",
+            "value": "Wordmark"
+        },
+        {
+            "id": "brandmarks",
+            "title": "Brand Marks",
+            "description": "A symbol or icon-based logo (Pictorial mark).",
+            "value": "Brand Marks"
+        },
+        {
+            "id": "combination",
+            "title": "Combination Mark",
+            "description": "A mix of a wordmark and a symbol.",
+            "value": "Combination Mark"
+        },
+        {
+            "id": "lettermark",
+            "title": "Lettermark (Monograms)",
+            "description": "A typography-based logo using brand initials.",
+            "value": "Lettermark"
+        },
+        {
+            "id": "abstract",
+            "title": "Abstract Logo Mark",
+            "description": "Uses geometric and conceptual symbols.",
+            "value": "Abstract Logo Mark"
+        },
+        {
+            "id": "emblem",
+            "title": "Emblem Logos",
+            "description": "Font inside a symbol, badge, or seal.",
+            "value": "Emblem Logos"
+        },
+        {
+            "id": "letterforms",
+            "title": "Letterforms",
+            "description": "Minimalist, single-letter icons.",
+            "value": "Letterforms"
+        },
+        {
+            "id": "mascots",
+            "title": "Mascots",
+            "description": "Character-based designs representing the brand.",
+            "value": "Mascots"
+        },
+        {
+            "id": "dynamic",
+            "title": "Dynamic Mark",
+            "description": "An adaptable logo that can change colors or patterns.",
+            "value": "Dynamic Mark"
+        }
+    ],
+    "colorPsychology": [
+        {
+            "id": "red",
+            "name": "Red",
+            "keywords": "Strength, Excitement, Power, Love",
+            "colorClass": "bg-red-500"
+        },
+        {
+            "id": "orange",
+            "name": "Orange",
+            "keywords": "Safety, Success, Confidence, Bravery",
+            "colorClass": "bg-orange-500"
+        },
+        {
+            "id": "yellow",
+            "name": "Yellow",
+            "keywords": "Cheer, Happiness, Creativity, Warmth",
+            "colorClass": "bg-yellow-400"
+        },
+        {
+            "id": "green",
+            "name": "Green",
+            "keywords": "Nature, Healing, Freshness, Quality",
+            "colorClass": "bg-emerald-500"
+        },
+        {
+            "id": "blue",
+            "name": "Blue",
+            "keywords": "Trust, Peace, Competence, Loyalty",
+            "colorClass": "bg-blue-500"
+        },
+        {
+            "id": "pink",
+            "name": "Pink",
+            "keywords": "Sweet, Compassion, Sincerity, Sophistication",
+            "colorClass": "bg-pink-400"
+        },
+        {
+            "id": "purple",
+            "name": "Purple",
+            "keywords": "Spiritual, Royalty, Modern, Luxury",
+            "colorClass": "bg-purple-600"
+        },
+        {
+            "id": "brown",
+            "name": "Brown",
+            "keywords": "Trust, Rugged, Simple, Dependable",
+            "colorClass": "bg-amber-900"
+        },
+        {
+            "id": "black",
+            "name": "Black",
+            "keywords": "Formality, Dramatic, Sophistication, Security",
+            "colorClass": "bg-black"
+        },
+        {
+            "id": "white",
+            "name": "White",
+            "keywords": "Clean, Simplicity, Innocence, Honest",
+            "colorClass": "bg-white",
+            "textClass": "text-slate-900"
+        }
+    ],
+    "pricingTiers": [
+        {
+            "id": "essential",
+            "title": "Essential",
+            "price": "$2,500",
+            "features": ["Core Visual Identity", "2 Logo Concepts", "Basic Brand Guidelines", "1 Week Timeline"],
+            "recommended": false
+        },
+        {
+            "id": "professional",
+            "title": "Professional",
+            "price": "$5,000",
+            "features": ["Full Brand Strategy", "4 Logo Concepts", "Comprehensive Style Guide", "Social Media Toolkit"],
+            "recommended": true
+        },
+        {
+            "id": "enterprise",
+            "title": "Enterprise",
+            "price": "$10,000+",
+            "features": ["Global Identity Audit", "Unlimited Concepts", "Brand Voice & Tone", "Full Collateral Design"],
+            "recommended": false
+        }
+    ]
+}
