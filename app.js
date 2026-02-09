@@ -34,19 +34,32 @@ class QuestionnaireApp {
             this.config = await response.json();
         } catch (error) {
             console.error('Failed to load config:', error);
-            // Fallback or error UI
         }
     }
 
     renderDynamicContent() {
         if (!this.config) return;
 
+        // Render Step 5: Personality Scales
+        const scalesContainer = document.getElementById('personality-scales-container');
+        if (scalesContainer) {
+            scalesContainer.innerHTML = this.config.personalityScales.map(scale => `
+                <div class="space-y-2">
+                    <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                        <span>${scale.left}</span>
+                        <span>${scale.right}</span>
+                    </div>
+                    <input type="range" name="${scale.name}" min="1" max="5" step="1" value="3" class="w-full personality-scale" data-left="${scale.left}" data-right="${scale.right}">
+                </div>
+            `).join('');
+        }
+
         // Render Step 6: Logo Styles
         const logoGrid = document.getElementById('logo-selection-grid');
         if (logoGrid) {
             logoGrid.innerHTML = this.config.logoStyles.map(style => `
                 <label class="cursor-pointer group relative">
-                    <input type="checkbox" name="logo_styles[]" value="${style.value}" class="peer hidden">
+                    <input type="checkbox" name="Logo_Style_Preferences[]" value="${style.value}" class="peer hidden">
                     <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
                         <span class="block font-bold text-white text-sm mb-1">${style.title}</span>
                         <p class="text-[10px] text-slate-500 leading-tight">${style.description}</p>
@@ -60,7 +73,7 @@ class QuestionnaireApp {
         if (colorGrid) {
             colorGrid.innerHTML = this.config.colorPsychology.map(color => `
                 <label class="cursor-pointer group relative">
-                    <input type="checkbox" name="colors[]" value="${color.name}" class="peer hidden color-checkbox">
+                    <input type="checkbox" name="Selected_Color_Psychology[]" value="${color.name}" data-keywords="${color.keywords}" class="peer hidden color-checkbox">
                     <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
                         <div class="w-full h-12 ${color.colorClass} rounded-lg mb-2 ${color.id === 'black' ? 'border border-slate-600' : ''}"></div>
                         <span class="block font-bold ${color.textClass || 'text-white'} text-xs mb-1">${color.name}</span>
@@ -77,7 +90,7 @@ class QuestionnaireApp {
         if (pricingGrid) {
             pricingGrid.innerHTML = this.config.pricingTiers.map(tier => `
                 <label class="cursor-pointer group relative block">
-                    <input type="radio" name="pricing_tier" value="${tier.title}" class="peer hidden" required>
+                    <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" class="peer hidden" required>
                     <div class="bg-slate-700/30 border-2 border-slate-600 rounded-2xl p-6 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500 relative overflow-hidden">
                         ${tier.recommended ? '<div class="absolute top-0 right-0 bg-indigo-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Recommended</div>' : ''}
                         <h3 class="text-xl font-bold text-white mb-1">${tier.title}</h3>
@@ -124,9 +137,8 @@ class QuestionnaireApp {
             input.addEventListener('input', () => this.validateCurrentStep());
         });
 
-        // Listen for changes on pricing tier
         document.addEventListener('change', (e) => {
-            if (e.target.name === 'pricing_tier') this.validateCurrentStep();
+            if (e.target.name === 'Selected_Investment_Strategy') this.validateCurrentStep();
         });
     }
 
@@ -192,7 +204,7 @@ class QuestionnaireApp {
             const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
             isValid = selectedCount >= 2 && selectedCount <= 4;
         } else if (this.currentStep === 9) {
-            const selectedTier = document.querySelector('input[name="pricing_tier"]:checked');
+            const selectedTier = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
             isValid = !!selectedTier;
         }
 

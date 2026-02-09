@@ -16,11 +16,69 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         const formData = new FormData(form);
+        const transformedData = {};
+
+        // Helper to get descriptors for scales
+        const getScaleDescription = (value, left, right) => {
+            const val = parseInt(value);
+            if (val === 1) return `1 (Strongly ${left})`;
+            if (val === 2) return `2 (Leaning ${left})`;
+            if (val === 3) return `3 (Neutral / Balanced)`;
+            if (val === 4) return `4 (Leaning ${right})`;
+            if (val === 5) return `5 (Strongly ${right})`;
+            return value;
+        };
+
+        // Transform Data
+        for (let [key, value] of formData.entries()) {
+            // Handle Personality Scales
+            if (key.startsWith('Personality_Scale_')) {
+                const input = form.querySelector(`input[name="${key}"]`);
+                if (input) {
+                    const left = input.getAttribute('data-left');
+                    const right = input.getAttribute('data-right');
+                    transformedData[key] = getScaleDescription(value, left, right);
+                } else {
+                    transformedData[key] = value;
+                }
+            }
+            // Handle Colors
+            else if (key === 'Selected_Color_Psychology[]') {
+                const checkbox = form.querySelector(`input[name="${key}"][value="${value}"]`);
+                const keywords = checkbox ? checkbox.getAttribute('data-keywords') : '';
+                const formattedColor = `${value} (${keywords})`;
+
+                if (!transformedData['Selected_Color_Psychology']) {
+                    transformedData['Selected_Color_Psychology'] = formattedColor;
+                } else {
+                    transformedData['Selected_Color_Psychology'] += `, ${formattedColor}`;
+                }
+            }
+            // Handle Logo Styles
+            else if (key === 'Logo_Style_Preferences[]') {
+                if (!transformedData['Logo_Style_Preferences']) {
+                    transformedData['Logo_Style_Preferences'] = value;
+                } else {
+                    transformedData['Logo_Style_Preferences'] += `, ${value}`;
+                }
+            }
+            // Pass through others (handled specially if needed)
+            else {
+                transformedData[key] = value;
+            }
+        }
+
+        // Clean up: Formspree prefers flat objects for reporting if using JSON
+        // Or we can construct a new FormData object
+        const finalFormData = new FormData();
+        for (let key in transformedData) {
+            finalFormData.append(key, transformedData[key]);
+        }
 
         try {
             const response = await fetch(form.action, {
                 method: 'POST',
-                body: formData,
+                body: finalFormData,
                 headers: {
                     'Accept': 'application/json'
                 }

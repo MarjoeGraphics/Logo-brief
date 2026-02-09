@@ -51,6 +51,9 @@
 
         <!-- Form Container -->
         <form id="questionnaire-form" class="p-8" action="https://formspree.io/f/xzdabljr" method="POST">
+            <!-- Formspree Subject -->
+            <input type="hidden" name="_subject" value="New Website Strategy Submission">
+
             <div id="steps-wrapper" class="relative min-h-[480px]">
 
                 <!-- Step 1: Let's Get Started -->
@@ -63,16 +66,16 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-slate-300 mb-2">Full Name</label>
-                                <input type="text" name="full_name" id="full_name" required placeholder="John Doe" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
+                                <input type="text" name="Client_Full_Name" id="full_name" required placeholder="John Doe" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
-                                <input type="email" name="email" id="email" required placeholder="john@company.com" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
+                                <input type="email" name="Client_Email_Address" id="email" required placeholder="john@company.com" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-2">Starting Date / Due Date</label>
-                            <input type="date" name="timeline" id="timeline" required class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white transition-all focus:bg-slate-700/50 [color-scheme:dark]">
+                            <input type="date" name="Project_Timeline" id="timeline" required class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white transition-all focus:bg-slate-700/50 [color-scheme:dark]">
                         </div>
                     </div>
                 </div>
@@ -86,19 +89,19 @@
                     <div class="space-y-6">
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-2">Business/Organization Name</label>
-                            <input type="text" name="business_name" placeholder="Acme Inc." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
+                            <input type="text" name="Business_Organization_Name" placeholder="Acme Inc." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-2">Products and Services</label>
-                            <textarea name="products_services" rows="2" placeholder="What do you sell or provide?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                            <textarea name="Products_and_Services" rows="2" placeholder="What do you sell or provide?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-2">Business Value Proposition</label>
-                            <textarea name="value_prop" rows="2" placeholder="What makes you unique?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                            <textarea name="Business_Value_Proposition" rows="2" placeholder="What makes you unique?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-2">Ideal Customers</label>
-                            <input type="text" name="ideal_customers" placeholder="Who is your target audience?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
+                            <input type="text" name="Target_Audience" placeholder="Who is your target audience?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
                         </div>
                     </div>
                 </div>
@@ -111,7 +114,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-2">How do you want your brand to be perceived by your audience?</label>
-                        <textarea name="perception" rows="8" placeholder="e.g., Innovative, trustworthy, approachable..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                        <textarea name="Audience_Perception_Goal" rows="8" placeholder="e.g., Innovative, trustworthy, approachable..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
                     </div>
                 </div>
 
@@ -124,70 +127,23 @@
                     <div class="space-y-6">
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-2">Core Values</label>
-                            <textarea name="core_values" rows="4" placeholder="What principles guide your business?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                            <textarea name="Brand_Core_Values" rows="4" placeholder="What principles guide your business?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-2">Mission Statement</label>
-                            <textarea name="mission_statement" rows="4" placeholder="Your brand's primary objective..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                            <textarea name="Brand_Mission_Statement" rows="4" placeholder="Your brand's primary objective..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 5: Brand Personality -->
+                <!-- Step 5: Brand Personality (Inputs updated dynamically in app.js or kept for reference) -->
                 <div id="step-5" class="step-content hidden">
                     <div class="mb-8">
                         <h2 class="text-2xl font-bold text-white mb-2">Brand Personality</h2>
                         <p class="text-slate-400">Fine-tune your brand's character with visual scales.</p>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Greyscale</span><span>Colorful</span></div>
-                            <input type="range" name="scale_greyscale_colorful" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Authoritative</span><span>Friendly</span></div>
-                            <input type="range" name="scale_authoritative_friendly" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Minimalistic</span><span>Complex</span></div>
-                            <input type="range" name="scale_minimalistic_complex" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Conservative</span><span>Nonconventional</span></div>
-                            <input type="range" name="scale_conservative_nonconventional" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Masculine</span><span>Feminine</span></div>
-                            <input type="range" name="scale_masculine_feminine" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Professional</span><span>Casual</span></div>
-                            <input type="range" name="scale_professional_casual" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Luxurious</span><span>Natural</span></div>
-                            <input type="range" name="scale_luxurious_natural" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Serious</span><span>Fun</span></div>
-                            <input type="range" name="scale_serious_fun" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Classic</span><span>Modern</span></div>
-                            <input type="range" name="scale_classic_modern" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Retro</span><span>Futuristic</span></div>
-                            <input type="range" name="scale_retro_futuristic" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Elegant</span><span>Sporty</span></div>
-                            <input type="range" name="scale_elegant_sporty" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500"><span>Safe</span><span>Extreme</span></div>
-                            <input type="range" name="scale_safe_extreme" min="1" max="5" step="1" value="3" class="w-full">
-                        </div>
+                    <div id="personality-scales-container" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+                        <!-- Rendered dynamically from config.json in app.js -->
                     </div>
                 </div>
 
@@ -201,12 +157,12 @@
                         <!-- Rendered dynamically from config.json -->
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <textarea name="logo_idea" rows="2" placeholder="Idea for new logo?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
-                        <textarea name="logo_elements" rows="2" placeholder="Elements to include?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
-                        <textarea name="logo_preferences" rows="2" placeholder="Visual preferences or constraints?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
-                        <textarea name="logo_assets" rows="2" placeholder="Current brand assets or references?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                        <textarea name="New_Logo_Ideas" rows="2" placeholder="Idea for new logo?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                        <textarea name="Must_Include_Elements" rows="2" placeholder="Elements to include?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                        <textarea name="Visual_Preferences_Constraints" rows="2" placeholder="Visual preferences or constraints?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
+                        <textarea name="Current_Brand_Assets_References" rows="2" placeholder="Current brand assets or references?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
                     </div>
-                    <input type="text" name="tagline" placeholder="What tagline or slogan represents your brand?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
+                    <input type="text" name="Brand_Tagline_Slogan" placeholder="What tagline or slogan represents your brand?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
                 </div>
 
                 <!-- Step 7: Brand Color Psychology (Dynamic) -->
@@ -231,7 +187,7 @@
                         <h2 class="text-2xl font-bold text-white mb-2">Final Thoughts</h2>
                         <p class="text-slate-400">Anything else we should know?</p>
                     </div>
-                    <textarea name="notes" rows="10" placeholder="Additional notes / comments / requests / concerns" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                    <textarea name="Additional_Notes_Comments" rows="10" placeholder="Additional notes / comments / requests / concerns" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
                 </div>
 
                 <!-- Step 9: Pricing (Dynamic) -->
