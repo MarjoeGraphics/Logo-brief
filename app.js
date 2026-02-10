@@ -90,12 +90,12 @@ class QuestionnaireApp {
             this.setupColorLogic();
         }
 
-        // Render Step 9: Pricing
+        // Render Step 8: Pricing
         const pricingGrid = document.getElementById('pricing-selection-grid');
         if (pricingGrid) {
             pricingGrid.innerHTML = this.config.pricingTiers.map(tier => `
                 <label class="cursor-pointer group relative block h-full">
-                    <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" class="peer hidden" required>
+                    <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" data-id="${tier.id}" class="peer hidden" required>
                     <div class="bg-slate-700/30 border-2 border-slate-600 rounded-2xl p-6 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500 relative overflow-hidden flex flex-col">
                         ${tier.recommended ? '<div class="absolute top-0 right-0 bg-indigo-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Recommended</div>' : ''}
                         <h3 class="text-xl font-bold text-white mb-1">${tier.title}</h3>
@@ -175,6 +175,9 @@ class QuestionnaireApp {
         document.addEventListener('change', (e) => {
             if (e.target.name === 'Selected_Investment_Strategy' || e.target.name === 'Logo_Style_Preference') {
                 this.validateCurrentStep();
+                if (e.target.name === 'Selected_Investment_Strategy' && this.currentStep === 8) {
+                    this.toggleEssentialAddons();
+                }
             }
         });
     }
@@ -233,8 +236,12 @@ class QuestionnaireApp {
 
         this.prevBtn.classList.toggle('hidden', this.currentStep === 1);
 
-        if (this.currentStep === 9) {
+        if (this.currentStep === 8) {
             this.toggleEssentialAddons();
+        }
+
+        if (this.currentStep === 9) {
+            this.generateReviewSummary();
         }
 
         if (this.currentStep === this.totalSteps) {
@@ -263,7 +270,7 @@ class QuestionnaireApp {
             const checkboxes = document.querySelectorAll('.color-checkbox');
             const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
             isValid = selectedCount >= 2 && selectedCount <= 4;
-        } else if (this.currentStep === 9) {
+        } else if (this.currentStep === 8) {
             const selectedTier = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
             isValid = !!selectedTier;
         }
@@ -273,6 +280,102 @@ class QuestionnaireApp {
         } else {
             this.nextBtn.disabled = !isValid;
         }
+    }
+
+    generateReviewSummary() {
+        const reviewContainer = document.getElementById('review-summary');
+        if (!reviewContainer) return;
+
+        const formData = new FormData(this.form);
+
+        const sections = [
+            {
+                title: 'Contact Details',
+                fields: [
+                    { name: 'Client_Full_Name', label: 'Full Name' },
+                    { name: 'Client_Email_Address', label: 'Email' },
+                    { name: 'Project_Timeline', label: 'Due Date' }
+                ]
+            },
+            {
+                title: 'Business Profile',
+                fields: [
+                    { name: 'Business_Organization_Name', label: 'Business Name' },
+                    { name: 'Products_and_Services', label: 'Products/Services' },
+                    { name: 'Business_Value_Proposition', label: 'Value Prop' },
+                    { name: 'Target_Audience', label: 'Target Audience' }
+                ]
+            },
+            {
+                title: 'Brand Vision',
+                fields: [
+                    { name: 'Audience_Perception_Goal', label: 'Perception Goal' },
+                    { name: 'Brand_Core_Values', label: 'Core Values' },
+                    { name: 'Brand_Mission_Statement', label: 'Mission Statement' }
+                ]
+            },
+            {
+                title: 'Visual Direction',
+                fields: [
+                    { name: 'Logo_Style_Preference', label: 'Logo Style' },
+                    { name: 'Brand_Tagline_Slogan', label: 'Tagline' }
+                ]
+            },
+            {
+                title: 'Investment',
+                fields: [
+                    { name: 'Selected_Investment_Strategy', label: 'Package' },
+                    { name: 'Essential_Addons[]', label: 'Add-ons' }
+                ]
+            }
+        ];
+
+        let html = '';
+
+        sections.forEach(section => {
+            const fieldContents = section.fields.map(field => {
+                let value = '';
+                if (field.name.endsWith('[]')) {
+                    const values = formData.getAll(field.name);
+                    value = values.length > 0 ? values.join(', ') : '';
+                } else {
+                    value = formData.get(field.name) || '';
+                }
+
+                return `
+                    <div class="flex flex-col sm:flex-row sm:justify-between py-2 border-b border-slate-700/30 last:border-0">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 min-w-[120px]">${field.label}</span>
+                        <span class="text-xs text-slate-300 sm:text-right">${value || '<span class="italic text-slate-600">Not specified</span>'}</span>
+                    </div>
+                `;
+            }).join('');
+
+            html += `
+                <div class="mb-6 last:mb-0">
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">${section.title}</h4>
+                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                        ${fieldContents}
+                    </div>
+                </div>
+            `;
+        });
+
+        // Add colors separately
+        const colors = formData.getAll('Selected_Color_Psychology[]');
+        if (colors.length > 0) {
+            html += `
+                <div class="mb-6">
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Selected Colors</h4>
+                    <div class="flex flex-wrap gap-2">
+                        ${colors.map(color => `
+                            <span class="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 font-medium">${color}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        reviewContainer.innerHTML = html;
     }
 }
 
