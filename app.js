@@ -79,10 +79,10 @@ class QuestionnaireApp {
             colorGrid.innerHTML = this.config.colorPsychology.map(color => `
                 <label class="cursor-pointer group relative">
                     <input type="checkbox" name="Selected_Color_Psychology[]" value="${color.name}" data-keywords="${color.keywords}" class="peer hidden color-checkbox">
-                    <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-3 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
-                        <div class="w-full h-12 ${color.colorClass} rounded-lg mb-2 ${color.id === 'black' ? 'border border-slate-600' : ''}"></div>
-                        <span class="block font-bold ${color.textClass || 'text-white'} text-xs mb-1">${color.name}</span>
-                        <p class="text-[9px] text-slate-500 leading-tight">${color.keywords}</p>
+                    <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-4 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                        <div class="w-full h-20 ${color.colorClass} rounded-lg mb-3 ${color.id === 'black' ? 'border border-slate-600' : ''}"></div>
+                        <span class="block font-bold ${color.textClass || 'text-white'} text-base mb-1.5">${color.name}</span>
+                        <p class="text-xs text-slate-400 leading-snug">${color.keywords}</p>
                     </div>
                 </label>
             `).join('');
@@ -94,13 +94,13 @@ class QuestionnaireApp {
         const pricingGrid = document.getElementById('pricing-selection-grid');
         if (pricingGrid) {
             pricingGrid.innerHTML = this.config.pricingTiers.map(tier => `
-                <label class="cursor-pointer group relative block">
+                <label class="cursor-pointer group relative block h-full">
                     <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" class="peer hidden" required>
-                    <div class="bg-slate-700/30 border-2 border-slate-600 rounded-2xl p-6 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500 relative overflow-hidden">
+                    <div class="bg-slate-700/30 border-2 border-slate-600 rounded-2xl p-6 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500 relative overflow-hidden flex flex-col">
                         ${tier.recommended ? '<div class="absolute top-0 right-0 bg-indigo-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Recommended</div>' : ''}
                         <h3 class="text-xl font-bold text-white mb-1">${tier.title}</h3>
                         <div class="text-2xl font-bold text-indigo-400 mb-4">${tier.price}</div>
-                        <ul class="space-y-2">
+                        <ul class="space-y-2 flex-grow">
                             ${tier.features.map(f => `
                                 <li class="flex items-center gap-2 text-xs text-slate-400">
                                     <i data-lucide="check" class="w-3 h-3 text-indigo-500"></i>
@@ -147,7 +147,7 @@ class QuestionnaireApp {
                 try {
                     e.target.showPicker();
                 } catch (err) {
-                    console.log('Browser does not support showPicker()');
+                    // Fallback for browsers that don't support showPicker()
                 }
             });
         }
