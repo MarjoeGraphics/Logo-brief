@@ -112,6 +112,26 @@ class QuestionnaireApp {
                 </label>
             `).join('');
 
+            // Render Add-ons for Essential Start
+            const addonsGrid = document.getElementById('addons-grid');
+            const essentialTier = this.config.pricingTiers.find(t => t.id === 'essential');
+            if (addonsGrid && essentialTier && essentialTier.addons) {
+                addonsGrid.innerHTML = essentialTier.addons.map(addon => `
+                    <label class="cursor-pointer group relative">
+                        <input type="checkbox" name="Essential_Addons[]" value="${addon.label} (${addon.price})" class="peer hidden">
+                        <div class="flex items-center justify-between p-4 bg-slate-700/30 border border-slate-600 rounded-xl transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500 peer-checked:[&_.checkmark-box]:bg-indigo-500 peer-checked:[&_.checkmark-box]:border-indigo-500 peer-checked:[&_svg]:opacity-100">
+                            <div class="flex flex-col">
+                                <span class="text-xs font-bold text-white">${addon.label}</span>
+                                <span class="text-[10px] text-slate-400">${addon.price}</span>
+                            </div>
+                            <div class="w-5 h-5 rounded border border-slate-600 flex items-center justify-center transition-all checkmark-box">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-white opacity-0 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                        </div>
+                    </label>
+                `).join('');
+            }
+
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
     }
@@ -174,6 +194,22 @@ class QuestionnaireApp {
         }, 400);
     }
 
+    toggleEssentialAddons() {
+        const selectedTier = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
+        const addonsContainer = document.getElementById('essential-addons-container');
+        if (!addonsContainer) return;
+
+        if (selectedTier && selectedTier.dataset.id === 'essential') {
+            addonsContainer.classList.remove('hidden');
+            // Reset addons if switching back to essential? No, let them keep selections if they want
+        } else {
+            addonsContainer.classList.add('hidden');
+            // Uncheck all addons when hidden to avoid sending data for non-essential tiers
+            const addons = addonsContainer.querySelectorAll('input[type="checkbox"]');
+            addons.forEach(cb => cb.checked = false);
+        }
+    }
+
     updateStepUI() {
         for (let i = 1; i <= this.totalSteps; i++) {
             const step = document.getElementById(`step-${i}`);
@@ -196,6 +232,10 @@ class QuestionnaireApp {
         this.stepIndicator.textContent = `Step ${this.currentStep} of ${this.totalSteps}`;
 
         this.prevBtn.classList.toggle('hidden', this.currentStep === 1);
+
+        if (this.currentStep === 9) {
+            this.toggleEssentialAddons();
+        }
 
         if (this.currentStep === this.totalSteps) {
             this.nextBtn.classList.add('hidden');

@@ -154,7 +154,16 @@
                 "3 Revision Rounds to perfect the details.",
                 "1-Week Turnaround."
             ],
-            "recommended": false
+            "recommended": false,
+            "addons": [
+                { "id": "flyers", "label": "Flyers (1 to 2 pages)", "price": "₱200" },
+                { "id": "brochure", "label": "Brochure (bifold or trifold)", "price": "₱300" },
+                { "id": "poster", "label": "Poster", "price": "₱300" },
+                { "id": "banner", "label": "Banner (Roll up, Display etc.)", "price": "₱300" },
+                { "id": "signage", "label": "Signage", "price": "₱200" },
+                { "id": "menu", "label": "Menu (2 pages)", "price": "₱400" },
+                { "id": "extra_page", "label": "Extra pricing per page", "price": "₱50" }
+            ]
         },
         {
             "id": "professional",
