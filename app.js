@@ -95,7 +95,7 @@ class QuestionnaireApp {
         if (pricingGrid) {
             pricingGrid.innerHTML = this.config.pricingTiers.map(tier => `
                 <label class="cursor-pointer group relative block h-full">
-                    <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" data-id="${tier.id}" class="peer hidden pricing-tier-radio" required>
+                    <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" class="peer hidden" required>
                     <div class="bg-slate-700/30 border-2 border-slate-600 rounded-2xl p-6 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500 relative overflow-hidden flex flex-col">
                         ${tier.recommended ? '<div class="absolute top-0 right-0 bg-indigo-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Recommended</div>' : ''}
                         <h3 class="text-xl font-bold text-white mb-1">${tier.title}</h3>
@@ -173,11 +173,7 @@ class QuestionnaireApp {
         }
 
         document.addEventListener('change', (e) => {
-            if (e.target.name === 'Selected_Investment_Strategy') {
-                this.toggleEssentialAddons();
-                this.validateCurrentStep();
-            }
-            if (e.target.name === 'Logo_Style_Preference') {
+            if (e.target.name === 'Selected_Investment_Strategy' || e.target.name === 'Logo_Style_Preference') {
                 this.validateCurrentStep();
             }
         });
