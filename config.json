@@ -4,55 +4,64 @@
             "id": "wordmark",
             "title": "Wordmark (Logotype)",
             "description": "Focuses on a company's name using custom typography.",
-            "value": "Wordmark"
+            "value": "Wordmark",
+            "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=400&auto=format&fit=crop"
         },
         {
             "id": "brandmarks",
             "title": "Brand Marks",
             "description": "A symbol or icon-based logo (Pictorial mark).",
-            "value": "Brand Marks"
+            "value": "Brand Marks",
+            "image": "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=400&auto=format&fit=crop"
         },
         {
             "id": "combination",
             "title": "Combination Mark",
             "description": "A mix of a wordmark and a symbol.",
-            "value": "Combination Mark"
+            "value": "Combination Mark",
+            "image": "https://images.unsplash.com/photo-1583321500900-82807e458f3c?q=80&w=400&auto=format&fit=crop"
         },
         {
             "id": "lettermark",
             "title": "Lettermark (Monograms)",
             "description": "A typography-based logo using brand initials.",
-            "value": "Lettermark"
+            "value": "Lettermark",
+            "image": "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=400&auto=format&fit=crop"
         },
         {
             "id": "abstract",
             "title": "Abstract Logo Mark",
             "description": "Uses geometric and conceptual symbols.",
-            "value": "Abstract Logo Mark"
+            "value": "Abstract Logo Mark",
+            "image": "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=400&auto=format&fit=crop"
         },
         {
             "id": "emblem",
             "title": "Emblem Logos",
             "description": "Font inside a symbol, badge, or seal.",
-            "value": "Emblem Logos"
+            "value": "Emblem Logos",
+            "image": "https://images.unsplash.com/photo-1599305090598-fe179d501c27?q=80&w=400&auto=format&fit=crop"
         },
         {
             "id": "letterforms",
             "title": "Letterforms",
             "description": "Minimalist, single-letter icons.",
-            "value": "Letterforms"
+            "value": "Letterforms",
+            "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=400&auto=format&fit=crop"
         },
         {
             "id": "mascots",
             "title": "Mascots",
             "description": "Character-based designs representing the brand.",
-            "value": "Mascots"
+            "value": "Mascots",
+            "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=400&auto=format&fit=crop"
         },
         {
             "id": "dynamic",
             "title": "Dynamic Mark",
             "description": "An adaptable logo that can change colors or patterns.",
-            "value": "Dynamic Mark"
+            "value": "Dynamic Mark",
+            "image": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=400&auto=format&fit=crop"
         }
     ],
     "personalityScales": [

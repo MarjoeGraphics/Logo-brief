@@ -59,10 +59,15 @@ class QuestionnaireApp {
         if (logoGrid) {
             logoGrid.innerHTML = this.config.logoStyles.map(style => `
                 <label class="cursor-pointer group relative">
-                    <input type="checkbox" name="Logo_Style_Preferences[]" value="${style.value}" class="peer hidden">
-                    <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl p-4 transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
-                        <span class="block font-bold text-white text-sm mb-1">${style.title}</span>
-                        <p class="text-[10px] text-slate-500 leading-tight">${style.description}</p>
+                    <input type="radio" name="Logo_Style_Preference" value="${style.value}" class="peer hidden">
+                    <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl overflow-hidden transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
+                        <div class="aspect-video w-full overflow-hidden border-b border-slate-600/50">
+                            <img src="${style.image}" alt="${style.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        </div>
+                        <div class="p-3">
+                            <span class="block font-bold text-white text-sm mb-1">${style.title}</span>
+                            <p class="text-[10px] text-slate-500 leading-tight">${style.description}</p>
+                        </div>
                     </div>
                 </label>
             `).join('');
@@ -137,8 +142,20 @@ class QuestionnaireApp {
             input.addEventListener('input', () => this.validateCurrentStep());
         });
 
+        if (this.step1Inputs.timeline) {
+            this.step1Inputs.timeline.addEventListener('click', (e) => {
+                try {
+                    e.target.showPicker();
+                } catch (err) {
+                    console.log('Browser does not support showPicker()');
+                }
+            });
+        }
+
         document.addEventListener('change', (e) => {
-            if (e.target.name === 'Selected_Investment_Strategy') this.validateCurrentStep();
+            if (e.target.name === 'Selected_Investment_Strategy' || e.target.name === 'Logo_Style_Preference') {
+                this.validateCurrentStep();
+            }
         });
     }
 
@@ -199,6 +216,9 @@ class QuestionnaireApp {
                       this.step1Inputs.email.value.trim() !== '' &&
                       this.step1Inputs.email.checkValidity() &&
                       this.step1Inputs.timeline.value !== '';
+        } else if (this.currentStep === 6) {
+            const selectedStyle = document.querySelector('input[name="Logo_Style_Preference"]:checked');
+            isValid = !!selectedStyle;
         } else if (this.currentStep === 7) {
             const checkboxes = document.querySelectorAll('.color-checkbox');
             const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
