@@ -90,15 +90,20 @@ class QuestionnaireApp {
             this.setupColorLogic();
         }
 
-        // Render Step 9: Pricing
+        // Render Step 8: Pricing
         const pricingGrid = document.getElementById('pricing-selection-grid');
         if (pricingGrid) {
             pricingGrid.innerHTML = this.config.pricingTiers.map(tier => `
                 <label class="cursor-pointer group relative block h-full">
-                    <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" class="peer hidden" required>
+                    <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" data-id="${tier.id}" class="peer hidden" required>
                     <div class="bg-slate-700/30 border-2 border-slate-600 rounded-2xl p-6 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500 relative overflow-hidden flex flex-col">
                         ${tier.recommended ? '<div class="absolute top-0 right-0 bg-indigo-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Recommended</div>' : ''}
-                        <h3 class="text-xl font-bold text-white mb-1">${tier.title}</h3>
+                        <div class="flex justify-between items-start mb-1">
+                            <h3 class="text-xl font-bold text-white">${tier.title}</h3>
+                            <div class="h-5 w-5 border-2 border-slate-600 rounded-full flex items-center justify-center peer-checked:border-indigo-500 transition-all peer-checked:[&_div]:opacity-100">
+                                <div class="w-2.5 h-2.5 bg-indigo-500 rounded-full opacity-0 transition-all"></div>
+                            </div>
+                        </div>
                         <div class="text-2xl font-bold text-indigo-400 mb-4">${tier.price}</div>
                         <ul class="space-y-2 flex-grow">
                             ${tier.features.map(f => `
@@ -173,10 +178,46 @@ class QuestionnaireApp {
         }
 
         document.addEventListener('change', (e) => {
-            if (e.target.name === 'Selected_Investment_Strategy' || e.target.name === 'Logo_Style_Preference') {
+            if (e.target.name === 'Selected_Investment_Strategy' || e.target.name === 'Logo_Style_Preference' || e.target.name === 'Essential_Addons[]') {
                 this.validateCurrentStep();
+                if (this.currentStep === 8) {
+                    if (e.target.name === 'Selected_Investment_Strategy') {
+                        this.toggleEssentialAddons();
+                    }
+                    this.updatePriceDisplay();
+                }
             }
         });
+    }
+
+    calculateTotalInvestment() {
+        const selectedTierInput = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
+        if (!selectedTierInput) return null;
+
+        const tierId = selectedTierInput.dataset.id;
+        const tier = this.config.pricingTiers.find(t => t.id === tierId);
+
+        if (tierId === 'essential') {
+            const basePrice = parseInt(tier.price.replace(/[^\d]/g, '')) || 1000;
+            let total = basePrice;
+
+            const addons = document.querySelectorAll('input[name="Essential_Addons[]"]:checked');
+            addons.forEach(addon => {
+                const priceMatch = addon.value.match(/₱(\d+)/);
+                if (priceMatch) {
+                    total += parseInt(priceMatch[1]);
+                }
+            });
+            return { value: total, display: `₱${total.toLocaleString()}` };
+        } else {
+            return { value: tier.price, display: tier.price };
+        }
+    }
+
+    updatePriceDisplay() {
+        // We no longer have the price display bar in Step 8,
+        // but we might want to keep the logic for other purposes
+        // or just rely on calculateTotalInvestment when moving to Step 9.
     }
 
     navigate(direction) {
@@ -233,8 +274,12 @@ class QuestionnaireApp {
 
         this.prevBtn.classList.toggle('hidden', this.currentStep === 1);
 
-        if (this.currentStep === 9) {
+        if (this.currentStep === 8) {
             this.toggleEssentialAddons();
+        }
+
+        if (this.currentStep === 9) {
+            this.generateReviewSummary();
         }
 
         if (this.currentStep === this.totalSteps) {
@@ -263,7 +308,7 @@ class QuestionnaireApp {
             const checkboxes = document.querySelectorAll('.color-checkbox');
             const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
             isValid = selectedCount >= 2 && selectedCount <= 4;
-        } else if (this.currentStep === 9) {
+        } else if (this.currentStep === 8) {
             const selectedTier = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
             isValid = !!selectedTier;
         }
@@ -273,6 +318,211 @@ class QuestionnaireApp {
         } else {
             this.nextBtn.disabled = !isValid;
         }
+    }
+
+    escapeHTML(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    generateReviewSummary() {
+        const reviewContainer = document.getElementById('review-summary');
+        if (!reviewContainer) return;
+
+        const formData = new FormData(this.form);
+
+        const sections = [
+            {
+                title: 'Contact Details',
+                fields: [
+                    { name: 'Client_Full_Name', label: 'Full Name' },
+                    { name: 'Client_Email_Address', label: 'Email' },
+                    { name: 'Project_Timeline', label: 'Due Date' }
+                ]
+            },
+            {
+                title: 'Business Profile',
+                fields: [
+                    { name: 'Business_Organization_Name', label: 'Business Name' },
+                    { name: 'Products_and_Services', label: 'Products/Services' },
+                    { name: 'Business_Value_Proposition', label: 'Value Prop' },
+                    { name: 'Target_Audience', label: 'Target Audience' }
+                ]
+            },
+            {
+                title: 'Brand Vision',
+                fields: [
+                    { name: 'Audience_Perception_Goal', label: 'Perception Goal' },
+                    { name: 'Brand_Core_Values', label: 'Core Values' },
+                    { name: 'Brand_Mission_Statement', label: 'Mission Statement' }
+                ]
+            },
+            {
+                title: 'Visual Direction',
+                fields: [
+                    { name: 'Logo_Style_Preference', label: 'Logo Style' },
+                    { name: 'Brand_Tagline_Slogan', label: 'Tagline' },
+                    { name: 'New_Logo_Ideas', label: 'Logo Ideas' },
+                    { name: 'Must_Include_Elements', label: 'Include Elements' },
+                    { name: 'Visual_Preferences_Constraints', label: 'Constraints' },
+                    { name: 'Current_Brand_Assets_References', label: 'References' }
+                ]
+            }
+        ];
+
+        let html = '';
+
+        // Render sections in order
+        sections.forEach(section => {
+            const fieldContents = section.fields.map(field => {
+                let value = '';
+                if (field.name.endsWith('[]')) {
+                    const values = formData.getAll(field.name);
+                    value = values.length > 0 ? values.join(', ') : '';
+                } else {
+                    value = formData.get(field.name) || '';
+                }
+
+                return `
+                    <div class="flex flex-col sm:flex-row sm:justify-between py-2 border-b border-slate-700/30 last:border-0">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 min-w-[120px]">${field.label}</span>
+                        <span class="text-xs text-slate-300 sm:text-right">${this.escapeHTML(value) || '<span class="italic text-slate-600">Not specified</span>'}</span>
+                    </div>
+                `;
+            }).join('');
+
+            html += `
+                <div class="mb-6 last:mb-0">
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">${section.title}</h4>
+                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                        ${fieldContents}
+                    </div>
+                </div>
+            `;
+        });
+
+        // Add colors between Visual Direction and Investment
+        const colors = formData.getAll('Selected_Color_Psychology[]');
+        if (colors.length > 0) {
+            html += `
+                <div class="mb-6">
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Selected Colors</h4>
+                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                        <div class="flex flex-wrap gap-2">
+                            ${colors.map(color => `
+                                <span class="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 font-medium">${this.escapeHTML(color)}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Investment Section
+        const investment = this.calculateTotalInvestment();
+        if (investment) {
+            const packageSelected = formData.get('Selected_Investment_Strategy');
+            const addons = formData.getAll('Essential_Addons[]');
+
+            let downpaymentHtml = '';
+            if (typeof investment.value === 'number') {
+                const dp = investment.value * 0.5;
+                downpaymentHtml = `
+                    <div class="mt-4 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-xl">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">50% Downpayment Required</span>
+                            <span class="text-lg font-black text-indigo-400">₱${dp.toLocaleString()}</span>
+                        </div>
+                        <p class="text-[9px] text-slate-500 leading-tight mb-4 text-center">Please scan the QR code below to make your downpayment. Your brief will be processed once payment is confirmed.</p>
+                        <div class="flex flex-col items-center gap-2">
+                            <div class="w-32 h-32 bg-white p-2 rounded-lg flex items-center justify-center">
+                                <!-- Placeholder for GCash QR Code -->
+                                <div class="w-full h-full border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400">
+                                    <i data-lucide="qr-code" class="w-8 h-8 mb-1"></i>
+                                    <span class="text-[8px] font-bold">QR Code</span>
+                                </div>
+                            </div>
+                            <span class="text-[8px] font-bold text-slate-500 uppercase">Scan to Pay via GCash</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                downpaymentHtml = `
+                    <div class="mt-4 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-xl">
+                        <p class="text-[10px] text-slate-400 leading-tight text-center">A 50% downpayment of the final agreed price is required to start the project.</p>
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="mb-6">
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Investment</h4>
+                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                        <div class="flex justify-between py-2 border-b border-slate-700/30">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Package</span>
+                            <span class="text-xs text-slate-300 text-right">${this.escapeHTML(packageSelected)}</span>
+                        </div>
+                        ${addons.length > 0 ? `
+                        <div class="flex justify-between py-2 border-b border-slate-700/30">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Add-ons</span>
+                            <span class="text-xs text-slate-300 text-right">${this.escapeHTML(addons.join(', '))}</span>
+                        </div>
+                        ` : ''}
+                        <div class="flex justify-between py-2 mt-2 pt-2 bg-indigo-500/5 -mx-3 px-3">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400">Total Investment</span>
+                            <span class="text-xs font-bold text-indigo-400" id="selected-price-display">${this.escapeHTML(investment.display)}</span>
+                        </div>
+                        ${downpaymentHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Add personality scales separately
+        const scales = [];
+        for (let [key, value] of formData.entries()) {
+            if (key.startsWith('Personality_Scale_')) {
+                const input = this.form.querySelector(`input[name="${key}"]`);
+                const left = input.getAttribute('data-left');
+                const right = input.getAttribute('data-right');
+
+                // Helper to get simple descriptor for review
+                const getSimpleDesc = (val) => {
+                    if (val == 1) return `Strongly ${left}`;
+                    if (val == 2) return `Leaning ${left}`;
+                    if (val == 3) return `Balanced`;
+                    if (val == 4) return `Leaning ${right}`;
+                    if (val == 5) return `Strongly ${right}`;
+                    return val;
+                };
+
+                scales.push({
+                    label: key.replace('Personality_Scale_', '').replace(/_/g, ' '),
+                    value: getSimpleDesc(value)
+                });
+            }
+        }
+
+        if (scales.length > 0) {
+            html += `
+                <div class="mb-6">
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Brand Personality</h4>
+                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50 grid grid-cols-1 sm:grid-cols-2 gap-x-6">
+                        ${scales.map(scale => `
+                            <div class="flex justify-between py-1 border-b border-slate-700/30 last:border-0 sm:even:border-b sm:last:border-b-0">
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-slate-500">${scale.label}</span>
+                                <span class="text-[10px] text-slate-300">${this.escapeHTML(scale.value)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        reviewContainer.innerHTML = html;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 }
 

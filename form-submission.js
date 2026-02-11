@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             // Handle Colors
-            else if (key === 'Selected_Color_Psychology[]') {
+            else if (key.includes('Selected_Color_Psychology')) {
                 const checkbox = form.querySelector(`input[name="${key}"][value="${value}"]`);
                 const keywords = checkbox ? checkbox.getAttribute('data-keywords') : '';
                 const formattedColor = `${value} (${keywords})`;
@@ -51,36 +51,102 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!transformedData['Selected_Color_Psychology']) {
                     transformedData['Selected_Color_Psychology'] = formattedColor;
                 } else {
-                    transformedData['Selected_Color_Psychology'] += `, ${formattedColor}`;
+                    if (!transformedData['Selected_Color_Psychology'].includes(formattedColor)) {
+                        transformedData['Selected_Color_Psychology'] += `, ${formattedColor}`;
+                    }
                 }
             }
             // Handle Logo Styles
-            else if (key === 'Logo_Style_Preferences[]') {
-                if (!transformedData['Logo_Style_Preferences']) {
-                    transformedData['Logo_Style_Preferences'] = value;
+            else if (key === 'Logo_Style_Preference') {
+                transformedData['Logo_Style_Preference'] = value;
+            }
+            // Handle Add-ons
+            else if (key.includes('Essential_Addons')) {
+                const cleanKey = 'Selected_Addons';
+                if (!transformedData[cleanKey]) {
+                    transformedData[cleanKey] = value;
                 } else {
-                    transformedData['Logo_Style_Preferences'] += `, ${value}`;
+                    if (!transformedData[cleanKey].includes(value)) {
+                        transformedData[cleanKey] += `, ${value}`;
+                    }
                 }
             }
-            // Pass through others (handled specially if needed)
+            // Handle Pricing Tier
+            else if (key === 'Selected_Investment_Strategy') {
+                transformedData['Package_Selected'] = value;
+            }
+            // Pass through others
             else {
                 transformedData[key] = value;
             }
         }
 
-        // Clean up: Formspree prefers flat objects for reporting if using JSON
-        // Or we can construct a new FormData object
-        const finalFormData = new FormData();
-        for (let key in transformedData) {
-            finalFormData.append(key, transformedData[key]);
+        // Get Investment info from App logic if available
+        const investment = window.app ? window.app.calculateTotalInvestment() : null;
+        const totalInvestmentDisplay = investment ? investment.display : "Not specified";
+
+        // Generate a formatted summary for Formspree
+        let summary = "--- STRATEGY BRIEF SUMMARY ---\n\n";
+
+        const summarySections = [
+            { title: "CONTACT DETAILS", keys: ["Client_Full_Name", "Client_Email_Address", "Project_Timeline"] },
+            { title: "BUSINESS PROFILE", keys: ["Business_Organization_Name", "Products_and_Services", "Business_Value_Proposition", "Target_Audience"] },
+            { title: "BRAND VISION", keys: ["Audience_Perception_Goal", "Brand_Core_Values", "Brand_Mission_Statement"] },
+            { title: "VISUAL DIRECTION", keys: ["Logo_Style_Preference", "Brand_Tagline_Slogan", "New_Logo_Ideas", "Must_Include_Elements", "Visual_Preferences_Constraints", "Current_Brand_Assets_References"] }
+        ];
+
+        summarySections.forEach(section => {
+            summary += `[ ${section.title} ]\n`;
+            section.keys.forEach(k => {
+                const val = transformedData[k] || "Not specified";
+                const label = k.replace(/_/g, " ");
+                summary += `• ${label}: ${val}\n`;
+            });
+            summary += "\n";
+        });
+
+        summary += "[ SELECTED COLORS ]\n";
+        summary += transformedData['Selected_Color_Psychology'] ? `• ${transformedData['Selected_Color_Psychology']}` : "• Not specified";
+        summary += "\n\n";
+
+        summary += "[ INVESTMENT ]\n";
+        summary += `• Package: ${transformedData['Package_Selected'] || "Not specified"}\n`;
+        if (transformedData['Selected_Addons']) {
+            summary += `• Add-ons: ${transformedData['Selected_Addons']}\n`;
         }
+        summary += `• Total Investment: ${totalInvestmentDisplay}\n`;
+        summary += "\n";
+
+        summary += "[ PERSONALITY SCALES ]\n";
+        let hasScales = false;
+        for (let k in transformedData) {
+            if (k.startsWith('Personality_Scale_')) {
+                summary += `• ${k.replace('Personality_Scale_', '').replace(/_/g, ' ')}: ${transformedData[k]}\n`;
+                hasScales = true;
+            }
+        }
+        if (!hasScales) summary += "• Not specified\n";
+        summary += "\n";
+
+        if (transformedData['Additional_Notes_Comments']) {
+            summary += `[ ADDITIONAL NOTES ]\n${transformedData['Additional_Notes_Comments']}\n`;
+        }
+
+        // Aggregating into Simple Labels as requested
+        const simplifiedData = {
+            "Client Details": `${transformedData['Client_Full_Name']} <${transformedData['Client_Email_Address']}> | Due: ${transformedData['Project_Timeline']}`,
+            "Investment Details": `${transformedData['Package_Selected'] || 'Not selected'} (Total: ${totalInvestmentDisplay})${transformedData['Selected_Addons'] ? ' | Add-ons: ' + transformedData['Selected_Addons'] : ''}`,
+            "Brief Summary": summary,
+            "_subject": transformedData['_subject'] || "New Brand Strategy Brief"
+        };
 
         try {
             const response = await fetch(form.action, {
                 method: 'POST',
-                body: finalFormData,
+                body: JSON.stringify(simplifiedData),
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 }
             });
 
