@@ -175,11 +175,8 @@ class QuestionnaireApp {
         document.addEventListener('change', (e) => {
             if (e.target.name === 'Selected_Investment_Strategy' || e.target.name === 'Logo_Style_Preference' || e.target.name === 'Essential_Addons[]') {
                 this.validateCurrentStep();
-                if (this.currentStep === 8) {
-                    if (e.target.name === 'Selected_Investment_Strategy') {
-                        this.toggleEssentialAddons();
-                    }
-                    this.updatePriceDisplay();
+                if (e.target.name === 'Selected_Investment_Strategy' && this.currentStep === 8) {
+                    this.toggleEssentialAddons();
                 }
             }
         });
@@ -199,10 +196,7 @@ class QuestionnaireApp {
         const tier = this.config.pricingTiers.find(t => t.id === tierId);
 
         if (tierId === 'essential') {
-            // Parse base price from config (e.g., "₱1,000" -> 1000)
-            const basePrice = parseInt(tier.price.replace(/[^\d]/g, '')) || 1000;
-            let total = basePrice;
-
+            let total = 1000;
             const addons = document.querySelectorAll('input[name="Essential_Addons[]"]:checked');
             addons.forEach(addon => {
                 const priceMatch = addon.value.match(/₱(\d+)/);
@@ -316,13 +310,6 @@ class QuestionnaireApp {
         }
     }
 
-    escapeHTML(str) {
-        if (!str) return '';
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
-
     generateReviewSummary() {
         const reviewContainer = document.getElementById('review-summary');
         if (!reviewContainer) return;
@@ -390,33 +377,16 @@ class QuestionnaireApp {
                 return `
                     <div class="flex flex-col sm:flex-row sm:justify-between py-2 border-b border-slate-700/30 last:border-0">
                         <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 min-w-[120px]">${field.label}</span>
-                        <span class="text-xs text-slate-300 sm:text-right">${this.escapeHTML(value) || '<span class="italic text-slate-600">Not specified</span>'}</span>
+                        <span class="text-xs text-slate-300 sm:text-right">${value || '<span class="italic text-slate-600">Not specified</span>'}</span>
                     </div>
                 `;
             }).join('');
-
-            let sectionFooter = '';
-            if (section.title === 'Investment') {
-                const priceDisplay = document.getElementById('selected-price-display');
-                let price = 'Not specified';
-                if (priceDisplay) {
-                    price = priceDisplay.textContent.trim();
-                    if (price === 'Select a package') price = 'Not specified';
-                }
-                sectionFooter = `
-                    <div class="flex justify-between py-2 mt-2 pt-2 border-t border-slate-700/50 bg-indigo-500/10 -mx-3 px-3 rounded-b-lg">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400">Total Investment</span>
-                        <span class="text-xs font-bold text-indigo-400">${this.escapeHTML(price)}</span>
-                    </div>
-                `;
-            }
 
             html += `
                 <div class="mb-6 last:mb-0">
                     <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">${section.title}</h4>
                     <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
                         ${fieldContents}
-                        ${sectionFooter}
                     </div>
                 </div>
             `;
@@ -430,48 +400,7 @@ class QuestionnaireApp {
                     <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Selected Colors</h4>
                     <div class="flex flex-wrap gap-2">
                         ${colors.map(color => `
-                            <span class="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 font-medium">${this.escapeHTML(color)}</span>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        // Add personality scales separately
-        const scales = [];
-        for (let [key, value] of formData.entries()) {
-            if (key.startsWith('Personality_Scale_')) {
-                const input = this.form.querySelector(`input[name="${key}"]`);
-                const left = input.getAttribute('data-left');
-                const right = input.getAttribute('data-right');
-
-                // Helper to get simple descriptor for review
-                const getSimpleDesc = (val) => {
-                    if (val == 1) return `Strongly ${left}`;
-                    if (val == 2) return `Leaning ${left}`;
-                    if (val == 3) return `Balanced`;
-                    if (val == 4) return `Leaning ${right}`;
-                    if (val == 5) return `Strongly ${right}`;
-                    return val;
-                };
-
-                scales.push({
-                    label: key.replace('Personality_Scale_', '').replace(/_/g, ' '),
-                    value: getSimpleDesc(value)
-                });
-            }
-        }
-
-        if (scales.length > 0) {
-            html += `
-                <div class="mb-6">
-                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Brand Personality</h4>
-                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50 grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-                        ${scales.map(scale => `
-                            <div class="flex justify-between py-1 border-b border-slate-700/30 last:border-0 sm:even:border-b sm:last:border-b-0">
-                                <span class="text-[9px] font-bold uppercase tracking-wider text-slate-500">${scale.label}</span>
-                                <span class="text-[10px] text-slate-300">${this.escapeHTML(scale.value)}</span>
-                            </div>
+                            <span class="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 font-medium">${color}</span>
                         `).join('')}
                     </div>
                 </div>

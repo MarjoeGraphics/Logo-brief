@@ -62,14 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 transformedData['Logo_Style_Preference'] = value;
             }
             // Handle Add-ons
-            else if (key.includes('Essential_Addons')) {
+            else if (key === 'Essential_Addons[]') {
                 const cleanKey = 'Selected_Addons';
                 if (!transformedData[cleanKey]) {
                     transformedData[cleanKey] = value;
                 } else {
-                    if (!transformedData[cleanKey].includes(value)) {
-                        transformedData[cleanKey] += `, ${value}`;
-                    }
+                    transformedData[cleanKey] += `, ${value}`;
                 }
             }
             // Handle Pricing Tier to include price
@@ -109,13 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const label = k.replace(/_/g, " ");
                 summary += `• ${label}: ${val}\n`;
             });
-
-            if (section.title === "INVESTMENT") {
-                const priceDisplay = document.getElementById('selected-price-display');
-                const total = priceDisplay ? priceDisplay.textContent.trim() : transformedData['Package_Price'];
-                summary += `• Total Investment: ${total}\n`;
-            }
-
             summary += "\n";
         });
 
@@ -136,6 +127,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (transformedData['Additional_Notes_Comments']) {
             summary += `[ ADDITIONAL NOTES ]\n${transformedData['Additional_Notes_Comments']}\n`;
+        }
+
+        transformedData['Submission_Summary'] = summary;
+
+        // Aggregating into Simple Labels as requested
+        const simplifiedData = {
+            "Client_Details": `${transformedData['Client_Full_Name']} <${transformedData['Client_Email_Address']}> | Due: ${transformedData['Project_Timeline']}`,
+            "Investment_Details": `${transformedData['Package_Selected']} (${transformedData['Package_Price']})${transformedData['Selected_Addons'] ? ' + ' + transformedData['Selected_Addons'] : ''}`,
+            "Brief_Summary": summary
+        };
+
+        // Clean up: Formspree prefers flat objects for reporting if using JSON
+        // We will send the simplified fields first, then the rest of the data
+        const finalFormData = new FormData();
+
+        // Add simplified fields first for prominence in Formspree
+        finalFormData.append("Client_Details", simplifiedData["Client_Details"]);
+        finalFormData.append("Investment_Details", simplifiedData["Investment_Details"]);
+        finalFormData.append("Brief_Summary", simplifiedData["Brief_Summary"]);
+
+        // Add the rest of the data
+        for (let key in transformedData) {
+            // Avoid duplicating the fields we just simplified if we want to keep it "simple"
+            // However, keeping them might be useful for structured data.
+            // The user asked to "change into simple label", so I'll skip the original parts of Step 1 and Investment.
+            const skipKeys = [
+                'Client_Full_Name', 'Client_Email_Address', 'Project_Timeline',
+                'Package_Selected', 'Package_Price', 'Selected_Addons', 'Submission_Summary'
+            ];
+            if (!skipKeys.includes(key)) {
+                finalFormData.append(key, transformedData[key]);
+            }
         }
 
         transformedData['Submission_Summary'] = summary;
