@@ -173,13 +173,41 @@ class QuestionnaireApp {
         }
 
         document.addEventListener('change', (e) => {
-            if (e.target.name === 'Selected_Investment_Strategy' || e.target.name === 'Logo_Style_Preference') {
+            if (e.target.name === 'Selected_Investment_Strategy' || e.target.name === 'Logo_Style_Preference' || e.target.name === 'Essential_Addons[]') {
                 this.validateCurrentStep();
                 if (e.target.name === 'Selected_Investment_Strategy' && this.currentStep === 8) {
                     this.toggleEssentialAddons();
                 }
             }
         });
+    }
+
+    updatePriceDisplay() {
+        const priceDisplay = document.getElementById('selected-price-display');
+        if (!priceDisplay) return;
+
+        const selectedTierInput = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
+        if (!selectedTierInput) {
+            priceDisplay.textContent = 'Select a package';
+            return;
+        }
+
+        const tierId = selectedTierInput.dataset.id;
+        const tier = this.config.pricingTiers.find(t => t.id === tierId);
+
+        if (tierId === 'essential') {
+            let total = 1000;
+            const addons = document.querySelectorAll('input[name="Essential_Addons[]"]:checked');
+            addons.forEach(addon => {
+                const priceMatch = addon.value.match(/₱(\d+)/);
+                if (priceMatch) {
+                    total += parseInt(priceMatch[1]);
+                }
+            });
+            priceDisplay.textContent = `₱${total.toLocaleString()}`;
+        } else {
+            priceDisplay.textContent = tier.price;
+        }
     }
 
     navigate(direction) {
