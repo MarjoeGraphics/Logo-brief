@@ -128,11 +128,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         transformedData['Submission_Summary'] = summary;
 
+        // Aggregating into Simple Labels as requested
+        const simplifiedData = {
+            "Client_Details": `${transformedData['Client_Full_Name']} <${transformedData['Client_Email_Address']}> | Due: ${transformedData['Project_Timeline']}`,
+            "Investment_Details": `${transformedData['Package_Selected']} (${transformedData['Package_Price']})${transformedData['Selected_Addons'] ? ' + ' + transformedData['Selected_Addons'] : ''}`,
+            "Brief_Summary": summary
+        };
+
         // Clean up: Formspree prefers flat objects for reporting if using JSON
-        // Or we can construct a new FormData object
+        // We will send the simplified fields first, then the rest of the data
         const finalFormData = new FormData();
+
+        // Add simplified fields first for prominence in Formspree
+        finalFormData.append("Client_Details", simplifiedData["Client_Details"]);
+        finalFormData.append("Investment_Details", simplifiedData["Investment_Details"]);
+        finalFormData.append("Brief_Summary", simplifiedData["Brief_Summary"]);
+
+        // Add the rest of the data
         for (let key in transformedData) {
-            finalFormData.append(key, transformedData[key]);
+            // Avoid duplicating the fields we just simplified if we want to keep it "simple"
+            // However, keeping them might be useful for structured data.
+            // The user asked to "change into simple label", so I'll skip the original parts of Step 1 and Investment.
+            const skipKeys = [
+                'Client_Full_Name', 'Client_Email_Address', 'Project_Timeline',
+                'Package_Selected', 'Package_Price', 'Selected_Addons', 'Submission_Summary'
+            ];
+            if (!skipKeys.includes(key)) {
+                finalFormData.append(key, transformedData[key]);
+            }
         }
 
         try {
