@@ -86,6 +86,48 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        // Generate a formatted summary for Formspree to look like the review design
+        let summary = "--- STRATEGY BRIEF SUMMARY ---\n\n";
+
+        const summarySections = [
+            { title: "CONTACT DETAILS", keys: ["Client_Full_Name", "Client_Email_Address", "Project_Timeline"] },
+            { title: "BUSINESS PROFILE", keys: ["Business_Organization_Name", "Products_and_Services", "Business_Value_Proposition", "Target_Audience"] },
+            { title: "BRAND VISION", keys: ["Audience_Perception_Goal", "Brand_Core_Values", "Brand_Mission_Statement"] },
+            { title: "VISUAL DIRECTION", keys: ["Logo_Style_Preference", "Brand_Tagline_Slogan", "New_Logo_Ideas", "Must_Include_Elements", "Visual_Preferences_Constraints", "Current_Brand_Assets_References"] },
+            { title: "INVESTMENT", keys: ["Package_Selected", "Package_Price", "Selected_Addons"] }
+        ];
+
+        summarySections.forEach(section => {
+            summary += `[ ${section.title} ]\n`;
+            section.keys.forEach(k => {
+                const val = transformedData[k] || "Not specified";
+                const label = k.replace(/_/g, " ");
+                summary += `• ${label}: ${val}\n`;
+            });
+            summary += "\n";
+        });
+
+        summary += "[ SELECTED COLORS ]\n";
+        summary += transformedData['Selected_Color_Psychology'] ? `• ${transformedData['Selected_Color_Psychology']}` : "• Not specified";
+        summary += "\n\n";
+
+        summary += "[ PERSONALITY SCALES ]\n";
+        let hasScales = false;
+        for (let k in transformedData) {
+            if (k.startsWith('Personality_Scale_')) {
+                summary += `• ${k.replace('Personality_Scale_', '').replace(/_/g, ' ')}: ${transformedData[k]}\n`;
+                hasScales = true;
+            }
+        }
+        if (!hasScales) summary += "• Not specified\n";
+        summary += "\n";
+
+        if (transformedData['Additional_Notes_Comments']) {
+            summary += `[ ADDITIONAL NOTES ]\n${transformedData['Additional_Notes_Comments']}\n`;
+        }
+
+        transformedData['Submission_Summary'] = summary;
+
         // Clean up: Formspree prefers flat objects for reporting if using JSON
         // Or we can construct a new FormData object
         const finalFormData = new FormData();

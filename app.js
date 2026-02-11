@@ -318,7 +318,11 @@ class QuestionnaireApp {
                 title: 'Visual Direction',
                 fields: [
                     { name: 'Logo_Style_Preference', label: 'Logo Style' },
-                    { name: 'Brand_Tagline_Slogan', label: 'Tagline' }
+                    { name: 'Brand_Tagline_Slogan', label: 'Tagline' },
+                    { name: 'New_Logo_Ideas', label: 'Logo Ideas' },
+                    { name: 'Must_Include_Elements', label: 'Include Elements' },
+                    { name: 'Visual_Preferences_Constraints', label: 'Constraints' },
+                    { name: 'Current_Brand_Assets_References', label: 'References' }
                 ]
             },
             {
