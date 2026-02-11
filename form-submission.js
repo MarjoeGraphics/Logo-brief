@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     transformedData[key] = value;
                 }
             }
-            // Handle Colors
-            else if (key === 'Selected_Color_Psychology[]') {
+            // Handle Colors (checking for key with or without brackets to be safe)
+            else if (key.includes('Selected_Color_Psychology')) {
                 const checkbox = form.querySelector(`input[name="${key}"][value="${value}"]`);
                 const keywords = checkbox ? checkbox.getAttribute('data-keywords') : '';
                 const formattedColor = `${value} (${keywords})`;
@@ -51,7 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!transformedData['Selected_Color_Psychology']) {
                     transformedData['Selected_Color_Psychology'] = formattedColor;
                 } else {
-                    transformedData['Selected_Color_Psychology'] += `, ${formattedColor}`;
+                    // Prevent duplicates if form-data iterates weirdly
+                    if (!transformedData['Selected_Color_Psychology'].includes(formattedColor)) {
+                        transformedData['Selected_Color_Psychology'] += `, ${formattedColor}`;
+                    }
                 }
             }
             // Handle Logo Styles
@@ -158,12 +161,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        transformedData['Submission_Summary'] = summary;
+
+        // Get total price from the UI display
+        const priceDisplay = document.getElementById('selected-price-display');
+        const totalInvestment = priceDisplay ? priceDisplay.textContent.trim() : transformedData['Package_Price'];
+
+        // Aggregating into Simple Labels as requested
+        const simplifiedData = {
+            "Client Details": `${transformedData['Client_Full_Name']} <${transformedData['Client_Email_Address']}> | Due: ${transformedData['Project_Timeline']}`,
+            "Investment Details": `${transformedData['Package_Selected']} (Total: ${totalInvestment})${transformedData['Selected_Addons'] ? ' | Add-ons: ' + transformedData['Selected_Addons'] : ''}`,
+            "Brief Summary": summary,
+            "_subject": transformedData['_subject'] || "New Brand Strategy Brief"
+        };
+
         try {
+            // Send ONLY the simplified data as JSON to avoid redundant fields
             const response = await fetch(form.action, {
                 method: 'POST',
-                body: finalFormData,
+                body: JSON.stringify(simplifiedData),
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 }
             });
 
