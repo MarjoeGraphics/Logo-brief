@@ -144,14 +144,15 @@
     "pricingTiers": [
         {
             "id": "essential",
-            "title": "The Essential Start",
+            "title": "Essential Start",
             "price": "₱1,000",
             "description": "Designed for startups and side-hustles needing a professional face without the heavy overhead.",
             "features": [
                 "1 Original Logo Concept tailored to your niche.",
                 "High-Resolution Files: JPG, PNG, SVG, and PDF.",
                 "1 Realistic 3D Mockup to see your brand in action.",
-                "3 Revision Rounds to perfect the details.",
+                "Social Media Profile and Cover Photo.",
+                "4 Revision Rounds to perfect the details.",
                 "1-Week Turnaround."
             ],
             "recommended": false,
@@ -167,7 +168,7 @@
         },
         {
             "id": "professional",
-            "title": "The Professional Growth",
+            "title": "Professional Growth",
             "price": "₱4,000 - ₱5,000",
             "description": "For established freelancers and businesses looking to standardize their look across all platforms.",
             "features": [
@@ -175,13 +176,13 @@
                 "Full Master File Access (AI/EPS).",
                 "Brand Color Palette & Typography.",
                 "2 Realistic 3D Mockups.",
-                "5 Revision Rounds."
+                "8 Revision Rounds."
             ],
             "recommended": true
         },
         {
             "id": "enterprise",
-            "title": "The Business Scale",
+            "title": "Business Scale",
             "price": "₱10,000+",
             "description": "A comprehensive branding solution for companies ready to dominate their market.",
             "features": [

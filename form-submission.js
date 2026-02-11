@@ -55,12 +55,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             // Handle Logo Styles
-            else if (key === 'Logo_Style_Preferences[]') {
-                if (!transformedData['Logo_Style_Preferences']) {
-                    transformedData['Logo_Style_Preferences'] = value;
+            else if (key === 'Logo_Style_Preference') {
+                transformedData['Logo_Style_Preference'] = value;
+            }
+            // Handle Add-ons
+            else if (key === 'Essential_Addons[]') {
+                const cleanKey = 'Selected_Addons';
+                if (!transformedData[cleanKey]) {
+                    transformedData[cleanKey] = value;
                 } else {
-                    transformedData['Logo_Style_Preferences'] += `, ${value}`;
+                    transformedData[cleanKey] += `, ${value}`;
                 }
+            }
+            // Handle Pricing Tier to include price
+            else if (key === 'Selected_Investment_Strategy') {
+                const radio = form.querySelector(`input[name="${key}"]:checked`);
+                const tierId = radio ? radio.getAttribute('data-id') : '';
+
+                // We'll try to find the price from the DOM or we could have just included it in the value
+                // For simplicity, let's just use the value and maybe append price if we can find it
+                const priceElement = radio ? radio.closest('label').querySelector('.text-2xl.font-bold') : null;
+                const price = priceElement ? priceElement.textContent.trim() : '';
+
+                transformedData['Package_Selected'] = value;
+                transformedData['Package_Price'] = price;
             }
             // Pass through others (handled specially if needed)
             else {
