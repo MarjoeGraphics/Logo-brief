@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     transformedData[key] = value;
                 }
             }
-            // Handle Colors
-            else if (key === 'Selected_Color_Psychology[]') {
+            // Handle Colors (checking for key with or without brackets to be safe)
+            else if (key.includes('Selected_Color_Psychology')) {
                 const checkbox = form.querySelector(`input[name="${key}"][value="${value}"]`);
                 const keywords = checkbox ? checkbox.getAttribute('data-keywords') : '';
                 const formattedColor = `${value} (${keywords})`;
@@ -51,16 +51,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!transformedData['Selected_Color_Psychology']) {
                     transformedData['Selected_Color_Psychology'] = formattedColor;
                 } else {
-                    transformedData['Selected_Color_Psychology'] += `, ${formattedColor}`;
+                    // Prevent duplicates if form-data iterates weirdly
+                    if (!transformedData['Selected_Color_Psychology'].includes(formattedColor)) {
+                        transformedData['Selected_Color_Psychology'] += `, ${formattedColor}`;
+                    }
                 }
             }
             // Handle Logo Styles
-            else if (key === 'Logo_Style_Preferences[]') {
-                if (!transformedData['Logo_Style_Preferences']) {
-                    transformedData['Logo_Style_Preferences'] = value;
+            else if (key === 'Logo_Style_Preference') {
+                transformedData['Logo_Style_Preference'] = value;
+            }
+            // Handle Add-ons
+            else if (key.includes('Essential_Addons')) {
+                const cleanKey = 'Selected_Addons';
+                if (!transformedData[cleanKey]) {
+                    transformedData[cleanKey] = value;
                 } else {
-                    transformedData['Logo_Style_Preferences'] += `, ${value}`;
+                    if (!transformedData[cleanKey].includes(value)) {
+                        transformedData[cleanKey] += `, ${value}`;
+                    }
                 }
+            }
+            // Handle Pricing Tier to include price
+            else if (key === 'Selected_Investment_Strategy') {
+                const radio = form.querySelector(`input[name="${key}"]:checked`);
+                const tierId = radio ? radio.getAttribute('data-id') : '';
+
+                // We'll try to find the price from the DOM or we could have just included it in the value
+                // For simplicity, let's just use the value and maybe append price if we can find it
+                const priceElement = radio ? radio.closest('label').querySelector('.text-2xl.font-bold') : null;
+                const price = priceElement ? priceElement.textContent.trim() : '';
+
+                transformedData['Package_Selected'] = value;
+                transformedData['Package_Price'] = price;
             }
             // Pass through others (handled specially if needed)
             else {
@@ -68,19 +91,75 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Clean up: Formspree prefers flat objects for reporting if using JSON
-        // Or we can construct a new FormData object
-        const finalFormData = new FormData();
-        for (let key in transformedData) {
-            finalFormData.append(key, transformedData[key]);
+        // Generate a formatted summary for Formspree to look like the review design
+        let summary = "--- STRATEGY BRIEF SUMMARY ---\n\n";
+
+        const summarySections = [
+            { title: "CONTACT DETAILS", keys: ["Client_Full_Name", "Client_Email_Address", "Project_Timeline"] },
+            { title: "BUSINESS PROFILE", keys: ["Business_Organization_Name", "Products_and_Services", "Business_Value_Proposition", "Target_Audience"] },
+            { title: "BRAND VISION", keys: ["Audience_Perception_Goal", "Brand_Core_Values", "Brand_Mission_Statement"] },
+            { title: "VISUAL DIRECTION", keys: ["Logo_Style_Preference", "Brand_Tagline_Slogan", "New_Logo_Ideas", "Must_Include_Elements", "Visual_Preferences_Constraints", "Current_Brand_Assets_References"] },
+            { title: "INVESTMENT", keys: ["Package_Selected", "Package_Price", "Selected_Addons"] }
+        ];
+
+        summarySections.forEach(section => {
+            summary += `[ ${section.title} ]\n`;
+            section.keys.forEach(k => {
+                const val = transformedData[k] || "Not specified";
+                const label = k.replace(/_/g, " ");
+                summary += `• ${label}: ${val}\n`;
+            });
+
+            if (section.title === "INVESTMENT") {
+                const priceDisplay = document.getElementById('selected-price-display');
+                const total = priceDisplay ? priceDisplay.textContent.trim() : transformedData['Package_Price'];
+                summary += `• Total Investment: ${total}\n`;
+            }
+
+            summary += "\n";
+        });
+
+        summary += "[ SELECTED COLORS ]\n";
+        summary += transformedData['Selected_Color_Psychology'] ? `• ${transformedData['Selected_Color_Psychology']}` : "• Not specified";
+        summary += "\n\n";
+
+        summary += "[ PERSONALITY SCALES ]\n";
+        let hasScales = false;
+        for (let k in transformedData) {
+            if (k.startsWith('Personality_Scale_')) {
+                summary += `• ${k.replace('Personality_Scale_', '').replace(/_/g, ' ')}: ${transformedData[k]}\n`;
+                hasScales = true;
+            }
+        }
+        if (!hasScales) summary += "• Not specified\n";
+        summary += "\n";
+
+        if (transformedData['Additional_Notes_Comments']) {
+            summary += `[ ADDITIONAL NOTES ]\n${transformedData['Additional_Notes_Comments']}\n`;
         }
 
+        transformedData['Submission_Summary'] = summary;
+
+        // Get total price from the UI display
+        const priceDisplay = document.getElementById('selected-price-display');
+        const totalInvestment = priceDisplay ? priceDisplay.textContent.trim() : transformedData['Package_Price'];
+
+        // Aggregating into Simple Labels as requested
+        const simplifiedData = {
+            "Client Details": `${transformedData['Client_Full_Name']} <${transformedData['Client_Email_Address']}> | Due: ${transformedData['Project_Timeline']}`,
+            "Investment Details": `${transformedData['Package_Selected']} (Total: ${totalInvestment})${transformedData['Selected_Addons'] ? ' | Add-ons: ' + transformedData['Selected_Addons'] : ''}`,
+            "Brief Summary": summary,
+            "_subject": transformedData['_subject'] || "New Brand Strategy Brief"
+        };
+
         try {
+            // Send ONLY the simplified data as JSON to avoid redundant fields
             const response = await fetch(form.action, {
                 method: 'POST',
-                body: finalFormData,
+                body: JSON.stringify(simplifiedData),
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 }
             });
 
