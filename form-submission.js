@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     transformedData[key] = value;
                 }
             }
-            // Handle Colors
+            // Handle Colors (checking for key with or without brackets to be safe)
             else if (key.includes('Selected_Color_Psychology')) {
                 const checkbox = form.querySelector(`input[name="${key}"][value="${value}"]`);
                 const keywords = checkbox ? checkbox.getAttribute('data-keywords') : '';
@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!transformedData['Selected_Color_Psychology']) {
                     transformedData['Selected_Color_Psychology'] = formattedColor;
                 } else {
+                    // Prevent duplicates if form-data iterates weirdly
                     if (!transformedData['Selected_Color_Psychology'].includes(formattedColor)) {
                         transformedData['Selected_Color_Psychology'] += `, ${formattedColor}`;
                     }
@@ -61,38 +62,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 transformedData['Logo_Style_Preference'] = value;
             }
             // Handle Add-ons
-            else if (key.includes('Essential_Addons')) {
+            else if (key === 'Essential_Addons[]') {
                 const cleanKey = 'Selected_Addons';
                 if (!transformedData[cleanKey]) {
                     transformedData[cleanKey] = value;
                 } else {
-                    if (!transformedData[cleanKey].includes(value)) {
-                        transformedData[cleanKey] += `, ${value}`;
-                    }
+                    transformedData[cleanKey] += `, ${value}`;
                 }
             }
-            // Handle Pricing Tier
+            // Handle Pricing Tier to include price
             else if (key === 'Selected_Investment_Strategy') {
+                const radio = form.querySelector(`input[name="${key}"]:checked`);
+                const tierId = radio ? radio.getAttribute('data-id') : '';
+
+                // We'll try to find the price from the DOM or we could have just included it in the value
+                // For simplicity, let's just use the value and maybe append price if we can find it
+                const priceElement = radio ? radio.closest('label').querySelector('.text-2xl.font-bold') : null;
+                const price = priceElement ? priceElement.textContent.trim() : '';
+
                 transformedData['Package_Selected'] = value;
+                transformedData['Package_Price'] = price;
             }
-            // Pass through others
+            // Pass through others (handled specially if needed)
             else {
                 transformedData[key] = value;
             }
         }
 
-        // Get Investment info from App logic if available
-        const investment = window.app ? window.app.calculateTotalInvestment() : null;
-        const totalInvestmentDisplay = investment ? investment.display : "Not specified";
-
-        // Generate a formatted summary for Formspree
+        // Generate a formatted summary for Formspree to look like the review design
         let summary = "--- STRATEGY BRIEF SUMMARY ---\n\n";
 
         const summarySections = [
             { title: "CONTACT DETAILS", keys: ["Client_Full_Name", "Client_Email_Address", "Project_Timeline"] },
             { title: "BUSINESS PROFILE", keys: ["Business_Organization_Name", "Products_and_Services", "Business_Value_Proposition", "Target_Audience"] },
             { title: "BRAND VISION", keys: ["Audience_Perception_Goal", "Brand_Core_Values", "Brand_Mission_Statement"] },
-            { title: "VISUAL DIRECTION", keys: ["Logo_Style_Preference", "Brand_Tagline_Slogan", "New_Logo_Ideas", "Must_Include_Elements", "Visual_Preferences_Constraints", "Current_Brand_Assets_References"] }
+            { title: "VISUAL DIRECTION", keys: ["Logo_Style_Preference", "Brand_Tagline_Slogan", "New_Logo_Ideas", "Must_Include_Elements", "Visual_Preferences_Constraints", "Current_Brand_Assets_References"] },
+            { title: "INVESTMENT", keys: ["Package_Selected", "Package_Price", "Selected_Addons"] }
         ];
 
         summarySections.forEach(section => {
@@ -109,10 +114,51 @@ document.addEventListener('DOMContentLoaded', () => {
         summary += transformedData['Selected_Color_Psychology'] ? `• ${transformedData['Selected_Color_Psychology']}` : "• Not specified";
         summary += "\n\n";
 
-        summary += "[ INVESTMENT ]\n";
-        summary += `• Package: ${transformedData['Package_Selected'] || "Not specified"}\n`;
-        if (transformedData['Selected_Addons']) {
-            summary += `• Add-ons: ${transformedData['Selected_Addons']}\n`;
+        summary += "[ PERSONALITY SCALES ]\n";
+        let hasScales = false;
+        for (let k in transformedData) {
+            if (k.startsWith('Personality_Scale_')) {
+                summary += `• ${k.replace('Personality_Scale_', '').replace(/_/g, ' ')}: ${transformedData[k]}\n`;
+                hasScales = true;
+            }
+        }
+        if (!hasScales) summary += "• Not specified\n";
+        summary += "\n";
+
+        if (transformedData['Additional_Notes_Comments']) {
+            summary += `[ ADDITIONAL NOTES ]\n${transformedData['Additional_Notes_Comments']}\n`;
+        }
+
+        transformedData['Submission_Summary'] = summary;
+
+        // Aggregating into Simple Labels as requested
+        const simplifiedData = {
+            "Client_Details": `${transformedData['Client_Full_Name']} <${transformedData['Client_Email_Address']}> | Due: ${transformedData['Project_Timeline']}`,
+            "Investment_Details": `${transformedData['Package_Selected']} (${transformedData['Package_Price']})${transformedData['Selected_Addons'] ? ' + ' + transformedData['Selected_Addons'] : ''}`,
+            "Brief_Summary": summary
+        };
+
+        // Clean up: Formspree prefers flat objects for reporting if using JSON
+        // We will send the simplified fields first, then the rest of the data
+        const finalFormData = new FormData();
+
+        // Add simplified fields first for prominence in Formspree
+        finalFormData.append("Client_Details", simplifiedData["Client_Details"]);
+        finalFormData.append("Investment_Details", simplifiedData["Investment_Details"]);
+        finalFormData.append("Brief_Summary", simplifiedData["Brief_Summary"]);
+
+        // Add the rest of the data
+        for (let key in transformedData) {
+            // Avoid duplicating the fields we just simplified if we want to keep it "simple"
+            // However, keeping them might be useful for structured data.
+            // The user asked to "change into simple label", so I'll skip the original parts of Step 1 and Investment.
+            const skipKeys = [
+                'Client_Full_Name', 'Client_Email_Address', 'Project_Timeline',
+                'Package_Selected', 'Package_Price', 'Selected_Addons', 'Submission_Summary'
+            ];
+            if (!skipKeys.includes(key)) {
+                finalFormData.append(key, transformedData[key]);
+            }
         }
         summary += `• Total Investment: ${totalInvestmentDisplay}\n`;
         summary += "\n";
@@ -140,7 +186,22 @@ document.addEventListener('DOMContentLoaded', () => {
             "_subject": transformedData['_subject'] || "New Brand Strategy Brief"
         };
 
+        transformedData['Submission_Summary'] = summary;
+
+        // Get total price from the UI display
+        const priceDisplay = document.getElementById('selected-price-display');
+        const totalInvestment = priceDisplay ? priceDisplay.textContent.trim() : transformedData['Package_Price'];
+
+        // Aggregating into Simple Labels as requested
+        const simplifiedData = {
+            "Client Details": `${transformedData['Client_Full_Name']} <${transformedData['Client_Email_Address']}> | Due: ${transformedData['Project_Timeline']}`,
+            "Investment Details": `${transformedData['Package_Selected']} (Total: ${totalInvestment})${transformedData['Selected_Addons'] ? ' | Add-ons: ' + transformedData['Selected_Addons'] : ''}`,
+            "Brief Summary": summary,
+            "_subject": transformedData['_subject'] || "New Brand Strategy Brief"
+        };
+
         try {
+            // Send ONLY the simplified data as JSON to avoid redundant fields
             const response = await fetch(form.action, {
                 method: 'POST',
                 body: JSON.stringify(simplifiedData),

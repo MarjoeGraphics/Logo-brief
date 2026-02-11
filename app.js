@@ -180,27 +180,28 @@ class QuestionnaireApp {
         document.addEventListener('change', (e) => {
             if (e.target.name === 'Selected_Investment_Strategy' || e.target.name === 'Logo_Style_Preference' || e.target.name === 'Essential_Addons[]') {
                 this.validateCurrentStep();
-                if (this.currentStep === 8) {
-                    if (e.target.name === 'Selected_Investment_Strategy') {
-                        this.toggleEssentialAddons();
-                    }
-                    this.updatePriceDisplay();
+                if (e.target.name === 'Selected_Investment_Strategy' && this.currentStep === 8) {
+                    this.toggleEssentialAddons();
                 }
             }
         });
     }
 
-    calculateTotalInvestment() {
+    updatePriceDisplay() {
+        const priceDisplay = document.getElementById('selected-price-display');
+        if (!priceDisplay) return;
+
         const selectedTierInput = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
-        if (!selectedTierInput) return null;
+        if (!selectedTierInput) {
+            priceDisplay.textContent = 'Select a package';
+            return;
+        }
 
         const tierId = selectedTierInput.dataset.id;
         const tier = this.config.pricingTiers.find(t => t.id === tierId);
 
         if (tierId === 'essential') {
-            const basePrice = parseInt(tier.price.replace(/[^\d]/g, '')) || 1000;
-            let total = basePrice;
-
+            let total = 1000;
             const addons = document.querySelectorAll('input[name="Essential_Addons[]"]:checked');
             addons.forEach(addon => {
                 const priceMatch = addon.value.match(/₱(\d+)/);
@@ -208,16 +209,10 @@ class QuestionnaireApp {
                     total += parseInt(priceMatch[1]);
                 }
             });
-            return { value: total, display: `₱${total.toLocaleString()}` };
+            priceDisplay.textContent = `₱${total.toLocaleString()}`;
         } else {
-            return { value: tier.price, display: tier.price };
+            priceDisplay.textContent = tier.price;
         }
-    }
-
-    updatePriceDisplay() {
-        // We no longer have the price display bar in Step 8,
-        // but we might want to keep the logic for other purposes
-        // or just rely on calculateTotalInvestment when moving to Step 9.
     }
 
     navigate(direction) {
@@ -320,13 +315,6 @@ class QuestionnaireApp {
         }
     }
 
-    escapeHTML(str) {
-        if (!str) return '';
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
-
     generateReviewSummary() {
         const reviewContainer = document.getElementById('review-summary');
         if (!reviewContainer) return;
@@ -369,12 +357,18 @@ class QuestionnaireApp {
                     { name: 'Visual_Preferences_Constraints', label: 'Constraints' },
                     { name: 'Current_Brand_Assets_References', label: 'References' }
                 ]
+            },
+            {
+                title: 'Investment',
+                fields: [
+                    { name: 'Selected_Investment_Strategy', label: 'Package' },
+                    { name: 'Essential_Addons[]', label: 'Add-ons' }
+                ]
             }
         ];
 
         let html = '';
 
-        // Render sections in order
         sections.forEach(section => {
             const fieldContents = section.fields.map(field => {
                 let value = '';
@@ -388,7 +382,7 @@ class QuestionnaireApp {
                 return `
                     <div class="flex flex-col sm:flex-row sm:justify-between py-2 border-b border-slate-700/30 last:border-0">
                         <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 min-w-[120px]">${field.label}</span>
-                        <span class="text-xs text-slate-300 sm:text-right">${this.escapeHTML(value) || '<span class="italic text-slate-600">Not specified</span>'}</span>
+                        <span class="text-xs text-slate-300 sm:text-right">${value || '<span class="italic text-slate-600">Not specified</span>'}</span>
                     </div>
                 `;
             }).join('');
@@ -403,118 +397,15 @@ class QuestionnaireApp {
             `;
         });
 
-        // Add colors between Visual Direction and Investment
+        // Add colors separately
         const colors = formData.getAll('Selected_Color_Psychology[]');
         if (colors.length > 0) {
             html += `
                 <div class="mb-6">
                     <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Selected Colors</h4>
-                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
-                        <div class="flex flex-wrap gap-2">
-                            ${colors.map(color => `
-                                <span class="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 font-medium">${this.escapeHTML(color)}</span>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Investment Section
-        const investment = this.calculateTotalInvestment();
-        if (investment) {
-            const packageSelected = formData.get('Selected_Investment_Strategy');
-            const addons = formData.getAll('Essential_Addons[]');
-
-            let downpaymentHtml = '';
-            if (typeof investment.value === 'number') {
-                const dp = investment.value * 0.5;
-                downpaymentHtml = `
-                    <div class="mt-4 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-xl">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">50% Downpayment Required</span>
-                            <span class="text-lg font-black text-indigo-400">₱${dp.toLocaleString()}</span>
-                        </div>
-                        <p class="text-[9px] text-slate-500 leading-tight mb-4 text-center">Please scan the QR code below to make your downpayment. Your brief will be processed once payment is confirmed.</p>
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="w-32 h-32 bg-white p-2 rounded-lg flex items-center justify-center">
-                                <!-- Placeholder for GCash QR Code -->
-                                <div class="w-full h-full border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400">
-                                    <i data-lucide="qr-code" class="w-8 h-8 mb-1"></i>
-                                    <span class="text-[8px] font-bold">QR Code</span>
-                                </div>
-                            </div>
-                            <span class="text-[8px] font-bold text-slate-500 uppercase">Scan to Pay via GCash</span>
-                        </div>
-                    </div>
-                `;
-            } else {
-                downpaymentHtml = `
-                    <div class="mt-4 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-xl">
-                        <p class="text-[10px] text-slate-400 leading-tight text-center">A 50% downpayment of the final agreed price is required to start the project.</p>
-                    </div>
-                `;
-            }
-
-            html += `
-                <div class="mb-6">
-                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Investment</h4>
-                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
-                        <div class="flex justify-between py-2 border-b border-slate-700/30">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Package</span>
-                            <span class="text-xs text-slate-300 text-right">${this.escapeHTML(packageSelected)}</span>
-                        </div>
-                        ${addons.length > 0 ? `
-                        <div class="flex justify-between py-2 border-b border-slate-700/30">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Add-ons</span>
-                            <span class="text-xs text-slate-300 text-right">${this.escapeHTML(addons.join(', '))}</span>
-                        </div>
-                        ` : ''}
-                        <div class="flex justify-between py-2 mt-2 pt-2 bg-indigo-500/5 -mx-3 px-3">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400">Total Investment</span>
-                            <span class="text-xs font-bold text-indigo-400" id="selected-price-display">${this.escapeHTML(investment.display)}</span>
-                        </div>
-                        ${downpaymentHtml}
-                    </div>
-                </div>
-            `;
-        }
-
-        // Add personality scales separately
-        const scales = [];
-        for (let [key, value] of formData.entries()) {
-            if (key.startsWith('Personality_Scale_')) {
-                const input = this.form.querySelector(`input[name="${key}"]`);
-                const left = input.getAttribute('data-left');
-                const right = input.getAttribute('data-right');
-
-                // Helper to get simple descriptor for review
-                const getSimpleDesc = (val) => {
-                    if (val == 1) return `Strongly ${left}`;
-                    if (val == 2) return `Leaning ${left}`;
-                    if (val == 3) return `Balanced`;
-                    if (val == 4) return `Leaning ${right}`;
-                    if (val == 5) return `Strongly ${right}`;
-                    return val;
-                };
-
-                scales.push({
-                    label: key.replace('Personality_Scale_', '').replace(/_/g, ' '),
-                    value: getSimpleDesc(value)
-                });
-            }
-        }
-
-        if (scales.length > 0) {
-            html += `
-                <div class="mb-6">
-                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Brand Personality</h4>
-                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50 grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-                        ${scales.map(scale => `
-                            <div class="flex justify-between py-1 border-b border-slate-700/30 last:border-0 sm:even:border-b sm:last:border-b-0">
-                                <span class="text-[9px] font-bold uppercase tracking-wider text-slate-500">${scale.label}</span>
-                                <span class="text-[10px] text-slate-300">${this.escapeHTML(scale.value)}</span>
-                            </div>
+                    <div class="flex flex-wrap gap-2">
+                        ${colors.map(color => `
+                            <span class="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 font-medium">${color}</span>
                         `).join('')}
                     </div>
                 </div>
@@ -522,7 +413,6 @@ class QuestionnaireApp {
         }
 
         reviewContainer.innerHTML = html;
-        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 }
 
