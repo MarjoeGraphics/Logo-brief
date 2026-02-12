@@ -426,6 +426,11 @@ class QuestionnaireApp {
             const packageSelected = formData.get('Selected_Investment_Strategy');
             const addons = formData.getAll('Essential_Addons[]');
 
+            const selectedTierInput = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
+            const tierId = selectedTierInput ? selectedTierInput.dataset.id : null;
+            const tier = this.config.pricingTiers.find(t => t.id === tierId);
+            const deliverables = tier ? tier.features : [];
+
             html += `
                 <div class="mb-6">
                     <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Investment</h4>
@@ -433,6 +438,17 @@ class QuestionnaireApp {
                         <div class="flex justify-between py-2 border-b border-slate-700/30">
                             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Package</span>
                             <span class="text-xs text-slate-300 text-right">${this.escapeHTML(packageSelected)} (${this.escapeHTML(investment.basePrice)})</span>
+                        </div>
+                        <div class="py-2 border-b border-slate-700/30">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Deliverables</span>
+                            <ul class="space-y-1">
+                                ${deliverables.map(d => `
+                                    <li class="flex items-start gap-2 text-[10px] text-slate-400">
+                                        <i data-lucide="check" class="w-3 h-3 text-indigo-500 mt-0.5"></i>
+                                        <span>${this.escapeHTML(d)}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
                         </div>
                         ${addons.length > 0 ? `
                         <div class="flex justify-between py-2 border-b border-slate-700/30">
