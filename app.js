@@ -2,6 +2,17 @@ class QuestionnaireApp {
     constructor() {
         this.currentStep = 1;
         this.totalSteps = 9;
+        this.stepTitles = [
+            "Contact Details",
+            "Investment Strategy",
+            "Business Profile",
+            "Brand Vision",
+            "Brand Identity",
+            "Brand Personality",
+            "Logo Style",
+            "Color Psychology",
+            "Review & Submit"
+        ];
         this.config = null;
 
         // DOM Elements
@@ -44,12 +55,15 @@ class QuestionnaireApp {
         const scalesContainer = document.getElementById('personality-scales-container');
         if (scalesContainer) {
             scalesContainer.innerHTML = this.config.personalityScales.map(scale => `
-                <div class="space-y-2">
-                    <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                        <span>${scale.left}</span>
-                        <span>${scale.right}</span>
+                <div class="space-y-4 bg-slate-800/30 p-5 rounded-2xl border border-slate-700/30 transition-all hover:bg-slate-800/50">
+                    <div class="flex justify-between text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-2">
+                        <span class="text-indigo-400/70">${scale.left}</span>
+                        <span class="text-indigo-400/70">${scale.right}</span>
                     </div>
                     <input type="range" name="${scale.name}" min="1" max="5" step="1" value="3" class="w-full personality-scale" data-left="${scale.left}" data-right="${scale.right}">
+                    <div class="flex justify-between px-1">
+                        ${[1, 2, 3, 4, 5].map(i => `<div class="w-1 h-1 rounded-full bg-slate-700"></div>`).join('')}
+                    </div>
                 </div>
             `).join('');
         }
@@ -58,15 +72,16 @@ class QuestionnaireApp {
         const logoGrid = document.getElementById('logo-selection-grid');
         if (logoGrid) {
             logoGrid.innerHTML = this.config.logoStyles.map(style => `
-                <label class="cursor-pointer group relative">
+                <label class="cursor-pointer group relative block h-full">
                     <input type="radio" name="Logo_Style_Preference" value="${style.value}" class="peer hidden">
-                    <div class="h-full bg-slate-700/30 border border-slate-600 rounded-xl overflow-hidden transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
-                        <div class="aspect-video w-full overflow-hidden border-b border-slate-600/50">
-                            <img src="${style.image}" alt="${style.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="h-full bg-slate-800/40 border border-slate-700/50 rounded-2xl overflow-hidden transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 group-hover:bg-slate-800/60 shadow-lg">
+                        <div class="aspect-video w-full overflow-hidden relative">
+                            <img src="${style.image}" alt="${style.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-60"></div>
                         </div>
-                        <div class="p-3">
-                            <span class="block font-bold text-white text-sm mb-1">${style.title}</span>
-                            <p class="text-[10px] text-slate-500 leading-tight">${style.description}</p>
+                        <div class="p-4 relative">
+                            <span class="block font-bold text-white text-xs mb-1 uppercase tracking-wider">${style.title}</span>
+                            <p class="text-[10px] text-slate-500 leading-relaxed">${style.description}</p>
                         </div>
                     </div>
                 </label>
@@ -79,10 +94,10 @@ class QuestionnaireApp {
             colorGrid.innerHTML = this.config.colorPsychology.map(color => `
                 <label class="cursor-pointer group relative">
                     <input type="checkbox" name="Selected_Color_Psychology[]" value="${color.name}" data-keywords="${color.keywords}" class="peer hidden color-checkbox">
-                    <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-4 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500">
-                        <div class="w-full h-20 ${color.colorClass} rounded-lg mb-3 ${color.id === 'black' ? 'border border-slate-600' : ''}"></div>
-                        <span class="block font-bold ${color.textClass || 'text-white'} text-base mb-1.5">${color.name}</span>
-                        <p class="text-xs text-slate-400 leading-snug">${color.keywords}</p>
+                    <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 h-full transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 shadow-lg">
+                        <div class="w-full h-16 ${color.colorClass} rounded-xl mb-4 shadow-inner ${color.id === 'black' ? 'border border-slate-700' : ''} ${color.id === 'white' ? 'border border-slate-200/10' : ''}"></div>
+                        <span class="block font-bold text-white text-[11px] mb-1.5 uppercase tracking-widest text-center">${color.name}</span>
+                        <p class="text-[9px] text-slate-500 leading-tight text-center uppercase tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">${color.keywords.split(',')[0]}</p>
                     </div>
                 </label>
             `).join('');
@@ -90,38 +105,39 @@ class QuestionnaireApp {
             this.setupColorLogic();
         }
 
-        // Render Step 8: Pricing
+        // Render Step 2: Pricing
         const pricingGrid = document.getElementById('pricing-selection-grid');
         if (pricingGrid) {
             pricingGrid.innerHTML = this.config.pricingTiers.map(tier => `
                 <label class="cursor-pointer group relative block h-full">
                     <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" data-id="${tier.id}" class="peer hidden" required>
-                    <div class="bg-slate-700/30 border-2 border-slate-600 rounded-2xl p-6 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500 relative overflow-hidden flex flex-col">
-                        ${tier.recommended ? '<div class="absolute top-0 right-0 bg-indigo-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Recommended</div>' : ''}
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-white">${tier.title}</h3>
+                    <div class="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-8 h-full transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 relative overflow-hidden flex flex-col shadow-xl">
+                        ${tier.recommended ? '<div class="absolute top-0 right-0 bg-indigo-500 text-white text-[9px] font-black px-4 py-1.5 rounded-bl-2xl uppercase tracking-[0.2em]">Recommended</div>' : ''}
+                        <div class="mb-6">
+                            <h3 class="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-2">${tier.title}</h3>
+                            <div class="text-3xl font-black text-white tracking-tight">${tier.priceDisplay}</div>
                         </div>
-                        <div class="text-2xl font-black text-indigo-400 mb-4">${tier.priceDisplay}</div>
 
-                        <div class="space-y-4 mb-6">
-                            <div class="flex items-center gap-2 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/50 py-1 px-2 rounded-md border border-slate-700/30 w-fit">
-                                <i data-lucide="layers" class="w-3 h-3"></i>
+                        <div class="space-y-3 mb-8">
+                            <div class="flex items-center gap-3 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/80 py-2 px-3 rounded-xl border border-slate-700/50 w-full">
+                                <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-400"></i>
                                 ${tier.concepts}
                             </div>
-                            <div class="flex items-center gap-2 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/50 py-1 px-2 rounded-md border border-slate-700/30 w-fit">
-                                <i data-lucide="refresh-ccw" class="w-3 h-3"></i>
+                            <div class="flex items-center gap-3 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/80 py-2 px-3 rounded-xl border border-slate-700/50 w-full">
+                                <i data-lucide="refresh-ccw" class="w-3.5 h-3.5 text-indigo-400"></i>
                                 ${tier.revisions}
                             </div>
-                            <div class="flex items-center gap-2 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/50 py-1 px-2 rounded-md border border-slate-700/30 w-fit">
-                                <i data-lucide="clock" class="w-3 h-3"></i>
+                            <div class="flex items-center gap-3 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/80 py-2 px-3 rounded-xl border border-slate-700/50 w-full">
+                                <i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-400"></i>
                                 ${tier.turnaround}
                             </div>
                         </div>
 
-                        <ul class="space-y-2 flex-grow">
+                        <div class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Deliverables</div>
+                        <ul class="space-y-3 flex-grow">
                             ${tier.deliverables.map(d => `
-                                <li class="flex items-start gap-2 text-xs text-slate-400">
-                                    <i data-lucide="check" class="w-3 h-3 text-indigo-500 mt-0.5"></i>
+                                <li class="flex items-start gap-3 text-[11px] text-slate-400 leading-relaxed">
+                                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-indigo-500 mt-0.5"></i>
                                     <span>${d}</span>
                                 </li>
                             `).join('')}
@@ -137,13 +153,13 @@ class QuestionnaireApp {
                 addonsGrid.innerHTML = essentialTier.addons.map(addon => `
                     <label class="cursor-pointer group relative">
                         <input type="checkbox" name="Essential_Addons[]" value="${addon.label} (${addon.price})" class="peer hidden">
-                        <div class="flex items-center justify-between p-4 bg-slate-700/30 border border-slate-600 rounded-xl transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500 peer-checked:[&_.checkmark-box]:bg-indigo-500 peer-checked:[&_.checkmark-box]:border-indigo-500 peer-checked:[&_svg]:opacity-100">
-                            <div class="flex flex-col">
-                                <span class="text-xs font-bold text-white">${addon.label}</span>
-                                <span class="text-[10px] text-slate-400">${addon.price}</span>
+                    <div class="flex items-center justify-between p-5 bg-slate-800/40 border border-slate-700/50 rounded-2xl transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 peer-checked:[&_.checkmark-box]:bg-indigo-500 peer-checked:[&_.checkmark-box]:border-indigo-500 peer-checked:[&_svg]:opacity-100 shadow-md">
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[11px] font-bold text-white uppercase tracking-widest">${addon.label}</span>
+                            <span class="text-[10px] font-black text-indigo-400/80 tracking-widest">${addon.price}</span>
                             </div>
-                            <div class="w-5 h-5 rounded border border-slate-600 flex items-center justify-center transition-all checkmark-box">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-white opacity-0 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <div class="w-6 h-6 rounded-lg border border-slate-600 flex items-center justify-center transition-all duration-300 checkmark-box bg-slate-900/50">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white opacity-0 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                             </div>
                         </div>
                     </label>
@@ -191,9 +207,9 @@ class QuestionnaireApp {
         }
 
         document.addEventListener('change', (e) => {
-            if (e.target.name === 'Selected_Investment_Strategy' || e.target.name === 'Logo_Style_Preference' || e.target.name === 'Essential_Addons[]') {
+            if (e.target.name === 'Selected_Investment_Strategy' || e.target.name === 'Logo_Style_Preference' || e.target.name === 'Essential_Addons[]' || e.target.id === 'confirm-review') {
                 this.validateCurrentStep();
-                if (this.currentStep === 8) {
+                if (this.currentStep === 2) {
                     if (e.target.name === 'Selected_Investment_Strategy') {
                         this.toggleEssentialAddons();
                     }
@@ -286,7 +302,7 @@ class QuestionnaireApp {
 
         this.prevBtn.classList.toggle('hidden', this.currentStep === 1);
 
-        if (this.currentStep === 8) {
+        if (this.currentStep === 2) {
             this.toggleEssentialAddons();
         }
 
@@ -300,9 +316,18 @@ class QuestionnaireApp {
         } else {
             this.nextBtn.classList.remove('hidden');
             this.submitBtn.classList.add('hidden');
+            this.updateNextBtnText();
         }
 
         this.validateCurrentStep();
+    }
+
+    updateNextBtnText() {
+        if (this.currentStep < this.totalSteps) {
+            const nextTitle = this.stepTitles[this.currentStep];
+            this.nextBtn.innerHTML = `Continue to ${nextTitle} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
     }
 
     validateCurrentStep() {
@@ -313,19 +338,21 @@ class QuestionnaireApp {
                       this.step1Inputs.email.value.trim() !== '' &&
                       this.step1Inputs.email.checkValidity() &&
                       this.step1Inputs.timeline.value !== '';
-        } else if (this.currentStep === 6) {
+        } else if (this.currentStep === 2) {
+            const selectedTier = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
+            isValid = !!selectedTier;
+        } else if (this.currentStep === 7) {
             const selectedStyle = document.querySelector('input[name="Logo_Style_Preference"]:checked');
             isValid = !!selectedStyle;
-        } else if (this.currentStep === 7) {
+        } else if (this.currentStep === 8) {
             const checkboxes = document.querySelectorAll('.color-checkbox');
             const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
             isValid = selectedCount >= 2 && selectedCount <= 4;
-        } else if (this.currentStep === 8) {
-            const selectedTier = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
-            isValid = !!selectedTier;
         }
 
         if (this.currentStep === this.totalSteps) {
+            const confirmCheck = document.getElementById('confirm-review');
+            if (confirmCheck) isValid = isValid && confirmCheck.checked;
             this.submitBtn.disabled = !isValid;
         } else {
             this.nextBtn.disabled = !isValid;
@@ -398,17 +425,17 @@ class QuestionnaireApp {
                 }
 
                 return `
-                    <div class="flex flex-col sm:flex-row sm:justify-between py-2 border-b border-slate-700/30 last:border-0">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 min-w-[120px]">${field.label}</span>
-                        <span class="text-xs text-slate-300 sm:text-right">${this.escapeHTML(value) || '<span class="italic text-slate-600">Not specified</span>'}</span>
+                    <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-slate-700/20 last:border-0">
+                        <span class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500 min-w-[140px] mb-1 sm:mb-0">${field.label}</span>
+                        <span class="text-[11px] text-slate-300 sm:text-right font-medium leading-relaxed">${this.escapeHTML(value) || '<span class="italic text-slate-700 font-normal">Not specified</span>'}</span>
                     </div>
                 `;
             }).join('');
 
             html += `
-                <div class="mb-6 last:mb-0">
-                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">${section.title}</h4>
-                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                <div class="animate-zoom-in">
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400/80 mb-3 ml-1">${section.title}</h4>
+                    <div class="bg-slate-800/30 rounded-3xl p-6 border border-slate-700/40 shadow-sm hover:bg-slate-800/50 transition-colors">
                         ${fieldContents}
                     </div>
                 </div>
