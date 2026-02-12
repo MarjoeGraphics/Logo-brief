@@ -158,6 +158,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 successScreen.classList.remove('hidden');
                 successScreen.classList.add('flex');
 
+                // Populate payment details
+                const paymentDetails = document.getElementById('payment-success-details');
+                if (paymentDetails && window.app) {
+                    const investment = window.app.calculateTotalInvestment();
+                    if (investment) {
+                        let html = `
+                            <div class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 text-left animate-zoom-in" style="animation-delay: 200ms">
+                                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700/50">
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Investment</span>
+                                    <span class="text-xl font-black text-white">${investment.display}</span>
+                                </div>
+                        `;
+
+                        if (typeof investment.value === 'number') {
+                            const dp = investment.value * 0.5;
+                            html += `
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em]">50% Downpayment</span>
+                                        <span class="text-2xl font-black text-white">₱${dp.toLocaleString()}</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400 leading-relaxed text-center bg-slate-900/50 p-3 rounded-lg border border-slate-700/30">
+                                        To begin the design process, please settle the downpayment via GCash. Your brief will be prioritized upon confirmation.
+                                    </p>
+                                    <div class="flex flex-col items-center gap-3 pt-2">
+                                        <div class="w-48 h-48 bg-white p-3 rounded-2xl shadow-2xl">
+                                            <div class="w-full h-full border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-400">
+                                                <i data-lucide="qr-code" class="w-12 h-12 mb-2"></i>
+                                                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Scan to Pay</span>
+                                            </div>
+                                        </div>
+                                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Scan QR to Pay via GCash</span>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            html += `
+                                <p class="text-xs text-slate-400 leading-relaxed text-center bg-slate-900/50 p-4 rounded-lg border border-slate-700/30">
+                                    A 50% downpayment of the final agreed price is required to start the project. We will contact you with the specific amount after reviewing your requirements.
+                                </p>
+                            `;
+                        }
+
+                        html += `</div>`;
+                        paymentDetails.innerHTML = html;
+                    }
+                }
+
                 if (typeof lucide !== 'undefined') {
                     lucide.createIcons();
                 }
