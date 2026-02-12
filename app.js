@@ -98,18 +98,31 @@ class QuestionnaireApp {
                     <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" data-id="${tier.id}" class="peer hidden" required>
                     <div class="bg-slate-700/30 border-2 border-slate-600 rounded-2xl p-6 h-full transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 group-hover:border-slate-500 relative overflow-hidden flex flex-col">
                         ${tier.recommended ? '<div class="absolute top-0 right-0 bg-indigo-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Recommended</div>' : ''}
-                        <div class="flex justify-between items-start mb-1">
+                        <div class="flex justify-between items-start mb-2">
                             <h3 class="text-xl font-bold text-white">${tier.title}</h3>
-                            <div class="h-5 w-5 border-2 border-slate-600 rounded-full flex items-center justify-center peer-checked:border-indigo-500 transition-all peer-checked:[&_div]:opacity-100">
-                                <div class="w-2.5 h-2.5 bg-indigo-500 rounded-full opacity-0 transition-all"></div>
+                        </div>
+                        <div class="text-2xl font-black text-indigo-400 mb-4">${tier.priceDisplay}</div>
+
+                        <div class="space-y-4 mb-6">
+                            <div class="flex items-center gap-2 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/50 py-1 px-2 rounded-md border border-slate-700/30 w-fit">
+                                <i data-lucide="layers" class="w-3 h-3"></i>
+                                ${tier.concepts}
+                            </div>
+                            <div class="flex items-center gap-2 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/50 py-1 px-2 rounded-md border border-slate-700/30 w-fit">
+                                <i data-lucide="refresh-ccw" class="w-3 h-3"></i>
+                                ${tier.revisions}
+                            </div>
+                            <div class="flex items-center gap-2 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/50 py-1 px-2 rounded-md border border-slate-700/30 w-fit">
+                                <i data-lucide="clock" class="w-3 h-3"></i>
+                                ${tier.turnaround}
                             </div>
                         </div>
-                        <div class="text-2xl font-bold text-indigo-400 mb-4">${tier.price}</div>
+
                         <ul class="space-y-2 flex-grow">
-                            ${tier.features.map(f => `
-                                <li class="flex items-center gap-2 text-xs text-slate-400">
-                                    <i data-lucide="check" class="w-3 h-3 text-indigo-500"></i>
-                                    ${f}
+                            ${tier.deliverables.map(d => `
+                                <li class="flex items-start gap-2 text-xs text-slate-400">
+                                    <i data-lucide="check" class="w-3 h-3 text-indigo-500 mt-0.5"></i>
+                                    <span>${d}</span>
                                 </li>
                             `).join('')}
                         </ul>
@@ -197,9 +210,8 @@ class QuestionnaireApp {
         const tierId = selectedTierInput.dataset.id;
         const tier = this.config.pricingTiers.find(t => t.id === tierId);
 
-        if (tierId === 'essential') {
-            const basePrice = parseInt(tier.price.replace(/[^\d]/g, '')) || 5000;
-            let total = basePrice;
+        if (tier.priceValue !== null) {
+            let total = tier.priceValue;
 
             const addons = document.querySelectorAll('input[name="Essential_Addons[]"]:checked');
             addons.forEach(addon => {
@@ -208,9 +220,9 @@ class QuestionnaireApp {
                     total += parseInt(priceMatch[1].replace(/,/g, ''));
                 }
             });
-            return { value: total, display: `₱${total.toLocaleString()}`, basePrice: tier.price };
+            return { value: total, display: `₱${total.toLocaleString()}`, basePrice: tier.priceDisplay };
         } else {
-            return { value: tier.price, display: tier.price, basePrice: tier.price };
+            return { value: tier.priceDisplay, display: tier.priceDisplay, basePrice: tier.priceDisplay };
         }
     }
 
@@ -429,7 +441,13 @@ class QuestionnaireApp {
             const selectedTierInput = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
             const tierId = selectedTierInput ? selectedTierInput.dataset.id : null;
             const tier = this.config.pricingTiers.find(t => t.id === tierId);
-            const deliverables = tier ? tier.features : [];
+
+            const features = [
+                tier.concepts,
+                tier.revisions,
+                tier.turnaround,
+                ...tier.deliverables
+            ];
 
             html += `
                 <div class="mb-6">
@@ -442,7 +460,7 @@ class QuestionnaireApp {
                         <div class="py-2 border-b border-slate-700/30">
                             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Deliverables</span>
                             <ul class="space-y-1">
-                                ${deliverables.map(d => `
+                                ${features.map(d => `
                                     <li class="flex items-start gap-2 text-[10px] text-slate-400">
                                         <i data-lucide="check" class="w-3 h-3 text-indigo-500 mt-0.5"></i>
                                         <span>${this.escapeHTML(d)}</span>
