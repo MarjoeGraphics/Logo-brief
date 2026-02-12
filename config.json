@@ -141,19 +141,24 @@
             "textClass": "text-slate-900"
         }
     ],
+    "paymentInfo": {
+        "number": "09667659307",
+        "name": "Marjoe M. Salto"
+    },
     "pricingTiers": [
         {
             "id": "essential",
             "title": "Essential Start",
-            "price": "₱1,000",
+            "priceDisplay": "₱1,000",
+            "priceValue": 1000,
             "description": "Designed for startups and side-hustles needing a professional face without the heavy overhead.",
-            "features": [
-                "1 Original Logo Concept tailored to your niche.",
+            "concepts": "1 Original Logo Concept",
+            "revisions": "4 Revision Rounds",
+            "turnaround": "1-Week Turnaround",
+            "deliverables": [
                 "High-Resolution Files: JPG, PNG, SVG, and PDF.",
-                "1 Realistic 3D Mockup to see your brand in action.",
-                "Social Media Profile and Cover Photo.",
-                "4 Revision Rounds to perfect the details.",
-                "1-Week Turnaround."
+                "1 Realistic 3D Mockup.",
+                "Social Media Profile and Cover Photo."
             ],
             "recommended": false,
             "addons": [
@@ -169,28 +174,32 @@
         {
             "id": "professional",
             "title": "Professional Growth",
-            "price": "₱4,000 - ₱5,000",
+            "priceDisplay": "₱4,000 - ₱5,000",
+            "priceValue": null,
             "description": "For established freelancers and businesses looking to standardize their look across all platforms.",
-            "features": [
-                "2-3 Distinct Logo Concepts to choose from.",
+            "concepts": "2-3 Distinct Logo Concepts",
+            "revisions": "8 Revision Rounds",
+            "turnaround": "2-Week Turnaround",
+            "deliverables": [
                 "Full Master File Access (AI/EPS).",
                 "Brand Color Palette & Typography.",
-                "2 Realistic 3D Mockups.",
-                "8 Revision Rounds."
+                "2 Realistic 3D Mockups."
             ],
             "recommended": true
         },
         {
             "id": "enterprise",
             "title": "Business Scale",
-            "price": "₱10,000+",
+            "priceDisplay": "₱10,000+",
+            "priceValue": null,
             "description": "A comprehensive branding solution for companies ready to dominate their market.",
-            "features": [
-                "Premium Logo Suite: Primary, Secondary, and Sub-marks.",
+            "concepts": "Premium Logo Suite: Primary, Secondary, and Sub-marks.",
+            "revisions": "Priority Support & Extended Revisions",
+            "turnaround": "3-4 Week Turnaround",
+            "deliverables": [
                 "Social Media Kit: profile pictures and banner templates.",
                 "Brand Style Guide: A PDF manual on usage.",
-                "Full Commercial Rights Transfer.",
-                "Priority Support & Extended Revisions."
+                "Full Commercial Rights Transfer."
             ],
             "recommended": false
         }
