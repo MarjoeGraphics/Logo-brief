@@ -198,19 +198,19 @@ class QuestionnaireApp {
         const tier = this.config.pricingTiers.find(t => t.id === tierId);
 
         if (tierId === 'essential') {
-            const basePrice = parseInt(tier.price.replace(/[^\d]/g, '')) || 1000;
+            const basePrice = parseInt(tier.price.replace(/[^\d]/g, '')) || 5000;
             let total = basePrice;
 
             const addons = document.querySelectorAll('input[name="Essential_Addons[]"]:checked');
             addons.forEach(addon => {
-                const priceMatch = addon.value.match(/₱(\d+)/);
+                const priceMatch = addon.value.match(/₱([\d,]+)/);
                 if (priceMatch) {
-                    total += parseInt(priceMatch[1]);
+                    total += parseInt(priceMatch[1].replace(/,/g, ''));
                 }
             });
-            return { value: total, display: `₱${total.toLocaleString()}` };
+            return { value: total, display: `₱${total.toLocaleString()}`, basePrice: tier.price };
         } else {
-            return { value: tier.price, display: tier.price };
+            return { value: tier.price, display: tier.price, basePrice: tier.price };
         }
     }
 
@@ -426,43 +426,13 @@ class QuestionnaireApp {
             const packageSelected = formData.get('Selected_Investment_Strategy');
             const addons = formData.getAll('Essential_Addons[]');
 
-            let downpaymentHtml = '';
-            if (typeof investment.value === 'number') {
-                const dp = investment.value * 0.5;
-                downpaymentHtml = `
-                    <div class="mt-4 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-xl">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">50% Downpayment Required</span>
-                            <span class="text-lg font-black text-indigo-400">₱${dp.toLocaleString()}</span>
-                        </div>
-                        <p class="text-[9px] text-slate-500 leading-tight mb-4 text-center">Please scan the QR code below to make your downpayment. Your brief will be processed once payment is confirmed.</p>
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="w-32 h-32 bg-white p-2 rounded-lg flex items-center justify-center">
-                                <!-- Placeholder for GCash QR Code -->
-                                <div class="w-full h-full border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400">
-                                    <i data-lucide="qr-code" class="w-8 h-8 mb-1"></i>
-                                    <span class="text-[8px] font-bold">QR Code</span>
-                                </div>
-                            </div>
-                            <span class="text-[8px] font-bold text-slate-500 uppercase">Scan to Pay via GCash</span>
-                        </div>
-                    </div>
-                `;
-            } else {
-                downpaymentHtml = `
-                    <div class="mt-4 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-xl">
-                        <p class="text-[10px] text-slate-400 leading-tight text-center">A 50% downpayment of the final agreed price is required to start the project.</p>
-                    </div>
-                `;
-            }
-
             html += `
                 <div class="mb-6">
                     <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Investment</h4>
                     <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
                         <div class="flex justify-between py-2 border-b border-slate-700/30">
                             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Package</span>
-                            <span class="text-xs text-slate-300 text-right">${this.escapeHTML(packageSelected)}</span>
+                            <span class="text-xs text-slate-300 text-right">${this.escapeHTML(packageSelected)} (${this.escapeHTML(investment.basePrice)})</span>
                         </div>
                         ${addons.length > 0 ? `
                         <div class="flex justify-between py-2 border-b border-slate-700/30">
@@ -474,7 +444,6 @@ class QuestionnaireApp {
                             <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400">Total Investment</span>
                             <span class="text-xs font-bold text-indigo-400" id="selected-price-display">${this.escapeHTML(investment.display)}</span>
                         </div>
-                        ${downpaymentHtml}
                     </div>
                 </div>
             `;
