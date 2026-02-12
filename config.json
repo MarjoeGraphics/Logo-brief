@@ -141,6 +141,10 @@
             "textClass": "text-slate-900"
         }
     ],
+    "paymentInfo": {
+        "number": "09667659307",
+        "name": "Marjoe M. Salto"
+    },
     "pricingTiers": [
         {
             "id": "essential",
