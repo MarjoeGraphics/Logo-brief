@@ -98,14 +98,14 @@ class QuestionnaireApp {
                 const essentialTier = this.config.pricingTiers.find(t => t.id === 'essential');
                 if (addonsGrid && essentialTier && essentialTier.addons) {
                     addonsGrid.innerHTML = essentialTier.addons.map(addon => `
-                        <label class="cursor-pointer group relative">
+                        <label class="cursor-pointer group relative block h-full">
                             <input type="checkbox" name="Essential_Addons[]" value="${addon.label} (${addon.price})" class="peer hidden">
-                        <div class="flex items-center justify-between p-5 bg-slate-800/40 border border-slate-700/50 rounded-2xl transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 peer-checked:[&_.checkmark-box]:bg-indigo-500 peer-checked:[&_.checkmark-box]:border-indigo-500 peer-checked:[&_svg]:opacity-100 shadow-md">
+                        <div class="flex items-center justify-between p-5 bg-slate-800/40 border border-slate-700/50 rounded-2xl h-full transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 peer-checked:[&_.checkmark-box]:bg-indigo-500 peer-checked:[&_.checkmark-box]:border-indigo-500 peer-checked:[&_svg]:opacity-100 shadow-md">
                             <div class="flex flex-col gap-1">
                                 <span class="text-[11px] font-bold text-white uppercase tracking-widest">${addon.label}</span>
                                 <span class="text-[10px] font-black text-indigo-400/80 tracking-widest">${addon.price}</span>
                                 </div>
-                            <div class="w-6 h-6 rounded-lg border border-slate-600 flex items-center justify-center transition-all duration-300 checkmark-box bg-slate-900/50">
+                            <div class="w-6 h-6 rounded-lg border border-slate-600 flex items-center justify-center transition-all duration-300 checkmark-box bg-slate-900/50 flex-shrink-0 ml-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white opacity-0 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                 </div>
                             </div>
@@ -180,7 +180,7 @@ class QuestionnaireApp {
                                 <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                             </div>
                             <span class="block font-black text-white text-[13px] mb-2 uppercase tracking-[0.2em] transition-colors group-hover:text-indigo-400">${color.name}</span>
-                            <div class="space-y-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+                            <div class="space-y-2 transition-all duration-500">
                                 <p class="text-[9px] font-bold text-slate-300 uppercase tracking-widest leading-tight">${color.keywords}</p>
                                 <p class="text-[9px] text-slate-500 leading-relaxed font-medium italic">${color.description || ''}</p>
                             </div>
