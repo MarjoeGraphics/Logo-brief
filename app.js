@@ -51,139 +51,148 @@ class QuestionnaireApp {
     renderDynamicContent() {
         if (!this.config) return;
 
-        // Render Availability Status (Step 1)
-        const statusText = document.getElementById('availability-status-text');
-        const statusIndicator = document.getElementById('availability-status-indicator');
-        if (statusText && this.config.availabilityStatus) {
-            statusText.textContent = this.config.availabilityStatus.text;
-            if (statusIndicator && this.config.availabilityStatus.badgeColor) {
-                // Remove existing bg classes and add new one
-                statusIndicator.className = statusIndicator.className.replace(/bg-\w+-\d+/, this.config.availabilityStatus.badgeColor);
+        try {
+            // Render Step 2: Pricing (PRIORITIZED)
+            const pricingGrid = document.getElementById('pricing-selection-grid');
+            if (pricingGrid && this.config.pricingTiers) {
+                pricingGrid.innerHTML = this.config.pricingTiers.map(tier => `
+                    <label class="cursor-pointer group relative block h-full">
+                        <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" data-id="${tier.id}" class="peer hidden" required>
+                        <div class="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-8 h-full transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 relative overflow-hidden flex flex-col shadow-xl">
+                            ${tier.recommended ? '<div class="absolute top-0 right-0 bg-indigo-500 text-white text-[9px] font-black px-4 py-1.5 rounded-bl-2xl uppercase tracking-[0.2em]">Recommended</div>' : ''}
+                            <div class="mb-6">
+                                <h3 class="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-2">${tier.title}</h3>
+                                <div class="text-3xl font-black text-white tracking-tight">${tier.priceDisplay}</div>
+                            </div>
+
+                            <div class="space-y-3 mb-8">
+                                <div class="flex items-center gap-3 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/80 py-2 px-3 rounded-xl border border-slate-700/50 w-full">
+                                    <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-400"></i>
+                                    ${tier.concepts}
+                                </div>
+                                <div class="flex items-center gap-3 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/80 py-2 px-3 rounded-xl border border-slate-700/50 w-full">
+                                    <i data-lucide="refresh-ccw" class="w-3.5 h-3.5 text-indigo-400"></i>
+                                    ${tier.revisions}
+                                </div>
+                                <div class="flex items-center gap-3 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/80 py-2 px-3 rounded-xl border border-slate-700/50 w-full">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-400"></i>
+                                    ${tier.turnaround}
+                                </div>
+                            </div>
+
+                            <div class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Deliverables</div>
+                            <ul class="space-y-3 flex-grow">
+                                ${(tier.deliverables || []).map(d => `
+                                    <li class="flex items-start gap-3 text-[11px] text-slate-400 leading-relaxed">
+                                        <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-indigo-500 mt-0.5"></i>
+                                        <span>${d}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    </label>
+                `).join('');
+
+                // Render Add-ons for Essential Start
+                const addonsGrid = document.getElementById('addons-grid');
+                const essentialTier = this.config.pricingTiers.find(t => t.id === 'essential');
+                if (addonsGrid && essentialTier && essentialTier.addons) {
+                    addonsGrid.innerHTML = essentialTier.addons.map(addon => `
+                        <label class="cursor-pointer group relative">
+                            <input type="checkbox" name="Essential_Addons[]" value="${addon.label} (${addon.price})" class="peer hidden">
+                        <div class="flex items-center justify-between p-5 bg-slate-800/40 border border-slate-700/50 rounded-2xl transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 peer-checked:[&_.checkmark-box]:bg-indigo-500 peer-checked:[&_.checkmark-box]:border-indigo-500 peer-checked:[&_svg]:opacity-100 shadow-md">
+                            <div class="flex flex-col gap-1">
+                                <span class="text-[11px] font-bold text-white uppercase tracking-widest">${addon.label}</span>
+                                <span class="text-[10px] font-black text-indigo-400/80 tracking-widest">${addon.price}</span>
+                                </div>
+                            <div class="w-6 h-6 rounded-lg border border-slate-600 flex items-center justify-center transition-all duration-300 checkmark-box bg-slate-900/50">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white opacity-0 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                            </div>
+                        </label>
+                    `).join('');
+                }
             }
-        }
+        } catch (e) { console.error("Error rendering Step 2:", e); }
 
-        // Render Step 5: Personality Scales
-        const scalesContainer = document.getElementById('personality-scales-container');
-        if (scalesContainer) {
-            scalesContainer.innerHTML = this.config.personalityScales.map(scale => `
-                <div class="space-y-4 bg-slate-800/30 p-5 rounded-2xl border border-slate-700/30 transition-all hover:bg-slate-800/50">
-                    <div class="flex justify-between text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-2">
-                        <span class="text-indigo-400/70">${scale.left}</span>
-                        <span class="text-indigo-400/70">${scale.right}</span>
-                    </div>
-                    <input type="range" name="${scale.name}" min="1" max="5" step="1" value="3" class="w-full personality-scale" data-left="${scale.left}" data-right="${scale.right}">
-                    <div class="flex justify-between px-1">
-                        ${[1, 2, 3, 4, 5].map(i => `<div class="w-1 h-1 rounded-full bg-slate-700"></div>`).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
+        try {
+            // Render Availability Status (Step 1)
+            const statusText = document.getElementById('availability-status-text');
+            const statusIndicator = document.getElementById('availability-status-indicator');
+            if (statusText && this.config.availabilityStatus) {
+                statusText.textContent = this.config.availabilityStatus.text;
+                if (statusIndicator && this.config.availabilityStatus.badgeColor) {
+                    statusIndicator.className = statusIndicator.className.replace(/bg-\w+-\d+/, this.config.availabilityStatus.badgeColor);
+                }
+            }
+        } catch (e) { console.error("Error rendering Step 1 status:", e); }
 
-        // Render Step 6: Logo Styles
-        const logoGrid = document.getElementById('logo-selection-grid');
-        if (logoGrid) {
-            logoGrid.innerHTML = this.config.logoStyles.map(style => `
-                <label class="cursor-pointer group relative block h-full">
-                    <input type="radio" name="Logo_Style_Preference" value="${style.value}" class="peer hidden">
-                    <div class="h-full bg-slate-800/40 border border-slate-700/50 rounded-2xl overflow-hidden transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 group-hover:bg-slate-800/60 shadow-lg">
-                        <div class="aspect-video w-full overflow-hidden relative">
-                            <img src="${style.image}" alt="${style.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-60"></div>
+        try {
+            // Render Step 6: Personality Scales
+            const scalesContainer = document.getElementById('personality-scales-container');
+            if (scalesContainer && this.config.personalityScales) {
+                scalesContainer.innerHTML = this.config.personalityScales.map(scale => `
+                    <div class="space-y-4 bg-slate-800/30 p-5 rounded-2xl border border-slate-700/30 transition-all hover:bg-slate-800/50">
+                        <div class="flex justify-between text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-2">
+                            <span class="text-indigo-400/70">${scale.left}</span>
+                            <span class="text-indigo-400/70">${scale.right}</span>
                         </div>
-                        <div class="p-4 relative">
-                            <span class="block font-bold text-white text-xs mb-1 uppercase tracking-wider">${style.title}</span>
-                            <p class="text-[10px] text-slate-500 leading-relaxed">${style.description}</p>
+                        <input type="range" name="${scale.name}" min="1" max="5" step="1" value="3" class="w-full personality-scale" data-left="${scale.left}" data-right="${scale.right}">
+                        <div class="flex justify-between px-1">
+                            ${[1, 2, 3, 4, 5].map(i => `<div class="w-1 h-1 rounded-full bg-slate-700"></div>`).join('')}
                         </div>
                     </div>
-                </label>
-            `).join('');
-        }
+                `).join('');
+            }
+        } catch (e) { console.error("Error rendering Step 6 scales:", e); }
 
-        // Render Step 8: Color Psychology
-        const colorGrid = document.getElementById('color-selection-grid');
-        if (colorGrid) {
-            colorGrid.innerHTML = this.config.colorPsychology.map(color => `
-                <label class="cursor-pointer group relative block h-full">
-                    <input type="checkbox" name="Selected_Color_Psychology[]" value="${color.name}" data-keywords="${color.keywords}" class="peer hidden color-checkbox">
-                    <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-5 h-full transition-all duration-500 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 shadow-xl flex flex-col items-center text-center">
-                        <div class="w-full h-20 ${color.colorClass} rounded-2xl mb-4 shadow-inner relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500 ${color.id === 'black' ? 'border border-slate-700' : ''} ${color.id === 'white' ? 'border border-slate-200/10' : ''}">
-                            <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        </div>
-                        <span class="block font-black text-white text-[13px] mb-2 uppercase tracking-[0.2em] transition-colors group-hover:text-indigo-400">${color.name}</span>
-                        <div class="space-y-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                            <p class="text-[9px] font-bold text-slate-300 uppercase tracking-widest leading-tight">${color.keywords}</p>
-                            <p class="text-[9px] text-slate-500 leading-relaxed font-medium italic">${color.description || ''}</p>
-                        </div>
-                    </div>
-                </label>
-            `).join('');
-
-            this.setupColorLogic();
-        }
-
-        // Render Step 2: Pricing
-        const pricingGrid = document.getElementById('pricing-selection-grid');
-        if (pricingGrid) {
-            pricingGrid.innerHTML = this.config.pricingTiers.map(tier => `
-                <label class="cursor-pointer group relative block h-full">
-                    <input type="radio" name="Selected_Investment_Strategy" value="${tier.title}" data-id="${tier.id}" class="peer hidden" required>
-                    <div class="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-8 h-full transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 relative overflow-hidden flex flex-col shadow-xl">
-                        ${tier.recommended ? '<div class="absolute top-0 right-0 bg-indigo-500 text-white text-[9px] font-black px-4 py-1.5 rounded-bl-2xl uppercase tracking-[0.2em]">Recommended</div>' : ''}
-                        <div class="mb-6">
-                            <h3 class="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-2">${tier.title}</h3>
-                            <div class="text-3xl font-black text-white tracking-tight">${tier.priceDisplay}</div>
-                        </div>
-
-                        <div class="space-y-3 mb-8">
-                            <div class="flex items-center gap-3 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/80 py-2 px-3 rounded-xl border border-slate-700/50 w-full">
-                                <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-400"></i>
-                                ${tier.concepts}
+        try {
+            // Render Step 7: Logo Styles
+            const logoGrid = document.getElementById('logo-selection-grid');
+            if (logoGrid && this.config.logoStyles) {
+                logoGrid.innerHTML = this.config.logoStyles.map(style => `
+                    <label class="cursor-pointer group relative block h-full">
+                        <input type="radio" name="Logo_Style_Preference" value="${style.value}" class="peer hidden">
+                        <div class="h-full bg-slate-800/40 border border-slate-700/50 rounded-2xl overflow-hidden transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 group-hover:bg-slate-800/60 shadow-lg">
+                            <div class="aspect-video w-full overflow-hidden relative">
+                                <img src="${style.image}" alt="${style.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-60"></div>
                             </div>
-                            <div class="flex items-center gap-3 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/80 py-2 px-3 rounded-xl border border-slate-700/50 w-full">
-                                <i data-lucide="refresh-ccw" class="w-3.5 h-3.5 text-indigo-400"></i>
-                                ${tier.revisions}
-                            </div>
-                            <div class="flex items-center gap-3 text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-slate-900/80 py-2 px-3 rounded-xl border border-slate-700/50 w-full">
-                                <i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-400"></i>
-                                ${tier.turnaround}
-                            </div>
-                        </div>
-
-                        <div class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Deliverables</div>
-                        <ul class="space-y-3 flex-grow">
-                            ${tier.deliverables.map(d => `
-                                <li class="flex items-start gap-3 text-[11px] text-slate-400 leading-relaxed">
-                                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-indigo-500 mt-0.5"></i>
-                                    <span>${d}</span>
-                                </li>
-                            `).join('')}
-                        </ul>
-                    </div>
-                </label>
-            `).join('');
-
-            // Render Add-ons for Essential Start
-            const addonsGrid = document.getElementById('addons-grid');
-            const essentialTier = this.config.pricingTiers.find(t => t.id === 'essential');
-            if (addonsGrid && essentialTier && essentialTier.addons) {
-                addonsGrid.innerHTML = essentialTier.addons.map(addon => `
-                    <label class="cursor-pointer group relative">
-                        <input type="checkbox" name="Essential_Addons[]" value="${addon.label} (${addon.price})" class="peer hidden">
-                    <div class="flex items-center justify-between p-5 bg-slate-800/40 border border-slate-700/50 rounded-2xl transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 peer-checked:[&_.checkmark-box]:bg-indigo-500 peer-checked:[&_.checkmark-box]:border-indigo-500 peer-checked:[&_svg]:opacity-100 shadow-md">
-                        <div class="flex flex-col gap-1">
-                            <span class="text-[11px] font-bold text-white uppercase tracking-widest">${addon.label}</span>
-                            <span class="text-[10px] font-black text-indigo-400/80 tracking-widest">${addon.price}</span>
-                            </div>
-                        <div class="w-6 h-6 rounded-lg border border-slate-600 flex items-center justify-center transition-all duration-300 checkmark-box bg-slate-900/50">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white opacity-0 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div class="p-4 relative">
+                                <span class="block font-bold text-white text-xs mb-1 uppercase tracking-wider">${style.title}</span>
+                                <p class="text-[10px] text-slate-500 leading-relaxed">${style.description}</p>
                             </div>
                         </div>
                     </label>
                 `).join('');
             }
+        } catch (e) { console.error("Error rendering Step 7 logo styles:", e); }
 
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
+        try {
+            // Render Step 8: Color Psychology
+            const colorGrid = document.getElementById('color-selection-grid');
+            if (colorGrid && this.config.colorPsychology) {
+                colorGrid.innerHTML = this.config.colorPsychology.map(color => `
+                    <label class="cursor-pointer group relative block h-full">
+                        <input type="checkbox" name="Selected_Color_Psychology[]" value="${color.name}" data-keywords="${color.keywords}" class="peer hidden color-checkbox">
+                        <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-5 h-full transition-all duration-500 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 shadow-xl flex flex-col items-center text-center">
+                            <div class="w-full h-20 ${color.colorClass} rounded-2xl mb-4 shadow-inner relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500 ${color.id === 'black' ? 'border border-slate-700' : ''} ${color.id === 'white' ? 'border border-slate-200/10' : ''}">
+                                <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            </div>
+                            <span class="block font-black text-white text-[13px] mb-2 uppercase tracking-[0.2em] transition-colors group-hover:text-indigo-400">${color.name}</span>
+                            <div class="space-y-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+                                <p class="text-[9px] font-bold text-slate-300 uppercase tracking-widest leading-tight">${color.keywords}</p>
+                                <p class="text-[9px] text-slate-500 leading-relaxed font-medium italic">${color.description || ''}</p>
+                            </div>
+                        </div>
+                    </label>
+                `).join('');
+
+                this.setupColorLogic();
+            }
+        } catch (e) { console.error("Error rendering Step 8 colors:", e); }
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     setupColorLogic() {
@@ -476,55 +485,59 @@ class QuestionnaireApp {
         }
 
         // Investment Section
-        const investment = this.calculateTotalInvestment();
-        if (investment) {
-            const packageSelected = formData.get('Selected_Investment_Strategy');
-            const addons = formData.getAll('Essential_Addons[]');
+        try {
+            const investment = this.calculateTotalInvestment();
+            if (investment) {
+                const packageSelected = formData.get('Selected_Investment_Strategy');
+                const addons = formData.getAll('Essential_Addons[]');
 
-            const selectedTierInput = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
-            const tierId = selectedTierInput ? selectedTierInput.dataset.id : null;
-            const tier = this.config.pricingTiers.find(t => t.id === tierId);
+                const selectedTierInput = document.querySelector('input[name="Selected_Investment_Strategy"]:checked');
+                const tierId = selectedTierInput ? selectedTierInput.dataset.id : null;
+                const tier = this.config.pricingTiers.find(t => t.id === tierId);
 
-            const features = [
-                tier.concepts,
-                tier.revisions,
-                tier.turnaround,
-                ...tier.deliverables
-            ];
+                if (tier) {
+                    const features = [
+                        tier.concepts,
+                        tier.revisions,
+                        tier.turnaround,
+                        ...(tier.deliverables || [])
+                    ].filter(Boolean);
 
-            html += `
-                <div class="mb-6">
-                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Investment</h4>
-                    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
-                        <div class="flex justify-between py-2 border-b border-slate-700/30">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Package</span>
-                            <span class="text-xs text-slate-300 text-right">${this.escapeHTML(packageSelected)} (${this.escapeHTML(investment.basePrice)})</span>
+                    html += `
+                        <div class="mb-6 animate-zoom-in">
+                            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400/80 mb-3 ml-1">Investment Strategy</h4>
+                            <div class="bg-slate-800/30 rounded-3xl p-6 border border-slate-700/40 shadow-sm hover:bg-slate-800/50 transition-colors">
+                                <div class="flex justify-between py-3 border-b border-slate-700/20">
+                                    <span class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500">Selected Package</span>
+                                    <span class="text-[11px] text-slate-300 font-bold">${this.escapeHTML(packageSelected)}</span>
+                                </div>
+                                <div class="py-4 border-b border-slate-700/20">
+                                    <span class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500 block mb-3">Package Deliverables</span>
+                                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        ${features.map(d => `
+                                            <li class="flex items-start gap-2 text-[10px] text-slate-400">
+                                                <i data-lucide="check" class="w-3 h-3 text-indigo-500 mt-0.5"></i>
+                                                <span class="leading-tight">${this.escapeHTML(d)}</span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                                ${addons.length > 0 ? `
+                                <div class="flex flex-col py-3 border-b border-slate-700/20">
+                                    <span class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-2">Bespoke Enhancements</span>
+                                    <span class="text-[10px] text-slate-400 leading-relaxed italic">${this.escapeHTML(addons.join(', '))}</span>
+                                </div>
+                                ` : ''}
+                                <div class="flex justify-between py-3 mt-2 bg-indigo-500/5 -mx-6 px-6 rounded-b-3xl">
+                                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-400">Estimated Investment</span>
+                                    <span class="text-sm font-black text-indigo-400" id="selected-price-display">${this.escapeHTML(investment.display)}</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="py-2 border-b border-slate-700/30">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Deliverables</span>
-                            <ul class="space-y-1">
-                                ${features.map(d => `
-                                    <li class="flex items-start gap-2 text-[10px] text-slate-400">
-                                        <i data-lucide="check" class="w-3 h-3 text-indigo-500 mt-0.5"></i>
-                                        <span>${this.escapeHTML(d)}</span>
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        </div>
-                        ${addons.length > 0 ? `
-                        <div class="flex justify-between py-2 border-b border-slate-700/30">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Add-ons</span>
-                            <span class="text-xs text-slate-300 text-right">${this.escapeHTML(addons.join(', '))}</span>
-                        </div>
-                        ` : ''}
-                        <div class="flex justify-between py-2 mt-2 pt-2 bg-indigo-500/5 -mx-3 px-3">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400">Total Investment</span>
-                            <span class="text-xs font-bold text-indigo-400" id="selected-price-display">${this.escapeHTML(investment.display)}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
+                    `;
+                }
+            }
+        } catch (e) { console.error("Error generating investment summary:", e); }
 
         // Add personality scales separately
         const scales = [];
