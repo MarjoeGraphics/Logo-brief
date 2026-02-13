@@ -134,7 +134,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Aggregating into Simple Labels as requested
         const simplifiedData = {
-            "Client Details": `${transformedData['Client_Full_Name']} <${transformedData['Client_Email_Address']}> | Due: ${transformedData['Project_Timeline']}`,
+            "Client Full Name": transformedData['Client_Full_Name'],
+            "Client Email Address": transformedData['Client_Email_Address'],
+            "Project Timeline": transformedData['Project_Timeline'],
             "Investment Details": `${transformedData['Package_Selected'] || 'Not selected'} (Total: ${totalInvestmentDisplay})${transformedData['Selected_Addons'] ? ' | Add-ons: ' + transformedData['Selected_Addons'] : ''}`,
             "Brief Summary": summary,
             "_subject": transformedData['_subject'] || "New Brand Strategy Brief"
