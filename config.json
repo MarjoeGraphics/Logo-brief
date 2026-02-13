@@ -157,7 +157,7 @@
     ],
     "paymentInfo": {
         "number": "09667659307",
-        "name": "Marjoe M. Salto"
+        "name": "Mar*** M. Sa***"
     },
     "pricingTiers": [
         {
@@ -177,18 +177,18 @@
             "recommended": false,
             "addons": [
                 { "id": "flyers", "label": "Flyers (1 to 2 pages)", "price": "₱200" },
-                { "id": "brochure", "label": "Brochure (bifold or trifold)", "price": "₱300" },
-                { "id": "poster", "label": "Poster", "price": "₱300" },
-                { "id": "banner", "label": "Banner (Roll up, Display etc.)", "price": "₱300" },
+                { "id": "brochure", "label": "Brochure (bifold or trifold)", "price": "₱200" },
+                { "id": "poster", "label": "Poster", "price": "₱200" },
+                { "id": "banner", "label": "Banner (Roll up, Display etc.)", "price": "₱200" },
                 { "id": "signage", "label": "Signage", "price": "₱200" },
-                { "id": "menu", "label": "Menu (2 pages)", "price": "₱400" },
+                { "id": "menu", "label": "Menu (2 pages)", "price": "₱500" },
                 { "id": "extra_page", "label": "Extra pricing per page", "price": "₱50" }
             ]
         },
         {
             "id": "professional",
             "title": "Professional Growth",
-            "priceDisplay": "₱4,000 - ₱5,000",
+            "priceDisplay": "₱4,000",
             "priceValue": null,
             "description": "For established freelancers and businesses looking to standardize their look across all platforms.",
             "concepts": "2-3 Distinct Logo Concepts",
