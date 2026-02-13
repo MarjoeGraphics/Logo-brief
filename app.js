@@ -51,6 +51,17 @@ class QuestionnaireApp {
     renderDynamicContent() {
         if (!this.config) return;
 
+        // Render Availability Status (Step 1)
+        const statusText = document.getElementById('availability-status-text');
+        const statusIndicator = document.getElementById('availability-status-indicator');
+        if (statusText && this.config.availabilityStatus) {
+            statusText.textContent = this.config.availabilityStatus.text;
+            if (statusIndicator && this.config.availabilityStatus.badgeColor) {
+                // Remove existing bg classes and add new one
+                statusIndicator.className = statusIndicator.className.replace(/bg-\w+-\d+/, this.config.availabilityStatus.badgeColor);
+            }
+        }
+
         // Render Step 5: Personality Scales
         const scalesContainer = document.getElementById('personality-scales-container');
         if (scalesContainer) {
@@ -88,16 +99,21 @@ class QuestionnaireApp {
             `).join('');
         }
 
-        // Render Step 7: Color Psychology
+        // Render Step 8: Color Psychology
         const colorGrid = document.getElementById('color-selection-grid');
         if (colorGrid) {
             colorGrid.innerHTML = this.config.colorPsychology.map(color => `
-                <label class="cursor-pointer group relative">
+                <label class="cursor-pointer group relative block h-full">
                     <input type="checkbox" name="Selected_Color_Psychology[]" value="${color.name}" data-keywords="${color.keywords}" class="peer hidden color-checkbox">
-                    <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 h-full transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 shadow-lg">
-                        <div class="w-full h-16 ${color.colorClass} rounded-xl mb-4 shadow-inner ${color.id === 'black' ? 'border border-slate-700' : ''} ${color.id === 'white' ? 'border border-slate-200/10' : ''}"></div>
-                        <span class="block font-bold text-white text-[11px] mb-1.5 uppercase tracking-widest text-center">${color.name}</span>
-                        <p class="text-[9px] text-slate-500 leading-tight text-center uppercase tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">${color.keywords.split(',')[0]}</p>
+                    <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-5 h-full transition-all duration-500 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 shadow-xl flex flex-col items-center text-center">
+                        <div class="w-full h-20 ${color.colorClass} rounded-2xl mb-4 shadow-inner relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500 ${color.id === 'black' ? 'border border-slate-700' : ''} ${color.id === 'white' ? 'border border-slate-200/10' : ''}">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                        <span class="block font-black text-white text-[13px] mb-2 uppercase tracking-[0.2em] transition-colors group-hover:text-indigo-400">${color.name}</span>
+                        <div class="space-y-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+                            <p class="text-[9px] font-bold text-slate-300 uppercase tracking-widest leading-tight">${color.keywords}</p>
+                            <p class="text-[9px] text-slate-500 leading-relaxed font-medium italic">${color.description || ''}</p>
+                        </div>
                     </div>
                 </label>
             `).join('');

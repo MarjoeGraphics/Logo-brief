@@ -1,4 +1,8 @@
 {
+    "availabilityStatus": {
+        "text": "Limited Capacity: Accepting only 2 project commissions per month.",
+        "badgeColor": "bg-indigo-500"
+    },
     "logoStyles": [
         {
             "id": "wordmark",
@@ -82,61 +86,71 @@
         {
             "id": "red",
             "name": "Red",
-            "keywords": "Strength, Excitement, Power, Love",
+            "keywords": "Passion, Energy, Urgency, Excitement",
+            "description": "Red is a powerful color that evokes strong emotions and stimulates appetite and heart rate.",
             "colorClass": "bg-red-500"
         },
         {
             "id": "orange",
             "name": "Orange",
-            "keywords": "Safety, Success, Confidence, Bravery",
+            "keywords": "Creativity, Adventure, Enthusiasm, Vitality",
+            "description": "Orange combines the energy of red and the happiness of yellow, representing fun and innovation.",
             "colorClass": "bg-orange-500"
         },
         {
             "id": "yellow",
             "name": "Yellow",
-            "keywords": "Cheer, Happiness, Creativity, Warmth",
+            "keywords": "Optimism, Happiness, Intellect, Clarity",
+            "description": "Yellow is the most visible color from a distance and communicates cheerfulness and mental clarity.",
             "colorClass": "bg-yellow-400"
         },
         {
             "id": "green",
             "name": "Green",
-            "keywords": "Nature, Healing, Freshness, Quality",
+            "keywords": "Growth, Harmony, Freshness, Safety",
+            "description": "Green is universally associated with nature and health, conveying peace and sustainability.",
             "colorClass": "bg-emerald-500"
         },
         {
             "id": "blue",
             "name": "Blue",
-            "keywords": "Trust, Peace, Competence, Loyalty",
+            "keywords": "Trust, Stability, Intelligence, Peace",
+            "description": "Blue is a preferred color for corporate brands as it fosters a sense of security and reliability.",
             "colorClass": "bg-blue-500"
         },
         {
             "id": "pink",
             "name": "Pink",
-            "keywords": "Sweet, Compassion, Sincerity, Sophistication",
+            "keywords": "Compassion, Sincerity, Sophistication, Playful",
+            "description": "Pink is often seen as feminine and nurturing, but also modern and sophisticated in luxury markets.",
             "colorClass": "bg-pink-400"
         },
         {
             "id": "purple",
             "name": "Purple",
-            "keywords": "Spiritual, Royalty, Modern, Luxury",
+            "keywords": "Luxury, Mystery, Spiritual, Creativity",
+            "description": "Historically associated with royalty, purple represents wisdom, wealth, and high-end imagination.",
             "colorClass": "bg-purple-600"
         },
         {
             "id": "brown",
             "name": "Brown",
-            "keywords": "Trust, Rugged, Simple, Dependable",
+            "keywords": "Reliability, Stability, Natural, Honest",
+            "description": "Brown is an earthy color that suggests wholesomeness, dependability, and traditional values.",
             "colorClass": "bg-amber-900"
         },
         {
             "id": "black",
             "name": "Black",
-            "keywords": "Formality, Dramatic, Sophistication, Security",
+            "keywords": "Sophistication, Power, Elegance, Authority",
+            "description": "Black is timeless and bold, often used by high-end brands to convey status and professional strength.",
             "colorClass": "bg-black"
         },
         {
             "id": "white",
             "name": "White",
-            "keywords": "Clean, Simplicity, Innocence, Honest",
+            "keywords": "Simplicity, Purity, Purity, Clarity",
+            "description": "White represents a clean slate, transparency, and minimalism, ideal for modern and honest brands.",
             "colorClass": "bg-white",
             "textClass": "text-slate-900"
         }
