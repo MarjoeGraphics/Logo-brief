@@ -1,0 +1,207 @@
+{
+    "logoStyles": [
+        {
+            "id": "wordmark",
+            "title": "Wordmark (Logotype)",
+            "description": "Focuses on a company's name using custom typography.",
+            "value": "Wordmark",
+            "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=400&auto=format&fit=crop"
+        },
+        {
+            "id": "brandmarks",
+            "title": "Brand Marks",
+            "description": "A symbol or icon-based logo (Pictorial mark).",
+            "value": "Brand Marks",
+            "image": "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=400&auto=format&fit=crop"
+        },
+        {
+            "id": "combination",
+            "title": "Combination Mark",
+            "description": "A mix of a wordmark and a symbol.",
+            "value": "Combination Mark",
+            "image": "https://images.unsplash.com/photo-1583321500900-82807e458f3c?q=80&w=400&auto=format&fit=crop"
+        },
+        {
+            "id": "lettermark",
+            "title": "Lettermark (Monograms)",
+            "description": "A typography-based logo using brand initials.",
+            "value": "Lettermark",
+            "image": "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=400&auto=format&fit=crop"
+        },
+        {
+            "id": "abstract",
+            "title": "Abstract Logo Mark",
+            "description": "Uses geometric and conceptual symbols.",
+            "value": "Abstract Logo Mark",
+            "image": "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=400&auto=format&fit=crop"
+        },
+        {
+            "id": "emblem",
+            "title": "Emblem Logos",
+            "description": "Font inside a symbol, badge, or seal.",
+            "value": "Emblem Logos",
+            "image": "https://images.unsplash.com/photo-1599305090598-fe179d501c27?q=80&w=400&auto=format&fit=crop"
+        },
+        {
+            "id": "letterforms",
+            "title": "Letterforms",
+            "description": "Minimalist, single-letter icons.",
+            "value": "Letterforms",
+            "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=400&auto=format&fit=crop"
+        },
+        {
+            "id": "mascots",
+            "title": "Mascots",
+            "description": "Character-based designs representing the brand.",
+            "value": "Mascots",
+            "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=400&auto=format&fit=crop"
+        },
+        {
+            "id": "dynamic",
+            "title": "Dynamic Mark",
+            "description": "An adaptable logo that can change colors or patterns.",
+            "value": "Dynamic Mark",
+            "image": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=400&auto=format&fit=crop"
+        }
+    ],
+    "personalityScales": [
+        { "id": "greyscale_colorful", "left": "Greyscale", "right": "Colorful", "name": "Personality_Scale_Greyscale_vs_Colorful" },
+        { "id": "authoritative_friendly", "left": "Authoritative", "right": "Friendly", "name": "Personality_Scale_Authoritative_vs_Friendly" },
+        { "id": "minimalistic_complex", "left": "Minimalistic", "right": "Complex", "name": "Personality_Scale_Minimalistic_vs_Complex" },
+        { "id": "conservative_nonconventional", "left": "Conservative", "right": "Nonconventional", "name": "Personality_Scale_Conservative_vs_Nonconventional" },
+        { "id": "masculine_feminine", "left": "Masculine", "right": "Feminine", "name": "Personality_Scale_Masculine_vs_Feminine" },
+        { "id": "professional_casual", "left": "Professional", "right": "Casual", "name": "Personality_Scale_Professional_vs_Casual" },
+        { "id": "luxurious_natural", "left": "Luxurious", "right": "Natural", "name": "Personality_Scale_Luxurious_vs_Natural" },
+        { "id": "serious_fun", "left": "Serious", "right": "Fun", "name": "Personality_Scale_Serious_vs_Fun" },
+        { "id": "classic_modern", "left": "Classic", "right": "Modern", "name": "Personality_Scale_Classic_vs_Modern" },
+        { "id": "retro_futuristic", "left": "Retro", "right": "Futuristic", "name": "Personality_Scale_Retro_vs_Futuristic" },
+        { "id": "elegant_sporty", "left": "Elegant", "right": "Sporty", "name": "Personality_Scale_Elegant_vs_Sporty" },
+        { "id": "safe_extreme", "left": "Safe", "right": "Extreme", "name": "Personality_Scale_Safe_vs_Extreme" }
+    ],
+    "colorPsychology": [
+        {
+            "id": "red",
+            "name": "Red",
+            "keywords": "Strength, Excitement, Power, Love",
+            "colorClass": "bg-red-500"
+        },
+        {
+            "id": "orange",
+            "name": "Orange",
+            "keywords": "Safety, Success, Confidence, Bravery",
+            "colorClass": "bg-orange-500"
+        },
+        {
+            "id": "yellow",
+            "name": "Yellow",
+            "keywords": "Cheer, Happiness, Creativity, Warmth",
+            "colorClass": "bg-yellow-400"
+        },
+        {
+            "id": "green",
+            "name": "Green",
+            "keywords": "Nature, Healing, Freshness, Quality",
+            "colorClass": "bg-emerald-500"
+        },
+        {
+            "id": "blue",
+            "name": "Blue",
+            "keywords": "Trust, Peace, Competence, Loyalty",
+            "colorClass": "bg-blue-500"
+        },
+        {
+            "id": "pink",
+            "name": "Pink",
+            "keywords": "Sweet, Compassion, Sincerity, Sophistication",
+            "colorClass": "bg-pink-400"
+        },
+        {
+            "id": "purple",
+            "name": "Purple",
+            "keywords": "Spiritual, Royalty, Modern, Luxury",
+            "colorClass": "bg-purple-600"
+        },
+        {
+            "id": "brown",
+            "name": "Brown",
+            "keywords": "Trust, Rugged, Simple, Dependable",
+            "colorClass": "bg-amber-900"
+        },
+        {
+            "id": "black",
+            "name": "Black",
+            "keywords": "Formality, Dramatic, Sophistication, Security",
+            "colorClass": "bg-black"
+        },
+        {
+            "id": "white",
+            "name": "White",
+            "keywords": "Clean, Simplicity, Innocence, Honest",
+            "colorClass": "bg-white",
+            "textClass": "text-slate-900"
+        }
+    ],
+    "paymentInfo": {
+        "number": "09667659307",
+        "name": "Marjoe M. Salto"
+    },
+    "pricingTiers": [
+        {
+            "id": "essential",
+            "title": "Essential Start",
+            "priceDisplay": "₱1,000",
+            "priceValue": 1000,
+            "description": "Designed for startups and side-hustles needing a professional face without the heavy overhead.",
+            "concepts": "1 Original Logo Concept",
+            "revisions": "4 Revision Rounds",
+            "turnaround": "1-Week Turnaround",
+            "deliverables": [
+                "High-Resolution Files: JPG, PNG, SVG, and PDF.",
+                "1 Realistic 3D Mockup.",
+                "Social Media Profile and Cover Photo."
+            ],
+            "recommended": false,
+            "addons": [
+                { "id": "flyers", "label": "Flyers (1 to 2 pages)", "price": "₱200" },
+                { "id": "brochure", "label": "Brochure (bifold or trifold)", "price": "₱300" },
+                { "id": "poster", "label": "Poster", "price": "₱300" },
+                { "id": "banner", "label": "Banner (Roll up, Display etc.)", "price": "₱300" },
+                { "id": "signage", "label": "Signage", "price": "₱200" },
+                { "id": "menu", "label": "Menu (2 pages)", "price": "₱400" },
+                { "id": "extra_page", "label": "Extra pricing per page", "price": "₱50" }
+            ]
+        },
+        {
+            "id": "professional",
+            "title": "Professional Growth",
+            "priceDisplay": "₱4,000 - ₱5,000",
+            "priceValue": null,
+            "description": "For established freelancers and businesses looking to standardize their look across all platforms.",
+            "concepts": "2-3 Distinct Logo Concepts",
+            "revisions": "8 Revision Rounds",
+            "turnaround": "2-Week Turnaround",
+            "deliverables": [
+                "Full Master File Access (AI/EPS).",
+                "Brand Color Palette & Typography.",
+                "2 Realistic 3D Mockups."
+            ],
+            "recommended": true
+        },
+        {
+            "id": "enterprise",
+            "title": "Business Scale",
+            "priceDisplay": "₱10,000+",
+            "priceValue": null,
+            "description": "A comprehensive branding solution for companies ready to dominate their market.",
+            "concepts": "Premium Logo Suite: Primary, Secondary, and Sub-marks.",
+            "revisions": "Priority Support & Extended Revisions",
+            "turnaround": "3-4 Week Turnaround",
+            "deliverables": [
+                "Social Media Kit: profile pictures and banner templates.",
+                "Brand Style Guide: A PDF manual on usage.",
+                "Full Commercial Rights Transfer."
+            ],
+            "recommended": false
+        }
+    ]
+}
