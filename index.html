@@ -33,19 +33,22 @@
     <div class="max-w-3xl w-full bg-slate-800/40 border border-slate-700/50 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-md">
 
         <!-- Header & Progress Bar -->
-        <div class="pt-8 px-8 pb-4">
-            <div class="flex justify-between items-center mb-6">
-                <div class="flex items-center gap-2">
-                    <div class="bg-indigo-500 p-1.5 rounded-lg">
-                        <i data-lucide="sparkles" class="text-white w-5 h-5"></i>
+        <div class="pt-10 px-10 pb-4">
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="bg-indigo-500/10 p-2.5 rounded-2xl border border-indigo-500/20">
+                        <i data-lucide="compass" class="text-indigo-400 w-5 h-5"></i>
                     </div>
-                    <span class="text-xl font-bold tracking-tight text-white">Logo Questioner</span>
+                    <div>
+                        <span class="text-xl font-black tracking-tight text-white block leading-none">Strategic Brief</span>
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mt-1 block">Premium Design Inquiry</span>
+                    </div>
                 </div>
-                <div class="text-xs font-semibold tracking-widest uppercase text-slate-500" id="step-indicator">Step 1 of 9</div>
+                <div class="text-xs font-bold tracking-[0.2em] uppercase text-slate-600" id="step-indicator">Step 1 of 9</div>
             </div>
 
-            <div class="w-full bg-slate-700/50 h-1 rounded-full overflow-hidden">
-                <div id="progress-bar" class="bg-indigo-500 h-full w-[11.1%] transition-all duration-700 ease-in-out"></div>
+            <div class="w-full bg-slate-800/50 h-1.5 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-500 h-full w-[11.1%] transition-all duration-1000 ease-in-out"></div>
             </div>
         </div>
 
@@ -56,180 +59,239 @@
 
             <div id="steps-wrapper" class="relative min-h-[480px]">
 
-                <!-- Step 1: Let's Get Started -->
+                <!-- Step 1: Brand foundations -->
                 <div id="step-1" class="step-content">
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-white mb-2">Let's Get Started</h2>
-                        <p class="text-slate-400">Establish the foundation for our collaboration.</p>
-                    </div>
-                    <div class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-slate-300 mb-2">Full Name</label>
-                                <input type="text" name="Client_Full_Name" id="full_name" required placeholder="John Doe" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
-                                <input type="email" name="Client_Email_Address" id="email" required placeholder="john@company.com" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
+                    <div class="mb-10">
+                        <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Brand Foundations</h2>
+                        <div class="space-y-4">
+                            <p class="text-slate-400 leading-relaxed text-sm">
+                                This strategic inquiry is the first stage of our high-level design process. By defining your vision and goals now, we ensure that every design decision is backed by purpose and aimed at premium outcomes.
+                            </p>
+                            <div class="inline-flex items-center gap-3 bg-slate-900/50 py-2.5 px-4 rounded-xl border border-slate-700/30">
+                                <div class="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+                                <p class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">
+                                    Limited Capacity: Accepting only 2 project commissions per month.
+                                </p>
                             </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Due Date</label>
-                            <input type="date" name="Project_Timeline" id="timeline" required class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white transition-all focus:bg-slate-700/50 [color-scheme:dark]">
+                    </div>
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Full Name</label>
+                                <input type="text" name="Client_Full_Name" id="full_name" required placeholder="John Doe" class="w-full">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Email Address</label>
+                                <input type="email" name="Client_Email_Address" id="email" required placeholder="john@company.com" class="w-full">
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-end">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Desired Launch Date</label>
+                                <span class="text-[10px] text-slate-500 italic">When do you need the brand to be live?</span>
+                            </div>
+                            <input type="date" name="Project_Timeline" id="timeline" required class="w-full [color-scheme:dark]">
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 2: Background Information -->
+                <!-- Step 2: Investment Strategy -->
                 <div id="step-2" class="step-content hidden">
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-white mb-2">Background Information</h2>
-                        <p class="text-slate-400">Tell us about your business and its core.</p>
-                    </div>
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Business/Organization Name</label>
-                            <input type="text" name="Business_Organization_Name" placeholder="Acme Inc." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Products and Services</label>
-                            <textarea name="Products_and_Services" rows="2" placeholder="What do you sell or provide?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Business Value Proposition</label>
-                            <textarea name="Business_Value_Proposition" rows="2" placeholder="What makes you unique?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Ideal Customers</label>
-                            <input type="text" name="Target_Audience" placeholder="Who is your target audience?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 3: Brand Presentation -->
-                <div id="step-3" class="step-content hidden">
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-white mb-2">Brand Presentation</h2>
-                        <p class="text-slate-400">Defining your brand's public image.</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">How do you want your brand to be perceived by your audience?</label>
-                        <textarea name="Audience_Perception_Goal" rows="8" placeholder="e.g., Innovative, trustworthy, approachable..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
-                    </div>
-                </div>
-
-                <!-- Step 4: Brand Identity -->
-                <div id="step-4" class="step-content hidden">
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-white mb-2">Brand Identity</h2>
-                        <p class="text-slate-400">The soul and purpose of your brand.</p>
-                    </div>
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Core Values</label>
-                            <textarea name="Brand_Core_Values" rows="4" placeholder="What principles guide your business?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Mission Statement</label>
-                            <textarea name="Brand_Mission_Statement" rows="4" placeholder="Your brand's primary objective..." class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 5: Brand Personality (Inputs updated dynamically in app.js or kept for reference) -->
-                <div id="step-5" class="step-content hidden">
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-white mb-2">Brand Personality</h2>
-                        <p class="text-slate-400">Fine-tune your brand's character with visual scales.</p>
-                    </div>
-                    <div id="personality-scales-container" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
-                        <!-- Rendered dynamically from config.json in app.js -->
-                    </div>
-                </div>
-
-                <!-- Step 6: Logo Style & Direction (Dynamic) -->
-                <div id="step-6" class="step-content hidden">
-                    <div class="mb-6">
-                        <h2 class="text-2xl font-bold text-white mb-2">Logo Style & Direction</h2>
-                        <p class="text-slate-400">Select the visual directions that appeal to you.</p>
-                    </div>
-                    <div id="logo-selection-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-                        <!-- Rendered dynamically from config.json -->
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <textarea name="New_Logo_Ideas" rows="2" placeholder="Idea for new logo?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
-                        <textarea name="Must_Include_Elements" rows="2" placeholder="Elements to include?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
-                        <textarea name="Visual_Preferences_Constraints" rows="2" placeholder="Visual preferences or constraints?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
-                        <textarea name="Current_Brand_Assets_References" rows="2" placeholder="Current brand assets or references?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-2 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none text-sm"></textarea>
-                    </div>
-                    <input type="text" name="Brand_Tagline_Slogan" placeholder="What tagline or slogan represents your brand?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50">
-                </div>
-
-                <!-- Step 7: Brand Color Psychology (Dynamic) -->
-                <div id="step-7" class="step-content hidden">
-                    <div class="mb-6">
-                        <div class="flex justify-between items-end">
-                            <div>
-                                <h2 class="text-2xl font-bold text-white mb-2">Brand Color Psychology</h2>
-                                <p class="text-slate-400">Select 2 to 4 colors that resonate.</p>
-                            </div>
-                            <div class="text-xs font-bold text-indigo-400 mb-1" id="color-count">0 / 4 selected</div>
-                        </div>
-                    </div>
-                    <div id="color-selection-grid" class="grid grid-cols-2 md:grid-cols-5 gap-3">
-                        <!-- Rendered dynamically from config.json -->
-                    </div>
-                </div>
-
-                <!-- Step 8: Investment Strategy (Pricing) -->
-                <div id="step-8" class="step-content hidden">
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-white mb-2">Investment Strategy</h2>
-                        <p class="text-slate-400">Select a pricing tier that aligns with your goals.</p>
+                    <div class="mb-10">
+                        <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Investment Strategy</h2>
+                        <p class="text-slate-400 leading-relaxed text-sm">
+                            Selecting the right investment level ensures we allocate the proper resources and strategic depth to your project.
+                        </p>
                     </div>
                     <div id="pricing-selection-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Rendered dynamically from config.json -->
                     </div>
 
-                    <!-- Step 8 Add-ons (Visible for Essential Start) -->
+                    <!-- Add-ons (Visible for Essential Start) -->
                     <div id="essential-addons-container" class="mt-8 hidden space-y-4">
-                        <h4 class="text-sm font-bold text-indigo-400 uppercase tracking-widest">Optional Add-ons</h4>
+                        <h4 class="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em]">Bespoke Enhancements</h4>
                         <div id="addons-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <!-- Dynamic Add-ons -->
                         </div>
                     </div>
-
                 </div>
 
-                <!-- Step 9: Review & Submit -->
+                <!-- Step 3: Business Profile -->
+                <div id="step-3" class="step-content hidden">
+                    <div class="mb-10">
+                        <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Business Profile</h2>
+                        <p class="text-slate-400 leading-relaxed text-sm">Help us understand the landscape your brand operates within.</p>
+                    </div>
+                    <div class="space-y-8">
+                        <div>
+                            <div class="flex justify-between items-end mb-3">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Entity Name</label>
+                                <span class="text-[10px] text-slate-500 italic">Legal or trading name</span>
+                            </div>
+                            <input type="text" name="Business_Organization_Name" placeholder="Acme Studio Co." class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl px-5 py-4 text-white placeholder-slate-600 transition-all focus:bg-slate-800 focus:border-indigo-500/50 shadow-inner">
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-end mb-3">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Core Offerings</label>
+                                <span class="text-[10px] text-slate-500 italic">What value do you provide?</span>
+                            </div>
+                            <textarea name="Products_and_Services" rows="2" placeholder="Describe your primary products or services..." class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl px-5 py-4 text-white placeholder-slate-600 transition-all focus:bg-slate-800 focus:border-indigo-500/50 shadow-inner resize-none"></textarea>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-end mb-3">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Unique Proposition</label>
+                                <span class="text-[10px] text-slate-500 italic">Why choose you over others?</span>
+                            </div>
+                            <textarea name="Business_Value_Proposition" rows="2" placeholder="e.g. We provide sustainable luxury for modern explorers." class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl px-5 py-4 text-white placeholder-slate-600 transition-all focus:bg-slate-800 focus:border-indigo-500/50 shadow-inner resize-none"></textarea>
+                            <p class="text-[9px] text-slate-500 mt-2 ml-1 italic">Strategist's Tip: Focus on the specific problem you solve for your customers.</p>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-end mb-3">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Target Demographic</label>
+                                <span class="text-[10px] text-slate-500 italic">Who are we speaking to?</span>
+                            </div>
+                            <input type="text" name="Target_Audience" placeholder="e.g. Eco-conscious professionals, ages 25-40." class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl px-5 py-4 text-white placeholder-slate-600 transition-all focus:bg-slate-800 focus:border-indigo-500/50 shadow-inner">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Brand Vision -->
+                <div id="step-4" class="step-content hidden">
+                    <div class="mb-10">
+                        <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Brand Vision</h2>
+                        <p class="text-slate-400 leading-relaxed text-sm">Defining the emotional and psychological impact of your brand.</p>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-end mb-3">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Audience Perception</label>
+                            <span class="text-[10px] text-slate-500 italic">Emotional response goal</span>
+                        </div>
+                        <textarea name="Audience_Perception_Goal" rows="6" placeholder="How should someone feel when they interact with your brand? (e.g., Inspired, secure, adventurous...)" class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl px-5 py-4 text-white placeholder-slate-600 transition-all focus:bg-slate-800 focus:border-indigo-500/50 shadow-inner resize-none"></textarea>
+                        <p class="text-[9px] text-slate-500 mt-3 ml-1 italic">Note: High-end brands often aim for "Exclusivity" or "Timelessness".</p>
+                    </div>
+                </div>
+
+                <!-- Step 5: Brand Identity -->
+                <div id="step-5" class="step-content hidden">
+                    <div class="mb-10">
+                        <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Brand Identity</h2>
+                        <p class="text-slate-400 leading-relaxed text-sm">The internal compass that guides your brand's growth.</p>
+                    </div>
+                    <div class="space-y-8">
+                        <div>
+                            <div class="flex justify-between items-end mb-3">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Core Values</label>
+                                <span class="text-[10px] text-slate-500 italic">e.g. Integrity, Innovation, Craftsmanship</span>
+                            </div>
+                            <textarea name="Brand_Core_Values" rows="3" placeholder="What principles will never be compromised?" class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl px-5 py-4 text-white placeholder-slate-600 transition-all focus:bg-slate-800 focus:border-indigo-500/50 shadow-inner resize-none"></textarea>
+                            <p class="text-[9px] text-slate-500 mt-2 ml-1 italic">Strategist's Tip: List 3-5 values that define your business ethics.</p>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-end mb-3">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Mission Statement</label>
+                                <span class="text-[10px] text-slate-500 italic">Your brand's primary objective</span>
+                            </div>
+                            <textarea name="Brand_Mission_Statement" rows="3" placeholder="What is the ultimate goal you are striving to achieve?" class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl px-5 py-4 text-white placeholder-slate-600 transition-all focus:bg-slate-800 focus:border-indigo-500/50 shadow-inner resize-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: Brand Personality -->
+                <div id="step-6" class="step-content hidden">
+                    <div class="mb-10">
+                        <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Brand Personality</h2>
+                        <p class="text-slate-400 leading-relaxed text-sm">Fine-tune the character and tone of your visual identity.</p>
+                    </div>
+                    <div id="personality-scales-container" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+                        <!-- Rendered dynamically from config.json in app.js -->
+                    </div>
+                </div>
+
+                <!-- Step 7: Logo Style & Direction -->
+                <div id="step-7" class="step-content hidden">
+                    <div class="mb-10">
+                        <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Logo Style & Direction</h2>
+                        <p class="text-slate-400 leading-relaxed text-sm">Select the visual aesthetic that best represents your premium positioning.</p>
+                    </div>
+                    <div id="logo-selection-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+                        <!-- Rendered dynamically from config.json -->
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Conceptual Ideas</label>
+                            <textarea name="New_Logo_Ideas" rows="2" placeholder="Any specific visual concepts?" class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl px-4 py-3 text-white placeholder-slate-600 transition-all focus:bg-slate-800 focus:border-indigo-500/50 text-sm resize-none"></textarea>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Must-Have Elements</label>
+                            <textarea name="Must_Include_Elements" rows="2" placeholder="Symbols or icons to include?" class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl px-4 py-3 text-white placeholder-slate-600 transition-all focus:bg-slate-800 focus:border-indigo-500/50 text-sm resize-none"></textarea>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Brand Tagline</label>
+                        <input type="text" name="Brand_Tagline_Slogan" placeholder="e.g. Pure Performance. Unmatched Elegance." class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl px-5 py-4 text-white placeholder-slate-600 transition-all focus:bg-slate-800 focus:border-indigo-500/50">
+                    </div>
+                </div>
+
+                <!-- Step 8: Brand Color Psychology -->
+                <div id="step-8" class="step-content hidden">
+                    <div class="mb-10">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Color Psychology</h2>
+                                <p class="text-slate-400 leading-relaxed text-sm">Choose a palette that communicates your brand's unique character.</p>
+                            </div>
+                            <div class="text-[10px] font-black text-indigo-400 mb-4 uppercase tracking-[0.2em]" id="color-count">0 / 4 Selected</div>
+                        </div>
+                    </div>
+                    <div id="color-selection-grid" class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <!-- Rendered dynamically from config.json -->
+                    </div>
+                </div>
+
+                <!-- Step 9: Finalization -->
                 <div id="step-9" class="step-content hidden">
-                    <div class="mb-6">
-                        <h2 class="text-2xl font-bold text-white mb-2">Review & Submit</h2>
-                        <p class="text-slate-400">Please review your information before submitting.</p>
+                    <div class="mb-10">
+                        <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Review & Submit</h2>
+                        <p class="text-slate-400 leading-relaxed text-sm">Please review your strategic information. Once submitted, our team will analyze your brief to ensure project compatibility.</p>
                     </div>
 
-                    <div id="review-summary" class="space-y-4 mb-6 bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
-                        <!-- Filled dynamically in app.js -->
+                    <div id="review-summary-container" class="max-h-[400px] overflow-y-auto pr-4 custom-scrollbar mb-10">
+                        <div id="review-summary" class="space-y-6">
+                            <!-- Filled dynamically in app.js -->
+                        </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Additional Notes (Optional)</label>
-                        <textarea name="Additional_Notes_Comments" id="final-notes" rows="3" placeholder="Anything else we should know?" class="w-full bg-slate-700/30 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-500 transition-all focus:bg-slate-700/50 resize-none"></textarea>
+                    <div class="space-y-6">
+                        <div class="space-y-3">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Additional Notes (Optional)</label>
+                            <textarea name="Additional_Notes_Comments" id="final-notes" rows="3" placeholder="Anything else we should know before we review your brief?" class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl px-5 py-4 text-white placeholder-slate-600 transition-all focus:bg-slate-800 focus:border-indigo-500/50 shadow-inner resize-none"></textarea>
+                        </div>
+                        <div class="bg-indigo-500/5 border border-indigo-500/20 rounded-2xl p-6">
+                            <div class="flex items-start gap-4">
+                                <div class="mt-1">
+                                    <input type="checkbox" id="confirm-review" required class="w-5 h-5 rounded-lg border-slate-600 bg-slate-800 text-indigo-500 focus:ring-indigo-500/50 cursor-pointer">
+                                </div>
+                                <label for="confirm-review" class="text-xs text-slate-300 leading-relaxed cursor-pointer">
+                                    I have reviewed the strategic brief and confirm that the information provided is accurate and representative of my brand vision.
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
             </div>
 
             <!-- Navigation Buttons -->
-            <div class="flex justify-between items-center mt-8 pt-6 border-t border-slate-700/50">
-                <button type="button" id="prev-btn" class="hidden px-6 py-2.5 rounded-xl font-medium text-slate-400 hover:text-white hover:bg-slate-700/50 transition-all flex items-center gap-2">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+            <div class="flex justify-between items-center mt-12 pt-8 border-t border-slate-800/60">
+                <button type="button" id="prev-btn" class="hidden px-6 py-3 rounded-2xl font-bold text-[11px] uppercase tracking-widest text-slate-500 hover:text-white hover:bg-slate-800 transition-all flex items-center gap-2">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i> Back
                 </button>
                 <div class="flex-1"></div>
-                <button type="button" id="next-btn" class="px-8 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/20 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                <button type="button" id="next-btn" class="px-8 py-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded-2xl font-bold text-[11px] uppercase tracking-[0.2em] shadow-xl shadow-indigo-500/20 transition-all flex items-center gap-3 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed">
                     Next Step <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
-                <button type="submit" id="submit-btn" class="hidden px-8 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/20 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                <button type="submit" id="submit-btn" class="hidden px-8 py-4 bg-white hover:bg-indigo-50 text-slate-900 rounded-2xl font-bold text-[11px] uppercase tracking-[0.2em] shadow-xl transition-all flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed">
                     Submit Brief <i data-lucide="send" class="w-4 h-4"></i>
                 </button>
             </div>
