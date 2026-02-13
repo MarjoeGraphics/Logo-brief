@@ -35,7 +35,12 @@ Update the `paymentInfo` section to ensure the generated QR code directs to your
 
 ## 🚀 Technical Features
 - **EMVCo QR Ph**: Automatically generates a dynamic GCash QR code for a 50% downpayment based on the selected package and add-ons.
-- **Aggregated Submissions**: Formspree payloads are cleaned to remove technical redundancy, sending you a concise summary of the client's strategy.
+- **Structured Submissions**: Formspree payloads are formatted for clarity, providing separate, readable fields in your inbox:
+    - **Client Full Name**: Extracted from Step 1.
+    - **Client Email Address**: Extracted from Step 1.
+    - **Project Timeline**: The requested due date.
+    - **Investment Details**: A combined string of the selected package, total cost, and any add-ons.
+    - **Brief Summary**: A full, human-readable breakdown of the entire strategy brief.
 - **Responsive Design**: Built with Tailwind CSS, optimized for both desktop and mobile high-end experiences.
 
 ## 📦 Deployment
