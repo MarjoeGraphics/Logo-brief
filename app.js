@@ -35,6 +35,7 @@ class QuestionnaireApp {
     async init() {
         await this.loadConfig();
         this.renderDynamicContent();
+        this.renderStepNav();
         this.setupEventListeners();
         this.updateStepUI();
     }
@@ -46,6 +47,39 @@ class QuestionnaireApp {
         } catch (error) {
             console.error('Failed to load config:', error);
         }
+    }
+
+    renderStepNav() {
+        const navContainer = document.getElementById('step-nav');
+        if (!navContainer) return;
+
+        navContainer.innerHTML = Array.from({ length: this.totalSteps }, (_, i) => i + 1).map(step => `
+            <button type="button" data-step="${step}" class="step-nav-item flex-1 min-w-[40px] py-2 rounded-xl text-[10px] font-black transition-all border border-slate-700/50 bg-slate-800/40 text-slate-500 hover:text-white hover:border-slate-500">
+                ${step}
+            </button>
+        `).join('');
+
+        navContainer.querySelectorAll('.step-nav-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetStep = parseInt(btn.dataset.step);
+                this.goToStep(targetStep);
+            });
+        });
+    }
+
+    goToStep(targetStep) {
+        if (targetStep === this.currentStep) return;
+
+        const currentStepEl = document.getElementById(`step-${this.currentStep}`);
+        const direction = targetStep > this.currentStep ? 1 : -1;
+        const animationClass = direction > 0 ? 'slide-out-left' : 'slide-out-right';
+
+        currentStepEl.classList.add(animationClass);
+
+        setTimeout(() => {
+            this.currentStep = targetStep;
+            this.updateStepUI();
+        }, 400);
     }
 
     renderDynamicContent() {
@@ -165,6 +199,20 @@ class QuestionnaireApp {
                         </div>
                     </label>
                 `).join('');
+
+                // Add recommended dimensions note if not already present
+                if (this.config.imageSpecs && !document.getElementById('image-specs-note')) {
+                    const note = document.createElement('div');
+                    note.id = 'image-specs-note';
+                    note.className = 'mt-6 flex items-center justify-center gap-2 bg-indigo-500/5 py-2.5 px-4 rounded-xl border border-indigo-500/10 animate-zoom-in';
+                    note.innerHTML = `
+                        <i data-lucide="info" class="w-3.5 h-3.5 text-indigo-400"></i>
+                        <p class="text-[9px] font-bold text-indigo-400/80 uppercase tracking-widest leading-none">
+                            Recommended Asset Size: ${this.config.imageSpecs.dimensions} (${this.config.imageSpecs.ratio})
+                        </p>
+                    `;
+                    logoGrid.after(note);
+                }
             }
         } catch (e) { console.error("Error rendering Step 7 logo styles:", e); }
 
@@ -324,6 +372,18 @@ class QuestionnaireApp {
         const progress = (this.currentStep / this.totalSteps) * 100;
         this.progressBar.style.width = `${progress}%`;
         this.stepIndicator.textContent = `Step ${this.currentStep} of ${this.totalSteps}`;
+
+        // Update Nav State
+        document.querySelectorAll('.step-nav-item').forEach(btn => {
+            const stepNum = parseInt(btn.dataset.step);
+            if (stepNum === this.currentStep) {
+                btn.classList.add('bg-indigo-500', 'border-indigo-400', 'text-white', 'shadow-lg', 'shadow-indigo-500/20');
+                btn.classList.remove('bg-slate-800/40', 'border-slate-700/50', 'text-slate-500');
+            } else {
+                btn.classList.remove('bg-indigo-500', 'border-indigo-400', 'text-white', 'shadow-lg', 'shadow-indigo-500/20');
+                btn.classList.add('bg-slate-800/40', 'border-slate-700/50', 'text-slate-500');
+            }
+        });
 
         this.prevBtn.classList.toggle('hidden', this.currentStep === 1);
 
