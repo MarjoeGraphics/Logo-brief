@@ -3,11 +3,6 @@
         "text": "Limited Capacity: Accepting only 2 project commissions per month.",
         "badgeColor": "bg-indigo-500"
     },
-    "imageSpecs": {
-        "dimensions": "1000 x 1000 pixels",
-        "ratio": "1:1 square",
-        "note": "Recommended for crisp hover zoom"
-    },
     "logoStyles": [
         {
             "id": "wordmark",
