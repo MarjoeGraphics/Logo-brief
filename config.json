@@ -23,7 +23,7 @@
             "title": "Combination Mark",
             "description": "A mix of a wordmark and a symbol.",
             "value": "Combination Mark",
-            "image": "logotype_Combination Marks.jpg"
+            "image": "assets/logotype_Combination Marks.jpg"
         },
         {
             "id": "lettermark",
@@ -44,7 +44,7 @@
             "title": "Emblem Logos",
             "description": "Font inside a symbol, badge, or seal.",
             "value": "Emblem Logos",
-            "image": "logotype_Emblem Logos.jpg"
+            "image": "assets/logotype_Emblem Logos.jpg"
         },
         {
             "id": "letterforms",
@@ -58,14 +58,14 @@
             "title": "Mascots",
             "description": "Character-based designs representing the brand.",
             "value": "Mascots",
-            "image": "logotype_Mascots.jpg"
+            "image": "assets/logotype_Mascots.jpg"
         },
         {
             "id": "dynamic",
             "title": "Dynamic Mark",
             "description": "An adaptable logo that can change colors or patterns.",
             "value": "Dynamic Mark",
-            "image": "logotype_Dynamic Marks.jpg"
+            "image": "assets/logotype_Dynamic Marks.jpg"
         }
     ],
     "personalityScales": [
