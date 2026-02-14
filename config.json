@@ -14,42 +14,42 @@
             "title": "Wordmark (Logotype)",
             "description": "Focuses on a company's name using custom typography.",
             "value": "Wordmark",
-            "image": "assets/logotype_Wordmark Logos.jpg"
+            "image": "assets/wordmark.png"
         },
         {
             "id": "brandmarks",
             "title": "Brand Marks",
             "description": "A symbol or icon-based logo (Pictorial mark).",
             "value": "Brand Marks",
-            "image": "assets/logotype_Brand Marks.jpg"
+            "image": "assets/brandmarks.png"
         },
         {
             "id": "combination",
             "title": "Combination Mark",
             "description": "A mix of a wordmark and a symbol.",
             "value": "Combination Mark",
-            "image": "assets/logotype_Combination Marks.jpg"
+            "image": "assets/combination.png"
         },
         {
             "id": "lettermark",
             "title": "Lettermark (Monograms)",
             "description": "A typography-based logo using brand initials.",
             "value": "Lettermark",
-            "image": "assets/logotype_Lettermarks.jpg"
+            "image": "assets/lettermark.png"
         },
         {
             "id": "abstract",
             "title": "Abstract Logo Mark",
             "description": "Uses geometric and conceptual symbols.",
             "value": "Abstract Logo Mark",
-            "image": "assets/logotype_Abstract Logo Marks.jpg"
+            "image": "assets/abstract.png"
         },
         {
             "id": "emblem",
             "title": "Emblem Logos",
             "description": "Font inside a symbol, badge, or seal.",
             "value": "Emblem Logos",
-            "image": "assets/logotype_Emblem Logos.jpg"
+            "image": "assets/emblem.png"
         },
         {
             "id": "letterforms",
@@ -63,14 +63,14 @@
             "title": "Mascots",
             "description": "Character-based designs representing the brand.",
             "value": "Mascots",
-            "image": "assets/logotype_Mascots.jpg"
+            "image": "assets/mascots.png"
         },
         {
             "id": "dynamic",
             "title": "Dynamic Mark",
             "description": "An adaptable logo that can change colors or patterns.",
             "value": "Dynamic Mark",
-            "image": "assets/logotype_Dynamic Marks.jpg"
+            "image": "assets/dynamic.png"
         }
     ],
     "personalityScales": [
