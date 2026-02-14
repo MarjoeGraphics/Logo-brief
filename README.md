@@ -28,7 +28,6 @@ Toggle your project capacity on the "Contact Details" (Step 1) page:
 - **Logo Styles (Step 7)**:
     - **Local Assets**: We have transitioned from Unsplash placeholders to local assets for better performance and customization. Store your logo examples in the `/assets` directory.
     - **Naming Convention**: By default, the system looks for `assets/wordmark.png`, `assets/brandmarks.png`, etc. If you use a different format (like `.jpg`), ensure you update the `image` field for each style in `config.json`.
-    - **Recommended Dimensions**: Use a **1:1 square ratio**. Recommended size is **1000 x 1000 pixels** (800 x 800 minimum) to ensure crispness during the hover zoom.
     - **Enhanced UI**: Logo cards now use an `aspect-square` ratio for larger previews. On hover, the images **enlarge by 25%** (`scale-125`) and the dark gradient overlay fades out, providing a clear, unobstructed view of the design.
 - **Color Psychology (Step 8)**: Update the `colorPsychology` array to modify the keywords, meanings, and CSS background classes. Descriptions are now permanently visible for better accessibility.
 

@@ -200,19 +200,6 @@ class QuestionnaireApp {
                     </label>
                 `).join('');
 
-                // Add recommended dimensions note if not already present
-                if (this.config.imageSpecs && !document.getElementById('image-specs-note')) {
-                    const note = document.createElement('div');
-                    note.id = 'image-specs-note';
-                    note.className = 'mt-6 flex items-center justify-center gap-2 bg-indigo-500/5 py-2.5 px-4 rounded-xl border border-indigo-500/10 animate-zoom-in';
-                    note.innerHTML = `
-                        <i data-lucide="info" class="w-3.5 h-3.5 text-indigo-400"></i>
-                        <p class="text-[9px] font-bold text-indigo-400/80 uppercase tracking-widest leading-none">
-                            Recommended Asset Size: ${this.config.imageSpecs.dimensions} (${this.config.imageSpecs.ratio})
-                        </p>
-                    `;
-                    logoGrid.after(note);
-                }
             }
         } catch (e) { console.error("Error rendering Step 7 logo styles:", e); }
 
