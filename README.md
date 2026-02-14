@@ -25,8 +25,18 @@ Toggle your project capacity on the "Contact Details" (Step 1) page:
 - Modify `availabilityStatus.badgeColor` to change the indicator (e.g., `bg-indigo-500`, `bg-emerald-500`, or `bg-rose-500`).
 
 ### 4. Visual Preferences
-- **Logo Styles**: Update the `logoStyles` array to change the categories, descriptions, or Unsplash images.
-- **Color Psychology**: Update the `colorPsychology` array to modify the keywords and meanings associated with each color.
+- **Logo Styles (Step 7)**:
+    - **Local Assets**: We have transitioned from Unsplash placeholders to local assets for better performance and customization. Store your logo examples in the `/assets` directory.
+    - **Naming Convention**: By default, the system looks for `assets/wordmark.png`, `assets/brandmarks.png`, etc. If you use a different format (like `.jpg`), ensure you update the `image` field for each style in `config.json`.
+    - **Enhanced UI**: Logo cards now use an `aspect-square` ratio for larger previews. On hover, the images **enlarge by 25%** (`scale-125`) and the dark gradient overlay fades out, providing a clear, unobstructed view of the design.
+- **Color Psychology (Step 8)**: Update the `colorPsychology` array to modify the keywords, meanings, and CSS background classes. Descriptions are now permanently visible for better accessibility.
+
+### 6. Project Structure
+- `index.html`: The main entry point and UI structure.
+- `app.js`: Core logic for multi-step navigation, dynamic rendering, and price calculations.
+- `config.json`: **The Source of Truth.** All content, pricing, and image paths live here.
+- `form-submission.js`: Handles AJAX submission to Formspree and GCash QR code generation.
+- `assets/`: Directory for your custom logo style examples.
 
 ### 5. Payment Information
 Update the `paymentInfo` section to ensure the generated QR code directs to your account:
