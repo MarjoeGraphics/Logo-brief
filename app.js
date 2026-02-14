@@ -154,9 +154,9 @@ class QuestionnaireApp {
                     <label class="cursor-pointer group relative block h-full">
                         <input type="radio" name="Logo_Style_Preference" value="${style.value}" class="peer hidden">
                         <div class="h-full bg-slate-800/40 border border-slate-700/50 rounded-2xl overflow-hidden transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-500/5 group-hover:border-slate-600 group-hover:bg-slate-800/60 shadow-lg">
-                            <div class="aspect-video w-full overflow-hidden relative">
-                                <img src="${style.image}" alt="${style.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-60"></div>
+                            <div class="aspect-square w-full overflow-hidden relative">
+                                <img src="${style.image}" alt="${style.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-20"></div>
                             </div>
                             <div class="p-4 relative">
                                 <span class="block font-bold text-white text-xs mb-1 uppercase tracking-wider">${style.title}</span>
