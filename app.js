@@ -1,7 +1,7 @@
 class QuestionnaireApp {
     constructor() {
         this.currentStep = 1;
-        this.totalSteps = 9;
+        this.totalSteps = 10;
         this.stepTitles = [
             "Contact Details",
             "Investment Strategy",
@@ -11,7 +11,8 @@ class QuestionnaireApp {
             "Brand Personality",
             "Logo Style",
             "Color Psychology",
-            "Review & Submit"
+            "Review & Submit",
+            "Thank You"
         ];
         this.config = null;
 
@@ -378,14 +379,25 @@ class QuestionnaireApp {
             this.toggleEssentialAddons();
         }
 
-        if (this.currentStep === 9) {
+        if (this.currentStep === this.totalSteps - 1) {
             this.generateReviewSummary();
         }
 
         if (this.currentStep === this.totalSteps) {
+            this.populateSuccessScreenPreview();
+        }
+
+        // Navigation button logic
+        if (this.currentStep === this.totalSteps - 1) {
+            // Last step of the form itself (Review & Submit)
             this.nextBtn.classList.add('hidden');
             this.submitBtn.classList.remove('hidden');
+        } else if (this.currentStep === this.totalSteps) {
+            // Success step (preview)
+            this.nextBtn.classList.add('hidden');
+            this.submitBtn.classList.add('hidden');
         } else {
+            // Normal intermediate steps
             this.nextBtn.classList.remove('hidden');
             this.submitBtn.classList.add('hidden');
             this.updateNextBtnText();
@@ -395,7 +407,7 @@ class QuestionnaireApp {
     }
 
     updateNextBtnText() {
-        if (this.currentStep < this.totalSteps) {
+        if (this.currentStep < this.totalSteps - 1) { // Only update if there is a 'Next' step before submission
             const nextTitle = this.stepTitles[this.currentStep];
             this.nextBtn.innerHTML = `Continue to ${nextTitle} <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
             if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -422,10 +434,12 @@ class QuestionnaireApp {
             isValid = selectedCount >= 2 && selectedCount <= 4;
         }
 
-        if (this.currentStep === this.totalSteps) {
+        if (this.currentStep === this.totalSteps - 1) {
             const confirmCheck = document.getElementById('confirm-review');
             if (confirmCheck) isValid = isValid && confirmCheck.checked;
             this.submitBtn.disabled = !isValid;
+        } else if (this.currentStep === this.totalSteps) {
+            isValid = true;
         } else {
             this.nextBtn.disabled = !isValid;
         }
@@ -436,6 +450,62 @@ class QuestionnaireApp {
         const div = document.createElement('div');
         div.textContent = str;
         return div.innerHTML;
+    }
+
+    populateSuccessScreenPreview() {
+        const paymentDetails = document.getElementById('payment-success-details');
+        if (!paymentDetails || !this.config) return;
+
+        const investment = this.calculateTotalInvestment();
+        const config = this.config;
+
+        if (investment && config.paymentInfo) {
+            const dpAmount = typeof investment.value === 'number' ? investment.value * 0.5 : 0;
+            const qrData = generateGCashQR(config.paymentInfo.number, config.paymentInfo.name, dpAmount);
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrData)}&size=200x200&margin=10`;
+
+            let html = `
+                <div class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 text-left animate-zoom-in" style="animation-delay: 200ms">
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700/50">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Investment</span>
+                        <span class="text-xl font-black text-white">${investment.display}</span>
+                    </div>
+            `;
+
+            if (dpAmount > 0) {
+                html += `
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em]">50% Downpayment</span>
+                            <span class="text-2xl font-black text-white">₱${dpAmount.toLocaleString()}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 leading-relaxed text-center bg-slate-900/50 p-3 rounded-lg border border-slate-700/30">
+                            To begin the design process, please settle the downpayment via GCash. Your brief will be prioritized upon confirmation.
+                        </p>
+                        <div class="flex flex-col items-center gap-3 pt-2">
+                            <div class="w-48 h-48 bg-white p-1 rounded-2xl shadow-2xl overflow-hidden">
+                                <img src="${qrUrl}" alt="GCash QR Code" class="w-full h-full object-contain">
+                            </div>
+                            <div class="text-center">
+                                <p class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">${config.paymentInfo.name}</p>
+                                <p class="text-[9px] font-medium text-slate-500 mt-0.5 tracking-widest">${config.paymentInfo.number}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <p class="text-xs text-slate-400 leading-relaxed text-center bg-slate-900/50 p-4 rounded-lg border border-slate-700/30">
+                        A 50% downpayment of the final agreed price is required to start the project. We will contact you with the specific amount after reviewing your requirements.
+                    </p>
+                `;
+            }
+
+            html += `</div>`;
+            paymentDetails.innerHTML = html;
+        }
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     generateReviewSummary() {
@@ -630,6 +700,60 @@ class QuestionnaireApp {
         reviewContainer.innerHTML = html;
         if (typeof lucide !== 'undefined') lucide.createIcons();
     }
+}
+
+/**
+ * Generates an EMVCo compliant QR Ph string for GCash
+ */
+function generateGCashQR(phone, name, amount) {
+    const crc16 = (data) => {
+        let crc = 0xFFFF;
+        for (let i = 0; i < data.length; i++) {
+            crc ^= data.charCodeAt(i) << 8;
+            for (let j = 0; j < 8; j++) {
+                if (crc & 0x8000) {
+                    crc = (crc << 1) ^ 0x1021;
+                } else {
+                    crc <<= 1;
+                }
+            }
+        }
+        return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+    };
+
+    const pad = (id, value) => {
+        const len = value.toString().length.toString().padStart(2, '0');
+        return id + len + value;
+    };
+
+    // 00: Payload Format Indicator
+    let payload = pad('00', '01');
+    // 01: Point of Initiation Method (12 for Dynamic/Amount included)
+    payload += pad('01', '12');
+
+    // 26: Merchant Account Information (QR Ph)
+    const guid = pad('00', 'PH.CASH.01');
+    const mobile = pad('01', phone);
+    payload += pad('26', guid + mobile);
+
+    // 52: Merchant Category Code
+    payload += pad('52', '0000');
+    // 53: Transaction Currency (608 for PHP)
+    payload += pad('53', '608');
+    // 54: Transaction Amount
+    payload += pad('54', amount.toFixed(2));
+    // 58: Country Code
+    payload += pad('58', 'PH');
+    // 59: Merchant Name
+    payload += pad('59', name);
+    // 60: Merchant City
+    payload += pad('60', 'Manila');
+
+    // 63: CRC
+    payload += '6304';
+    payload += crc16(payload);
+
+    return payload;
 }
 
 // Initialize App
