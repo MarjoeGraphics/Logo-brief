@@ -285,6 +285,19 @@
                     </div>
                 </div>
 
+                <!-- Step 10: Finalization/Success -->
+                <div id="step-10" class="step-content hidden p-16 text-center flex-col items-center justify-center">
+                    <div class="w-20 h-20 bg-indigo-500/20 text-indigo-500 rounded-full flex items-center justify-center mb-8 mx-auto">
+                        <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-3 tracking-tight">Thank You!</h2>
+                    <p class="text-slate-400 text-lg max-w-sm mb-8 mx-auto">Your brand strategy brief has been submitted successfully. We'll be in touch shortly.</p>
+
+                    <div id="payment-success-details" class="w-full max-w-md mx-auto">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
             </div>
 
             <!-- Navigation Buttons -->
@@ -302,18 +315,6 @@
             </div>
         </form>
 
-        <!-- Success Message -->
-        <div id="success-screen" class="hidden p-16 text-center flex-col items-center justify-center animate-zoom-in">
-            <div class="w-20 h-20 bg-indigo-500/20 text-indigo-500 rounded-full flex items-center justify-center mb-8">
-                <i data-lucide="check-circle-2" class="w-10 h-10"></i>
-            </div>
-            <h2 class="text-3xl font-bold text-white mb-3 tracking-tight">Thank You!</h2>
-            <p class="text-slate-400 text-lg max-w-sm mb-8">Your brand strategy brief has been submitted successfully. We'll be in touch shortly.</p>
-
-            <div id="payment-success-details" class="w-full max-w-md">
-                <!-- Populated by form-submission.js -->
-            </div>
-        </div>
     </div>
 
     <!-- Version Indicator -->
