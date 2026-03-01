@@ -646,8 +646,20 @@ class QuestionnaireApp {
                                 </div>
                                 ${addons.length > 0 ? `
                                 <div class="flex flex-col py-3 border-b border-slate-700/20">
-                                    <span class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-2">Bespoke Enhancements</span>
-                                    <span class="text-[10px] text-slate-400 leading-relaxed italic">${this.escapeHTML(addons.join(', '))}</span>
+                                    <span class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Bespoke Enhancements</span>
+                                    <ul class="space-y-2">
+                                        ${addons.map(addon => {
+                                            const parts = addon.split(' (');
+                                            const name = parts[0];
+                                            const price = parts[1] ? '(' + parts[1] : '';
+                                            return `
+                                                <li class="flex justify-between items-center text-[10px] text-slate-400">
+                                                    <span class="font-medium">${this.escapeHTML(name)}</span>
+                                                    <span class="font-bold text-indigo-400/80 tracking-wider">${this.escapeHTML(price)}</span>
+                                                </li>
+                                            `;
+                                        }).join('')}
+                                    </ul>
                                 </div>
                                 ` : ''}
                                 <div class="flex justify-between py-3 mt-2 bg-indigo-500/5 -mx-6 px-6 rounded-b-3xl">
