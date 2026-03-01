@@ -23,6 +23,10 @@ class QuestionnaireApp {
         this.submitBtn = document.getElementById('submit-btn');
         this.progressBar = document.getElementById('progress-bar');
         this.stepIndicator = document.getElementById('step-indicator');
+        this.logoTrigger = document.getElementById('logo-trigger');
+        this.stepNav = document.getElementById('step-nav');
+        this.logoClickCount = 0;
+        this.logoClickTimeout = null;
 
         this.step1Inputs = {
             name: document.getElementById('full_name'),
@@ -252,6 +256,25 @@ class QuestionnaireApp {
     setupEventListeners() {
         this.nextBtn.addEventListener('click', () => this.navigate(1));
         this.prevBtn.addEventListener('click', () => this.navigate(-1));
+
+        if (this.logoTrigger && this.stepNav) {
+            this.logoTrigger.addEventListener('click', () => {
+                this.logoClickCount++;
+
+                // Reset counter after 5 seconds of inactivity
+                if (this.logoClickTimeout) clearTimeout(this.logoClickTimeout);
+                this.logoClickTimeout = setTimeout(() => {
+                    this.logoClickCount = 0;
+                }, 5000);
+
+                if (this.logoClickCount >= 10) {
+                    this.stepNav.classList.toggle('hidden');
+                    this.stepNav.classList.toggle('flex');
+                    this.logoClickCount = 0;
+                    clearTimeout(this.logoClickTimeout);
+                }
+            });
+        }
 
         Object.values(this.step1Inputs).forEach(input => {
             input.addEventListener('input', () => this.validateCurrentStep());
