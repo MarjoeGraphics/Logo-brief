@@ -31,14 +31,19 @@ Toggle your project capacity on the "Contact Details" (Step 1) page:
     - **Enhanced UI**: Logo cards now use an `aspect-square` ratio for larger previews. On hover, the images **enlarge by 25%** (`scale-125`) and the dark gradient overlay fades out, providing a clear, unobstructed view of the design.
 - **Color Psychology (Step 8)**: Update the `colorPsychology` array to modify the keywords, meanings, and CSS background classes. Descriptions are now permanently visible for better accessibility.
 
-### 6. Project Structure
+### 6. Hidden Navigation Toggle
+For administrative or debugging purposes, the quick step navigation (1-10) is hidden by default.
+- **How to Show/Hide**: Click the "Strategic Brief" logo or header area at the top 10 times in rapid succession (within 5 seconds).
+- **Auto-Reset**: The click counter resets after 5 seconds of inactivity to prevent accidental triggers.
+
+### 7. Project Structure
 - `index.html`: The main entry point and UI structure.
 - `app.js`: Core logic for multi-step navigation, dynamic rendering, and price calculations.
 - `config.json`: **The Source of Truth.** All content, pricing, and image paths live here.
 - `form-submission.js`: Handles AJAX submission to Formspree and GCash QR code generation.
 - `assets/`: Directory for your custom logo style examples.
 
-### 5. Payment Information
+### 8. Payment Information
 Update the `paymentInfo` section to ensure the generated QR code directs to your account:
 - **`number`**: Your GCash mobile number.
 - **`name`**: Your full name (as it appears on GCash).
